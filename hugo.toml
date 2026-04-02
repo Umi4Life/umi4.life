@@ -1,0 +1,4 @@
+baseURL = 'https://umi4.life/'
+locale = 'en-us'
+title = "UmiLife's Blog"
+theme = 'reimu'
