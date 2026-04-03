@@ -3,7 +3,7 @@ banner:
 cover: 
 title: "My first post"
 date: 2026-04-02
-draft: true
+draft: false
 description: "Starting a blog."
 tags: ["hugo", "personal"]
 categories: ["etc"]
