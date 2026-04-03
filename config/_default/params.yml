@@ -11,12 +11,12 @@ menu:
   - name: archives
     url: "archives"
     icon:
-  - name: about
-    url: "about"
-    icon:
-  - name: friend
-    url: "friend"
-    icon:
+  # - name: about
+  #   url: "about"
+  #   icon:
+  # - name: friend
+  #   url: "friend"
+  #   icon:
 
 mainSections: ["posts"]
 # 年，月，日及时间的格式化样式
@@ -28,18 +28,160 @@ timeFormat: "2006-01-02 15:04:05"
 
 author: Umi4Life
 email: zekamashi@umi4.life
-description: "少女祈祷中..."
+description: "Programmer, Engineer, Inventor"
 # subtitle: "少女祈祷中..."
 subtitle:
   typing:
-    enable: false
+    enable: true
     strings:
-      # - Sentence 1
-      # - Sentence 2
-      # - Sentence 3
-      # - Sentence 4
-    typeSpeed: 100              # 打字速度（毫秒/字符） 
-    backSpeed: 50               # 删除速度（毫秒/字符）
+      - Tachyon
+      - はっぴ～しゅ～てぃんぐすた～
+      - give it up to you
+      - ALLNIGHT_DANCER
+      - máγια
+      - YURUSHITE (LeaF Remix)
+      - Azucar
+      - Earthly Light
+      - ジャンヌ・ダルクの慟哭
+      - Princesses Holiday
+      - Diamond Dust
+      - Elusive Emotes
+      - Butterfly Wave
+      - ブツメツビーターズ
+      - Say Goodbye
+      - Geki Geki!! 激闘Break Out!!
+      - Diamond Dust -crystal piano Arr.-
+      - 怨撃・真
+      - Sword of Secret
+      - Heart Cooking Recipe
+      - 共鳴合体 オトゲリヲン
+      - TAIKAN GAME
+      - THE TRiANGLE
+      - 冥乱幻舞
+      - MY GLORY WANTED!!!
+      - めんどーい！やっほーい！ともだち！
+      - Rhythm of Love
+      - Daredevil Glaive
+      - RED to RED
+      - lovelynonsense
+      - 霧の書斎
+      - Jörqer
+      - ロッキンピンクモンスター
+      - 天つ風
+      - Stellar:Dream
+      - \[HALO\]
+      - Trinity Departure
+      - Memories of O.N.G.E.K.I.
+      - Mini skirt
+      - Island Breeze
+      - Xingularity
+      - 花時は夢を見る。
+      - 天河游泳
+      - MEGATON BLAST (tpz Overcute Remix)
+      - Mizutama-Tripster
+      - ゲーミングポーラーベア
+      - DAWNBREAKER
+      - Tricky Treat!!!
+      - Sargasso
+      - 六連星
+      - μ3
+      - Final Flash Flight
+      - 夢を叶える場所
+      - Touch and Go
+      - fulgente (flip-side color mix)
+      - Never Ending Adventure
+      - GAME：CHANGER
+      - Apollo -onoken AxSwing Remix-
+      - スキが止まらない！
+      - Crazy Party Rush
+      - fulgente
+      - HONEY-Q
+      - White Magic Night!
+      - Little Twinkle
+      - TeA
+      - I got a gig tonight!
+      - 怨撃
+      - Cogito ergo sum
+      - まりもとおもちゃ箱
+      - Skip & Smile!!
+      - Magical Panic Adventure
+      - 青空コントレール
+      - STEP BY STEP
+      - レーイレーイ ～超絶最強アメちゃん Mix～
+      - UTOPIA CRASH
+      - ウキウキ☆Candy!
+      - 耐冬花麗
+      - 感情アクセラレイション
+      - Ai Drew
+      - Op.I《fear-TITΛN-》
+      - Buck's Fizz
+      - TAKE ON THE WORLD
+      - Maqrite
+      - Knocking Harder
+      - FANTASY BABY
+      - ツムギボシ（starring オンゲキシューターズ）
+      - パピプペ Popping！ Talk！
+      - Selenadia
+      - Baqeela (Creepy Remix)
+      - B WiZ U
+      - All Right!
+      - Chant Say Yeah!
+      - ω4
+      - Recollect Lines
+      - ロッキンピンクモンスター (豚乙女ランコVo Ver.)
+      - Ai Me
+      - ゼーレンヴァンデルング
+      - キミは“見ていたね”？
+      - Honey Bear
+      - Chelly spLash♪♪
+      - 無敵のフロンティア三銃士
+      - Lazy Addiction
+      - Starring Stars
+      - And Revive The Melody
+      - Vibes 2k20 (owl＊aging remix)
+      - FestA of PandemoniuM
+      - アイシング・ドリーム
+      - Event Horizon
+      - 心
+      - ICEBURN
+      - Happiness on the Table
+      - girls.exe
+      - Over Voltage
+      - Livmetarryr
+      - A Day in the Patisserie
+      - YAMINABE☆PANIC ～ご馳走詰め込みフルコース～
+      - MAKING！ハイタッチ！
+      - Pastel Sprinkles
+      - ヒトリボッチサテライト
+      - Good bye, Merry-Go-Round. (Kobaryo's FTN-Remix)
+      - Aenbharr
+      - in den Himmel steigen
+      - Lazulis Gambit
+      - 超前進！満点スマイル！
+      - Suspiro
+      - オンゲキ全域★アカネサマ？
+      - .locusignore
+      - Nýx
+      - Random Access Emotions
+      - My precious holiday
+      - Dolphika
+      - colorful transparency
+      - 涙隠しておんな道
+      - いつか花咲くその前に
+      - ランダムサンデー
+      - おやすみのうた
+      - 光焔のラテラルアーク
+      - Flow Into You
+      - FLUFFY FLASH (C-Show & Maozon Remix)
+      - Sparkle
+      - Handmade Good Day
+      - HEADLINER
+      - 天つ風 feat. 夏川陽子
+      - Glitter-Glitter
+      - がおっと!!最強☆ぱーりーないと
+
+    typeSpeed: 50              # 打字速度（毫秒/字符） 
+    backSpeed: 25               # 删除速度（毫秒/字符）
     backDelay: 2000             # 打完一句话后，等待时间
     startDelay: 300             # 页面加载后，等待时间
     loop: true                  # 是否循环播放
@@ -114,21 +256,21 @@ footer:
 # Sidebar
 # sidebar: right # deprecated, use sidebar.position instead
 sidebar:
-  position: right
+  position: left
   menu: true  # whether to show the sidebar menu button, ignored on mobile devices
   article:
     show_common: true # whether to show common sidebar, ignored on mobile devices
 
 social:
-  # email: mailto:xxx@gmail.com
-  # github: https://github.com/yourname
+  email: zekamashi@umi4.life
+  github: github.com/Umi4Life
   # google: https://plus.google.com/yourname
   # twitter: https://twitter.com/yourname
   # facebook: https://www.facebook.com/yourname
   # instagram: https://www.instagram.com/yourname
   # linkedin: https://www.linkedin.com/in/yourname
   # pinterest: https://www.pinterest.com/yourname
-  # youtube: https://www.youtube.com/channel/yourname
+  youtube: https://www.youtube.com/@Umi4Life
   # vimeo: https://vimeo.com/yourname
   # flickr: https://www.flickr.com/photos/yourname
   # dribbble: https://dribbble.com/yourname
@@ -143,8 +285,8 @@ social:
   # stackoverflow: https://stackoverflow.com/users/yourname
   # keybase: https://keybase.io/yourname
   # telegram: https://t.me/yourname
-  # discord: https://discordapp.com/users/yourname
-  # steam: https://steamcommunity.com/id/yourname
+  discord: https://discordapp.com/users/zekamashi
+  steam: https://steamcommunity.com/id/umi4life/
   # weixin: 
   # qq:
   # tiktok:
@@ -205,9 +347,9 @@ layout:
   max_width: 1350px # the max width of the main content area
 
 triangle_badge:
-  enable: false
+  enable: true
   icon: github # same as the icon in the social config
-  link: https://github.com/D-Sketon/hugo-theme-reimu
+  link: https://github.com/Umi4Life/umi4.life
 
 anchor_icon: # default use '#' icon, you can use a hexadecimal representation of fontawesome or icon_font, like 'f0c1', you can also use false to hide anchor icon
 
@@ -586,9 +728,9 @@ sponsor:
 
 # Share
 share:
-  # - facebook
-  # - twitter
-  # - linkedin
+  - facebook
+  - twitter
+  - linkedin
   # - reddit
   # - weibo
   # - qq
@@ -641,12 +783,12 @@ service_worker:
 # Experimental
 live2d:
   enable: true
-  position: left # left or right
+  position: right # left or right
 
 # Experimental
 live2d_widgets:
   enable: true
-  position: left # left or right
+  position: right # left or right
 
 # https://github.com/CodeByZach/pace
 pace:
@@ -656,32 +798,35 @@ pace:
 # Please turn on pjax to use this feature
 player:
   disable_on_mobile: false
-  position: before_sidebar # before_sidebar | after_sidebar | after_widget
+  position: after_sidebar # before_sidebar | after_sidebar | after_widget
   # if you enable meting, you must enable aplayer first
   aplayer:
     # https://github.com/DIYgod/APlayer
-    enable: false
+    enable: true
     options:
       audio: []
-      fixed: true
-      autoplay:
+      fixed: false
+      mini: false
+      autoplay: true
       loop:
-      order:
+      order: random
       preload:
-      volume:
+      volume: 0.3
       mutex:
-      listFolded:
+      listFolded: true
       lrcType:
   meting:
     # https://github.com/metowolf/MetingJS
     # if you want to use meting, please enable aplayer first
-    enable: false
+    enable: true
     meting_api: # custom api
     options:
       id: 2265921590
       server: netease
       type: playlist
-      auto:
+      auto: true
+      autoplay: true
+      volume: 0.3
 
 ########################################
 # pangu.js

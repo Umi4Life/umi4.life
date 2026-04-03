@@ -1,6 +1,7 @@
 baseURL = 'https://umi4.life/'
 locale = 'en-us'
 title = "UmiLife's Blog"
+description = "test"
 theme = 'reimu'
 
 [caches]
