@@ -636,8 +636,6 @@ waline:
     - https://unpkg.com/@waline/emojis@1.2.0/tw-emoji
   meta:
     - nick
-    - mail
-    - link
   requiredMeta:
     - nick
   wordLimit: 0
