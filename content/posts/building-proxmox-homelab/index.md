@@ -25,7 +25,7 @@ Storage:
  - HDD: 
      - x2 Seagate IronWolf 4 TB
      - x1 Old WD 640 GB
-     - x3 mixes 2nd hand of WD Blue and Toshiba HDD from taobao
+     - x3 mixes of 2nd hand 500 GB WD Blue and Toshiba HDD from taobao
 PSU: Corsair RM750x 750W Power Supply
 Case: JONSBO N6
 Cooling: 
@@ -58,9 +58,9 @@ This puts me at ~ 5.5 TB of network storage
 After setting up data set and created SMB share for my main PC, phones, and family, I immediatly started spinning up some LXCs
 
 ### The mistakes
-I came across a repostory of community script which would automatically create LXCs for many services https://community-scripts.org/. Initially I was only after the [Prometheus Exporter](https://community-scripts.org/scripts/prometheus-pve-exporter) for Grafana observibility of my system. However, I started getting trigger happy and created *bunch* of containers, each dedicated for only one microservice.
+I came across a curate of community script for automatically creating LXCs for listed services https://community-scripts.org. Initially I was only after the [Prometheus Exporter](https://community-scripts.org/scripts/prometheus-pve-exporter) for Grafana observibility of my system. However, I started getting trigger happy and created *bunch* of containers, each dedicated for only one microservice.
 
-Without realizing, I my Proxmox server ended up with 20+ LXCs which would be bad for memory overhead. I spend days re-creating LXCs and setting up docker manually, migrating each service inside those containers into docker. This came with headache of moving to central database LXC, converting many which were using sqlite into postgres table. There was only 2 survivors left, the affrmentioned Prometheus Exporter LXC and Ollama LXC which need to work closly with the kernel.
+Without realizing, I my Proxmox server got filled with 20+ LXCs and that would be very bad for memory overhead. I spent days re-creating LXCs and setting up docker manually, migrating each service inside those LXCs into proper docker container. This came with headache of moving to central database LXC, converting many of which were using sqlite into postgres table. There were only 2 survivors left, the affrmentioned Prometheus Exporter LXC and Ollama LXC which need to work closly with the kernel.
 
 In the end, the LXCs structure look something like this
 ```Markdown
@@ -109,17 +109,17 @@ Proxmox Host
 └─── Virtual Machines
     └── TrueNAS
 ```
-Each LXCs' dockers also have cadvisor running to send more real-time observibility data to Prometheus -> Grafana. There's also NVIDIA DCGM exporter which lets me monitor my GPU usage.
+Each LXCs' dockers also have cadvisor running to send more real-time observibility data to Prometheus -> Grafana. There's also NVIDIA DCGM exporter to monitor my GPU usage.
 
 {{< gallery >}}
-![image](./images/grafana-1.jpg)
-![image](./images/grafana-2.jpg)
-![image](./images/grafana-3.jpg)
-![image](./images/grafana-4.jpg)
+![image](./images/grafana-1.JPG)
+![image](./images/grafana-2.JPG)
+![image](./images/grafana-3.JPG)
+![image](./images/grafana-4.JPG)
 {{< /gallery >}}
 
 ### The LXC -> GPU shenanigans 
-The installation of Ollama didn't go smoothly. Apparently my kernel version was too new which caused nvidia driver build to fail. I had to downgrade to previous version to get my LXC to detect GPU with passthrough.
+The installation of Ollama didn't go smoothly. Apparently my kernel version was too new leading to nvidia driver build failling. I had to downgrade to previous version to get my LXC to properly detect GPU with passthrough.
 
 ```Bash
 root@ollama:~# nvidia-smi
@@ -144,11 +144,11 @@ root@ollama:~# nvidia-smi
 ```
 
 ### Networking and Proxies
-I setup AdGuard as a DNS rewriter. The ability to block ad from the entire network is just a side benifit. This way, I can just type in a custom domain name instead of having to type in IP of each LXC I want to access.
+I setup AdGuard as a DNS rewriter. The ability to block ad from the entire network is just a side benefit. This way, I can just type in a custom domain name instead of having to remember IP of each LXC I want to access.
 
-On top of that, there's Traefik to help me proxy each microservice. With this, I don't have to type in the port either, just the name of the host. I simply had to point every DNS rewrite in AdGuard to Traefik IP to get everything to work. 
+On top of that, there's Traefik to proxy each microservice. With this, I don't have to type the port either, just the name of the host. I simply had to point every DNS rewrite in AdGuard to Traefik IP to get everything to work. 
 
-I also setup Let's Encrypt using domain name umi4.life I got from cloudflare so that every service I host will have SSL/TLS.
+I also setup Let's Encrypt using domain name umi4.life I got from Cloudflare so that every service I host will have SSL/TLS.
 
 {{< gallery >}}
 ![alt](./images/adguard.JPG)
@@ -156,12 +156,18 @@ I also setup Let's Encrypt using domain name umi4.life I got from cloudflare so 
 ![alt](./images/ssl.JPG)
 {{< /gallery >}}
 
-None of these are exposed to the internet, of course. These hosts can only be accessed when connected to the same network as the Proxmox server, which brings us to...
+None of these are exposed to the internet of course. They can only be accessed when connected to the same network as the Proxmox server, which brings us to...
 
 ### Private VPN
-At first I was going to use WireGuard for self hosted VPN. However, my home network is locked behind not just dynamic IP, but also CGNAT by my ISP which made it impossible by preventing inbound connections. I had to rely on external relay service which led me to [Tailscale](https://tailscale.com/) which coincidently also uses WireGuard protocol.
+At first I was going to use WireGuard for self hosted VPN. However, my home network is locked behind not just dynamic IP, but also CGNAT by my ISP, preventing any inbound connections. I had to rely on 3rd party relay, leading me to [Tailscale](https://tailscale.com/) which coincidently also uses WireGuard protocol.
 
-By installing directly on the Proxmox host, advertise subnet route on it, and setup split DNS on Tailscale console to point to the AdGuard IP, I can not only access my Proxmox server from external network, but also anything inside my home network including my 3d printer from edge devices.
+By installing Tailscale directly on the Proxmox host and...
+
+- advertise subnet route on the host
+- setup split DNS on Tailscale admin console to point to the AdGuard IP
+
+I can not only access my Proxmox server from external network, but also anything inside my home network including my 3d printer from edge devices.
+
 {{< gallery >}}
 ![alt](./images/tailscale.JPG)
 ![alt](./images/phone.png)
@@ -173,7 +179,7 @@ This finally brings up to the stacks diagram of my homelab.
 
 ![alt](./images/stacks.svg)
 
-This diagram is not 100% accurate yet. Where stuff are hosted aren't up to date, some I haven't add to the diagram and as afformention, I'm using a consumer ISP package with consumer router, which is unable to do VLAN to properly seperate DMZ services from my internal service. I ended just creating another VM for Traefik, put everthing on seperate VMBR, reverse tunnel those DMZ services and put everthing under strict firewall policy to make sure that ousiders can't access my internal network.
+This diagram is not 100% accurate yet. The places where stuff are hosted aren't up to date, some haven't been added to the diagram and as afformention, I'm using a consumer ISP package with consumer router, which is unable to do VLAN to properly seperate DMZ services from my internal service. I ended just creating another VM for Traefik, put everthing on seperate VMBR, created reverse tunnel on those DMZ services and put everthing under strict firewall policy to make sure other people can't access my internal network.
 
 ### The DMZ
 This is where I host public stuff. As of now, there's only fork of [ARTEMiS server](https://gitea.tendokyu.moe/Hay1tsme/artemis) hosting on https://artemis.umi4.life with it's frontend at https://artemis-web.umi4.life. I'm planning to host more arcade servers and some other pet project in the future.
@@ -214,8 +220,8 @@ flowchart TD
 ```
 
 ### Result
-In the end, I ended up with infra, services and data that I own 100% and have complete control over (besides Cloudflare tunnel and Tailscale VPN). Right now my RAM usage is sitting at ~17 GB out of 32 GB which is something I definitely have to upgrade in the future. 
+In the end, I ended up with infrastructure that I own 100% and have complete control over (besides Cloudflare tunnel and Tailscale VPN). Right now my RAM usage is sitting at ~17 GB out of 32 GB which is something I definitely have to upgrade in the future. 
 
-There's still a lot to do. I'm planning to integrate Terraform and Ansible to turn my whole Proxmob homelab into Infrastructure as a Code and version control everything into my private git, so that's something to look forward to.
+There's still a lot to do. I'm planning to integrate [Terraform](https://developer.hashicorp.com/terraform) and [Ansible](https://github.com/ansible/ansible) to turn my whole Proxmox homelab into Infrastructure as a Code and version control everything into my private git, so that's something to look forward to.
 
 I ended up tearing and re-doing lots of things along the way, broke many stuff, got my whole house wifi down while my family is streaming movie. But I did not regret a single step, *the point of homelab is to make and break things to learn more stuff and be able to fix things on the go*. That's the philosophy I came across in multiple guides I came across during research of making a homelab.
