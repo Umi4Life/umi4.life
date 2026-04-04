@@ -640,7 +640,6 @@ waline:
     - link
   requiredMeta:
     - nick
-    - mail
   wordLimit: 0
   pageSize: 10
   pageview: true
