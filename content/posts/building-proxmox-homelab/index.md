@@ -1,6 +1,6 @@
 +++
-banner = 'https://github.com/Umi4Life/umi4.life/posts/building-proxmox-homelab/cover.jpg'
-cover = 'https://github.com/Umi4Life/umi4.life/posts/building-proxmox-homelab/cover.jpg'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/building-proxmox-homelab/cover.jpg'
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/building-proxmox-homelab/cover.jpg'
 date = '2026-04-04T10:35:08+07:00'
 draft = false
 title = 'Building a Proxmox Homelab'
