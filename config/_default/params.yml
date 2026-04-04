@@ -191,19 +191,19 @@ subtitle:
     smartBackspace: false       # 智能退格，只删除不同的部分
   text: "少女祈祷中..."        # 当 typing.enable = false 时使用
 
-banner: "images/banner.webp"
+banner: "images/banner-setsuna.webp"
 # You can also write it in the form of the following url
 # banner: "https://example.com"
 
 # If you want to use the srcset attribute, please enable it
 banner_srcset:
-  enable: false
+  enable: true
   srcset:
-    - src: "images/banner-600w.webp"
+    - src: "images/banner-setsuna-600w.webp"
       media: "(max-width: 479px)"
-    - src: "images/banner-800w.webp"
+    - src: "images/banner-setsuna-800w.webp"
       media: "(max-width: 799px)"
-    - src: "images/banner.webp"
+    - src: "images/banner-setsuna.webp"
       media: "(min-width: 800px)"
 
 avatar: "avatar.webp"
@@ -356,9 +356,9 @@ anchor_icon: # default use '#' icon, you can use a hexadecimal representation of
 reimu_cursor:
   enable: true
   cursor:
-    default: ../images/cursor/reimu-cursor-default.png  # this path is relative to the css/main.css, so it needs to go up one level to reach the images folder
-    pointer: ../images/cursor/reimu-cursor-pointer.png
-    text: ../images/cursor/reimu-cursor-text.png
+    default: ../images/cursor/setsuna-cursor-default.png  # this path is relative to the css/main.css, so it needs to go up one level to reach the images folder
+    pointer: ../images/cursor/setsuna-cursor-pointer.png
+    text: ../images/cursor/setsuna-cursor-text.png
 
 icon_font: 4552607_a0oqhord1y
 
@@ -846,7 +846,7 @@ material_theme:
   # more information: https://github.com/2061360308/material-theme
   # notice: when you enable this feature, all the covers will be automatically added "crossorigin" attribute to support the dynamic color scheme
   # so make sure your custom covers will not be blocked by the browser's CORS policy
-  enable: false # enable material_theme to generate dynamic color schemes based on the banner image
+  enable: true # enable material_theme to generate dynamic color schemes based on the banner image
 
 internal_theme:
   dark:
