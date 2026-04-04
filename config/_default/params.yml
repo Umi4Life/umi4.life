@@ -28,7 +28,7 @@ timeFormat: "2006-01-02 15:04:05"
 
 author: Umi4Life
 email: zekamashi@umi4.life
-description: "Programmer, Engineer, Inventor"
+description: "I make stuff"
 # subtitle: "少女祈祷中..."
 subtitle:
   typing:
@@ -372,7 +372,7 @@ sidebar:
 
 social:
   email: zekamashi@umi4.life
-  github: github.com/Umi4Life
+  github: https://github.com/Umi4Life
   # google: https://plus.google.com/yourname
   # twitter: https://twitter.com/yourname
   # facebook: https://www.facebook.com/yourname
@@ -623,8 +623,8 @@ valine:
 
 # https://waline.js.org/
 waline:
-  enable: false
-  serverURL:
+  enable: true
+  serverURL: https://waline.umi4.life # waline server url
   # lang: zh-CN # deprecated, use html.lang instead
   locale: {} # https://waline.js.org/guide/features/i18n.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80
   emoji:
@@ -891,12 +891,12 @@ service_worker:
 
 # Experimental
 live2d:
-  enable: true
+  enable: false
   position: right # left or right
 
 # Experimental
 live2d_widgets:
-  enable: true
+  enable: false
   position: right # left or right
 
 # https://github.com/CodeByZach/pace
