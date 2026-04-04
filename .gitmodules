@@ -1,3 +1,4 @@
 [submodule "themes/reimu"]
 	path = themes/reimu
-	url = https://github.com/D-Sketon/hugo-theme-reimu
+	url = https://github.com/Umi4Life/hugo-theme-reimu
+	branch = setsuna
