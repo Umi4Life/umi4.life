@@ -19,21 +19,19 @@ So out of the blue, I decided to start out a blog documenting stuff I made, star
 - Arcade rhythm games
 - IoT
 
-The printers I use are:
+The printers I own are:
 
 - Voron V0
 - Voron 2.4 (yes, I hand built both of them)
-- Ender 3 (retired - I'm planning to remodel into E3NG or Virtu E3 sometime in the future)
+- Ender 3 (retired, planning to remodel into E3NG or Virtu E3)
 
-### Video Games I Play
+### Rhythm Games
 
-I don't really play "normal" games like shooters, MOBAs, or all the other stuff. I'm also too broke and too busy to sink my time into gacha games.
+The ones I'm actively playing:
 
-I mostly play arcade rhythm games, the ones I'm actively playing:
-
-- Maimai
-- ongeki
-- IIDX
+- Maimai rating 15000 真二段 
+- Ongeki ratubg 19.100
+- IIDX DP 四段
 
 {{< figure
   src="./reimu-voron.jpg"

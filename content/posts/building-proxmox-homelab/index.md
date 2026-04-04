@@ -4,6 +4,9 @@ cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/
 date = '2026-04-04T10:35:08+07:00'
 draft = false
 title = 'Building a Proxmox Homelab'
+description = 'Own your infra'
+tags = ["proxmox", "linux", "homelab", "ai", "documentation"]
+categories = ["homelab"]
 mermaid = true
 +++
 
