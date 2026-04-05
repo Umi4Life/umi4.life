@@ -100,8 +100,8 @@ Without realizing, I my Proxmox server got filled with 20+ LXCs and that would b
 The idea virtualization strategy should be the following
 
 | Workload      | Type   | Reason                                                    |
-| ------------- | ------ | ----------------------------------------------------------|
-| Reverse Proxy | LXC    | External point, Isolation, networking flexibility         |
+| :------------ | :----- | :-------------------------------------------------------- |
+| Proxy         | LXC    | External point, Isolation, networking flexibility         |
 | Apps          | LXC    | Lightweight, fast                                         |
 | Database      | LXC    | Centralized persistent data Performance, low overhead     |           
 | Monitoring    | LXC    | Observability of the entire system                        |    
@@ -119,7 +119,7 @@ Proxmox Host
 │   ├── network
 │   │   └── Docker
 │   │       └── AdGuard
-│   ├── ingress
+│   ├── proxy
 │   │   └── Docker
 │   │       └── Traefik
 │   ├── databases
