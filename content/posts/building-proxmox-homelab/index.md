@@ -18,11 +18,11 @@ flowchart TD
 
     %% Entry
     A[Internet] --> B[Tunneling]
-    B --> C[Reverse Proxy Container]
+    B --> C[Reverse Proxy]
 
     %% Core
-    subgraph Proxmox Host
-        C --> D[Application Services]
+    subgraph Homelab
+        C --> D[Microservices]
         D --> E[Databases]
         F[Network Storage / NAS] --> D
         F --> E
@@ -208,11 +208,11 @@ flowchart LR
         B[Router / Firewall]
     end
 
-    subgraph Proxmox
-        C[Reverse Proxy VM]
-        D[App LXCs]
+    subgraph Proxmox Host
+        C[Traefik Reverse Proxy Container]
+        D[Apps LXCs]
         E[Database LXCs]
-        F[Storage VM]
+        F[TrueNAS Storage VM]
         G[Monitoring LXC]
     end
 
