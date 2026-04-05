@@ -10,12 +10,34 @@ categories = ["homelab"]
 mermaid = true
 +++
 
-### The begnning
-I've been wanting to host my own bare-metal server for a while. It all started from my pc running out of storage and planning to buil a NAS, along the way during planning I just had a random thought "hey, why not turn it into a full scale home server to host all my own microservices".
+### The plan
+I've been wanting to host my own bare-metal server for a while. It all started from my PC running out of storage and planning to build a NAS, along the way during planning I just had a random thought "hey, why not turn it into a full scale home server to host all my own microservices".
+
+```mermaid
+flowchart TD
+
+    %% Entry
+    A[Internet] --> B[Tunneling]
+    B --> C[Reverse Proxy VM]
+
+    %% Core
+    subgraph Proxmox Host
+        C --> D[Application Services]
+        D --> E[Databases]
+        F[Network Storage / NAS] --> D
+        F --> E
+        G[Monitoring / Observibility]
+    end
+
+    %% Observability
+    G --> C
+    G --> D
+    G --> E
+```
 
 With recent news of AWS and Cloudflare outages, I think this is something more people should get into as well.
 
-This will be more of a diary of by journey building this infrastructure rather than a detailed guide how to set up your own lab or a technical deep dive.
+This will be more of a diary of my journey building this infrastructure rather than a detailed guide of how to set up your own lab or a technical deep dive.
 
 ### The hardware
 It's a mix of new and old pc parts
@@ -57,9 +79,9 @@ The first thing I did after installing Proxmox is to install TrueNAS as my main 
 - the first pool is mirror RAID1 using the x2 4 TB IronWolf for main storage
   - RAID1 mirrors(requires 2 disks), providing instant failover and fast reads at the cost of using only half the total storage space.
   - 1 Drive out of 2 can fail and be easily replaced
-- the second is RAIDZ1(requires minimum 3 disks) using 4 smaller old 500 GB HDDs for secondary, and someting to tinker with
+- the second is RAIDZ1(requires minimum 3 disks) using 4 smaller old 500 GB HDDs for secondary, and something to tinker with
   - RAID Z1 stripes data across three or more drives with single-drive protection, sacrificing 1 drive space for redundancy
-  - 1 Drive out of 3 can fail and I acan keep adding more drive ulike mirror. But also unlike mirror, each restripe will take significantly longer time
+  - 1 Drive out of 3 can fail and I can keep adding more drive ulike mirror. But also unlike mirror RAID1, each restripe will take significantly longer time
 
 This puts me at ~ 5.5 TB of network storage
 
@@ -71,9 +93,9 @@ This puts me at ~ 5.5 TB of network storage
 After setting up data set and created SMB share for my main PC, phones, and family, I immediatly started spinning up some LXCs
 
 ### The mistakes
-I came across a curate of community script for automatically creating LXCs for listed services https://community-scripts.org. Initially I was only after the [Prometheus Exporter](https://community-scripts.org/scripts/prometheus-pve-exporter) for Grafana observibility of my system. However, I started getting trigger happy and created *bunch* of containers, each dedicated for only one microservice.
+I came across a curated list of community script for automatically creating LXCs for listed services https://community-scripts.org. Initially I was only after the [Prometheus Exporter](https://community-scripts.org/scripts/prometheus-pve-exporter) for Grafana observibility of my system. However, I started getting trigger happy and created *bunch* of containers, each dedicated for only one microservice.
 
-Without realizing, I my Proxmox server got filled with 20+ LXCs and that would be very bad for memory overhead. I spent days re-creating LXCs and setting up docker manually, migrating each service inside those LXCs into proper docker container. This came with headache of moving to central database LXC, converting many of which were using sqlite into postgres table. There were only 2 survivors left, the affrmentioned Prometheus Exporter LXC and Ollama LXC which need to work closly with the kernel.
+Without realizing, I my Proxmox server got filled with 20+ LXCs and that would be very bad for memory overhead. I spent days re-creating LXCs and setting up Docker manually, migrating each service inside those LXCs into proper Docker container. This came with headache of moving to central database LXC, converting many of which were using sqlite into postgres table. There were only 2 survivors left, the affrmentioned Prometheus Exporter LXC and Ollama LXC which need to work closely with the kernel.
 
 The idea virtualization strategy should be the following
 
@@ -81,11 +103,10 @@ The idea virtualization strategy should be the following
 | ------------- | ----   | ----------------------------------------------------------|
 | Reverse Proxy | VM/LXC | External point, Isolation, networking flexibility         |
 | Apps          | LXC    | Lightweight, fast                                         |
-| Database      | LXC    | Centralized persistant data Performance, low overhead     |           
+| Database      | LXC    | Centralized persistent data Performance, low overhead     |           
 | Monitoring    | LXC    | Observability of the entire system                        |    
 | NAS           | VM     | Filesystem control (ZFS, passthrough)                     |
 | DMZ           | VM     | External app hoting to the internet, isolated from kernel |
-
 
 In the end, the LXCs structure look something like this
 ```Markdown
@@ -134,7 +155,7 @@ Proxmox Host
 └─── Virtual Machines
     └── TrueNAS
 ```
-Each LXCs' dockers also have cadvisor running to send more real-time observibility data to Prometheus -> Grafana. There's also NVIDIA DCGM exporter to monitor my GPU metrics.
+Each LXCs' Dockers also have cadvisor running to send more real-time observibility data to Prometheus -> Grafana. There's also NVIDIA DCGM exporter to monitor my GPU metrics.
 
 {{< gallery >}}
 ![image](./images/grafana-1.JPG)
@@ -151,7 +172,7 @@ My Grafana can the track system's
 - disk read and writes
 
 ### What I'd avoid next time
-Lazily sing community script to spin up LXCs not only ends up with inefficient resource usage, but because I was specifally using express version, every container got assined with dynamic IP by router DCHP. This gives me headache organizing each IP in Traefik.
+Lazily sing community script to spin up LXCs not only ends up with inefficient resource usage, but because I was specifally using express version, every container got assined with dynamic IP by router DHCP. This gives me headache organizing each IP in Traefik.
 
 I had to reorganize into static IP as such
 
@@ -169,11 +190,11 @@ I had to reorganize into static IP as such
 | TrueNAS               | 192.168.1.200 |
 
 
-To provide some more background, my current router DCHP assigns dynamic ip between `101-199`. I put all these containers into IP out of DCHP range, starting with Proxmox host at `.10`, dns& proxy at `.2` & `.3`, database & monitoring at `.30` & `.32`, servuces starting at `.40`, and VM strting at `.200`
+To provide some more background, my current router DCHP assigns dynamic IP between `101-199`. I put all these containers into IP out of DCHP range, starting with Proxmox host at `.10`, dns& proxy at `.2` & `.3`, database & monitoring at `.30` & `.32`, servuces starting at `.40`, and VM starting at `.200`
 
-Reassiging IP broke relation bewtween my services, had to go inside each docker compose file/condig to update the IPs. But on the brightside his prevents mixing with other network device such as home computer, phones, printers and such. It also paves standard to expand more stuff such as new Promxmox nodes into my lab.
+Reassiging IP broke relation bewtween my services, had to go inside each Docker compose file/condig to update the IPs. But on the brightside his prevents mixing with other network device such as home computer, phones, printers and such. It also paves standard to expand more stuff such as new Promxmox nodes into my lab.
 
-The conclusion of this mistake is to plan out IP assigntment of what you're going to host from the start, to have a more organized IP hiraechy.
+The conclusion of this mistake is to plan out IP assignment of what you're going to host from the start, to have a more organized IP hierarchy.
 
 ### High-Level Architecture
 ```mermaid
@@ -232,19 +253,19 @@ root@ollama:~# nvidia-smi
 ```
 
 ### Networking and Proxies
-I setup AdGuard as a DNS rewriter. The ability to block ad from the entire network is just a side benefit. This way, I can just type in a custom domain name instead of having to remember IP of each LXC I want to access.
+I set up AdGuard as a DNS rewriter. The ability to block ad from the entire network is just a side benefit. This way, I can just type in a custom domain name instead of having to remember IP of each LXC I want to access.
 
 On top of that, there's Traefik to reverse proxy each microservice. With this, I don't have to type the port either, just the name of the host. I simply had to point every DNS rewrite in AdGuard to Traefik IP to get everything to work. 
 
-I also setup Let's Encrypt using domain name umi4.life I got from Cloudflare so that every service I host will have SSL/TLS.
+I also set up Let's Encrypt using domain name umi4.life I got from Cloudflare so that every service I host will have SSL/TLS.
 
 `Internet → Router → DNS → Reverse Proxy (Traefik) → Internal Services`
 
 Reverse Proxy (Traefik) acts as a unified gateway to each internal services, it provides;
  - A single point of security and 
- - performance optimizarion
+ - performance optimization
  - traffic management
-I can easily edit the centralized proxy setting without touching proxy setting on other microservices inside docker.
+I can easily edit the centralized proxy setting without touching proxy setting on other microservices inside Docker.
 
 {{< gallery >}}
 ![alt](./images/adguard.JPG)
@@ -260,7 +281,7 @@ At first I was going to use WireGuard for self hosted VPN. However, my home netw
 By installing Tailscale directly on the Proxmox host and...
 
 - advertise subnet route on the host
-- setup split DNS on Tailscale admin console to point to the AdGuard IP
+- set up split DNS on Tailscale admin console to point to the AdGuard IP
 
 I can not only access my Proxmox server from external network, but also anything inside my home network including my 3d printer from edge devices.
 
@@ -271,33 +292,37 @@ I can not only access my Proxmox server from external network, but also anything
 
 
 ### Overall stacks
-This finally brings up to the stacks diagram of my homelab.
+This finally brings up to the stacks diagram of my infrastructure.
 
 ![alt](./images/stacks.svg)
 
-This diagram is not 100% accurate yet. The places where stuff are hosted aren't up to date, some haven't been added to the diagram and as afformention, I'm using a consumer ISP package with consumer router, which is unable to do VLAN to properly seperate DMZ services from my internal service. I ended just creating another VM for Traefik, put everthing on seperate VMBR, created reverse tunnel on those DMZ services and put everthing under strict firewall policy to make sure other people can't access my internal network.
+This diagram is not 100% accurate yet. The places where where the stuff is hosted aren't up to date, some haven't been added to the diagram and as aforementioned, I'm using a consumer ISP package with consumer router, which is unable to do VLAN to properly seperate DMZ services from my internal service. I ended just creating another VM for Traefik, put everything on separate VMBR, created reverse tunnel on those DMZ services and put everthing under strict firewall policy to make sure other people can't access my internal network.
 
 ### The DMZ
-This is where I host public stuff. As of now, there's only fork of [ARTEMiS server](https://gitea.tendokyu.moe/Hay1tsme/artemis) hosting on https://artemis.umi4.life with it's frontend at https://artemis-web.umi4.life. I'm planning to host more arcade servers and some other pet project in the future.
+This is where I host public stuff via Cloudflare Tunnel. As of now, there's only fork of [ARTEMiS server](https://gitea.tendokyu.moe/Hay1tsme/artemis) hosting on https://artemis.umi4.life with it's frontend at https://artemis-web.umi4.life. I'm planning to host more arcade servers and some other pet project in the future.
 
-The artemis server is not just something I pulled from tendokyu and serve as-is either. First I forked it into my self hosted private git repo. Setup CI/CD to build docker image and push into my self hosted registry stored in the NAS, and then do some ssh jumping to the destination destination to pull it from that registry and re compose up.
+The artemis server is not just something I pulled from tendokyu and serve as-is. First I forked it into my self hosted private git repo. Setting up CI/CD to build Docker image and push into my self hosted registry stored in the NAS, and then do some ssh jumping to the destination container to pull it from that registry and re compose up.
+
+The reason I didn't push directly to the service container is because since this is a DMZ service, everything is cut completely off from the rest of my internal network, so I made them communicate over internet instead.
 
 ```mermaid
 flowchart TD
 
-    A["Git Push to Gitea Repo"]
+    A["Git Push to main repo"]
 
     B["service-git LXC"]
     C["Gitea Runner act_runner"]
 
     D["Build Docker Image"]
     E["Self Hosted TrueNAS Registry"]
-    F["Cloudflare Tunnel"]
+    F["Cloudflare Tunnel (Registry)"]
     G["registry.umi4.life"]
 
-    H["Edge VM 192.168.1.188"]
+    H["Edge VM 192.168.1.xxx"]
     I["DMZ VM 10.10.10.10"]
-    J["Docker Compose Up"]
+    J["Docker Pull & Compose Up"]
+    K["Cloudflare Tunnel (Service)"]
+    L["\{service\}.umi4.life"]
 
     A --> B
     B --> C
@@ -313,6 +338,8 @@ flowchart TD
 
     I -->|docker pull| G
     I --> J
+    J --> K
+    K --> L
 ```
 
 ### Result
@@ -324,6 +351,6 @@ I ended up tearing and re-doing lots of things along the way, broke many stuff, 
 
 There's still a lot to do. As of now there is 0 backup plan and recovery strategy. That's something I need to work on asap to have something to rollback to. How I'd probably implement is to create each day snapshot of central DBs into my NAS.
 
-I'm also planning to integrate [Terraform](https://developer.hashicorp.com/terraform) and [Ansible](https://github.com/ansible/ansible) to turn my whole Proxmox homelab into Infrastructure as a Code and version control everything into my private git, so that's something to look forward to.
+I'm also planning to integrate [Terraform](https://developer.hashicorp.com/terraform) and [Ansible](https://github.com/ansible/ansible) to turn my whole Proxmox environment into Infrastructure as a Code and version control everything into my private git, so that's something to look forward to.
 
-As mention, my current AI capability is very limited, anything LLM model over 9b spilt to RAM and slowed down token/s significantly, 3090 is one of the top priority hardware upgrade I want, second from RAM upgrade
+As mentioned, my current AI capability is very limited, anything LLM model over 9b spilled to RAM and slowed down token/s significantly, 3090 is one of the top priority hardware upgrade I want, second from RAM upgrade
