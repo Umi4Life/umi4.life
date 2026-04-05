@@ -18,7 +18,7 @@ flowchart TD
 
     %% Entry
     A[Internet] --> B[Tunneling]
-    B --> C[Reverse Proxy VM]
+    B --> C[Reverse Proxy Container]
 
     %% Core
     subgraph Proxmox Host
