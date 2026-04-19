@@ -13,7 +13,7 @@ mermaid = true
 ![image](./images/meme.png)
 Right now, I'm using Tailscale as a VPN for homelab access from remote (external wifi & cellular). What I don't like about this set up is that Tailscale free plan is very difficult to scale users as the user limit is only 6. If I want to share my internal services to my friend groups, they need to sign up for Tailscale account first and go through their onboarding. The only way to get aroud user limit I could think of is to add by device which is also a nightmare onboarding process (Tailscale login from user's device -> use the auth link to sign in to my account).
 
-In short, Tailscale is great for personal use. But a pain to add users. Wireguard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install Wireguard app and nothing else.
+In short, Tailscale is great for personal use. But a pain to add users. WireGuard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install Wireguard app and nothing else.
 
 ## Making the most out of my VPS
 I recently set up a Vultr VPS for a static IP access in order to expose my minecraft server TCP connection to internet thorght reservse proxy. It boasts 1 vCPU, 1 GB of memory, 25 GB of storage and costs a whopping $5 per month. I wanted to get the most out of it's value.
@@ -36,7 +36,7 @@ flowchart TD
     subgraph Clients
         E[Wireguard Client 1] --> C
         F[Wireguard Client 2] --> C
-        G[Wireguard Client 2] --> C
+        G[Wireguard Client 3] --> C
     end
 
     %% Advertise
