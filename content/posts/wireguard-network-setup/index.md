@@ -16,7 +16,7 @@ Right now, I'm using Tailscale as a VPN for homelab access from remote (external
 In short, Tailscale is great for personal use. But a pain to add users. Wireguard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install Wireguard app and nothing else.
 
 ## Making the most out of my VPS
-I recently set up a Vultr VPS as a reverse proxy tunnel for my minecraft server to get a static ip. It boasts 1 vCPU, 1 GB of memory, 25 GB storage and costs whopping $5 per month. I wanted to get the most out of it's value.
+I recently set up a Vultr VPS for a static IP access in order to expose my minecraft server TCP connection to internet thorght reservse proxy. It boasts 1 vCPU, 1 GB of memory, 25 GB of storage and costs a whopping $5 per month. I wanted to get the most out of it's value.
 
 
 ## Design
@@ -44,12 +44,11 @@ flowchart TD
     D --> F
     D --> G
 ```
-I'll implement full tunnel on this Wireguard network. The VPS server will host Wireguard server, have Proxmox connect as client and advertise all local network route to all other clients. This grants client devices local network access from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS.
+I'll implement full tunnel on this Wireguard network. The VPS server will host Wireguard server, have Proxmox connect as client and advertise all local network route to all other clients. This gives client devices local network access from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS IP.
 
 ## Steps
-
 ### Setting up Wireguard Easy on VPS
-I will be using vpn.domain.name as a placeholder here
+I will be using `vpn.domain.name` as a placeholder here
 
 Create docker compsoe
 ```bash
@@ -96,6 +95,7 @@ vpn.domain.name {
 ```
 
 Then start docker `docker compose up -d`
+
 Afterwards, map the actual `vpn.domain.name` to the domain provider
 | Attribute | Value |
 | :--- | :--- |
@@ -107,7 +107,7 @@ Afterwards, map the actual `vpn.domain.name` to the domain provider
 The Wireguard admin UI will now be accessible in `vpn.domain.name`
 
 ### Setting up Wireguard client on Proxmox VM
-On admin UI, create new configuration and download it. The file will be something like this
+On admin UI, create a new configuration and download it. The file will be something like this
 ```cfg
 [Interface]
 PrivateKey = <PRIVATE_KEY>
@@ -120,13 +120,15 @@ PresharedKey = <PRESHARED_KEY>
 ...
 Endpoint = vpn.domain.name:51820
 ```
-Then spin up a Proxmox VM to install Wireguard client and use this keys and endpoint from this configuration. I'll be using Debian 13 in this case.
+Then spin up a Proxmox VM to install Wireguard client and use the keys and endpoint from this configuration. I'll be using Debian 13 in this example.
+
 On terminal
+
 Install Wireguard
 ```bash
 sudo apt update && apt install wireguard -y
 ```
-Create config, use the address, keys and endpoint from configuration file downloaded from admin
+Create config and use the address, keys and endpoint from configuration file downloadeded from admin
 ```bash
 sudo nano /etc/wireguard/wg0.conf
 ```
