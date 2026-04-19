@@ -44,7 +44,7 @@ flowchart TD
     D --> F
     D --> G
 ```
-I'll implement full tunnel on this WireGuard network. The VPS server will host WireGuard server, have Proxmox connect as client and advertise all local network route to all other clients. This gives client devices local network access from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS IP.
+I'll implement full tunnel on this WireGuard network. The VPS server will host WireGuard server, have Proxmox connect as client and route local subnet all other clients. This gives client devices access to my local network from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS IP.
 
 ## Steps
 ### Setting up WireGuard Easy on VPS
@@ -199,14 +199,14 @@ systemctl enable wg-quick@wg0
 ### Setting up WireGuard on other clients
 First, go back to WireGuard admin and set allowed IPs and DNS on server side
 1. Go to Proxmox VM client -> edit 
-    - set Allow IPs to 10.8.0.0/24 and 192.168.1.0/24 (my adguard interface and local network interface in this case)
+    - set Allow IPs to 10.8.0.0/24 and 192.168.1.0/24 (my adguard interface and local network subnets in this case)
     - set Server Allowed IPs to 192.168.1.0/24
     - set DNS to 192.168.1.2 (my local network's DNS)
-    - this will make Proxmox advertise the local network routes to clients
+    - this will make Proxmox advertise the local subnets routes to clients
 2. Go to Admistrator -> Admin Panel -> Config
     - set Allowed IPs to 0.0.0.0/0 and 192.168.1.0/24
     - set DNS to 192.168.1.2
-    - this will override client config to use our advertised routes
+    - this will override client config to use subnets routes
 3. It should be noted that my DNS service (Adguard at 192.168.1.0) also has Cloudflare's dns (1.1.1.1) as upstream
 4. Go back to root page/Administrator -> client and create a new configuration file for client
 5. Download Wiregard on target client
