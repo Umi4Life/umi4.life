@@ -1,7 +1,7 @@
 +++
 date = '2026-04-19T15:33:15+07:00'
 draft = false
-title = 'Wireguard Network Setup'
+title = 'WireGuard Network Setup'
 cover = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
 description = 'Creating VPN for people to my local network access'
 tags = ["proxmox", "linux", "homelab", "vpn", "documentation"]
@@ -13,10 +13,10 @@ mermaid = true
 ![image](./images/meme.png)
 Right now, I'm using Tailscale as a VPN for homelab access from remote (external wifi & cellular). What I don't like about this set up is that Tailscale free plan is very difficult to scale users as the user limit is only 6. If I want to share my internal services to my friend groups, they need to sign up for Tailscale account first and go through their onboarding. The only way to get aroud user limit I could think of is to add by device which is also a nightmare onboarding process (Tailscale login from user's device -> use the auth link to sign in to my account).
 
-In short, Tailscale is great for personal use. But a pain to add users. WireGuard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install Wireguard app and nothing else.
+In short, Tailscale is great for personal use. But a pain to add users. WireGuard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install WireGuard app and nothing else.
 
 ## Making the most out of my VPS
-I recently set up a Vultr VPS for a static IP access in order to expose my minecraft server TCP connection to internet thorght reservse proxy. It boasts 1 vCPU, 1 GB of memory, 25 GB of storage and costs a whopping $5 per month. I wanted to get the most out of it's value.
+I recently set up a Vultr VPS for a static IP access for minecraft server TCP forwarding. It boasts 1 vCPU, 1 GB of memory, 25 GB of storage and costs a whopping $5 per month. I wanted to get the most out of it's value.
 
 
 ## Design
@@ -25,18 +25,18 @@ flowchart TD
 
     %% Entry
     A[Static IP] --> B[VPS]
-    B --> C[Wireguard VPS Server]
+    B --> C[WireGuard VPS Server]
 
     %% Core
-    subgraph Wireguard Network
-        C --> D[Wireguard Proxmox Client]
+    subgraph WireGuard Network
+        C --> D[WireGuard Proxmox Client]
     end
 
     %% Core
     subgraph Clients
-        E[Wireguard Client 1] --> C
-        F[Wireguard Client 2] --> C
-        G[Wireguard Client 3] --> C
+        E[WireGuard Client 1] --> C
+        F[WireGuard Client 2] --> C
+        G[WireGuard Client 3] --> C
     end
 
     %% Advertise
@@ -44,13 +44,14 @@ flowchart TD
     D --> F
     D --> G
 ```
-I'll implement full tunnel on this Wireguard network. The VPS server will host Wireguard server, have Proxmox connect as client and advertise all local network route to all other clients. This gives client devices local network access from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS IP.
+I'll implement full tunnel on this WireGuard network. The VPS server will host WireGuard server, have Proxmox connect as client and advertise all local network route to all other clients. This gives client devices local network access from anywhere and also full tunnels to VPS server to be able to hide their own IP under VPS IP.
 
 ## Steps
-### Setting up Wireguard Easy on VPS
+### Setting up WireGuard Easy on VPS
 I will be using `vpn.domain.name` as a placeholder here
 
-Create docker compsoe
+
+#### Create docker compsoe
 ```bash
 nano compose.yml
 ```
@@ -80,7 +81,7 @@ services:
         - ./caddy/caddydata:/data
     network_mode: "host
 ```
-Create caddyfile
+#### Create caddyfile
 ```bash
 nano caddy/Caddyfile
 ```
@@ -104,9 +105,9 @@ Afterwards, map the actual `vpn.domain.name` to the domain provider
 | **Address** | VPS IP |
 | **Proxy Status** | DNS only |
 
-The Wireguard admin UI will now be accessible in `vpn.domain.name`
+The WireGuard admin UI will now be accessible in `vpn.domain.name`
 
-### Setting up Wireguard client on Proxmox VM
+### Setting up WireGuard client on Proxmox VM
 On admin UI, create a new configuration and download it. The file will be something like this
 ```cfg
 [Interface]
@@ -120,11 +121,11 @@ PresharedKey = <PRESHARED_KEY>
 ...
 Endpoint = vpn.domain.name:51820
 ```
-Then spin up a Proxmox VM to install Wireguard client and use the keys and endpoint from this configuration. I'll be using Debian 13 in this example.
+Then spin up a Proxmox VM to install WireGuard client and use the keys and endpoint from this configuration. I'll be using Debian 13 in this example.
 
-On terminal
+#### On terminal
 
-Install Wireguard
+Install WireGuard
 ```bash
 sudo apt update && apt install wireguard -y
 ```
@@ -189,14 +190,14 @@ Wipes rules added by PostUps
 #### PersistentKeepalive = 25
 Keepalive packet is sent to the server endpoint once every 25s. VM client will automatically disconnect without it and the rest of client will lose all connection including internet access
 
-After saving the config file, start Wireguard client and make it persistent
+After saving the config file, start WireGuard client and make it persistent
 ```bash
 systemctl start wg-quick@wg0
 systemctl enable wg-quick@wg0
 ```
 
-### Setting up Wireguard on other clients
-First, go back to Wireguard admin and set allowed IPs and DNS on server side
+### Setting up WireGuard on other clients
+First, go back to WireGuard admin and set allowed IPs and DNS on server side
 1. Go to Proxmox VM client -> edit 
     - set Allow IPs to 10.8.0.0/24 and 192.168.1.0/24 (my adguard interface and local network interface in this case)
     - set Server Allowed IPs to 192.168.1.0/24
