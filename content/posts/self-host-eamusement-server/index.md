@@ -6,11 +6,15 @@ draft = false
 title = 'Self Host Eamusement Server'
 description = 'Rebuilding, refactoring and hosting bemani server'
 tags = ["proxmox", "mongo", "server", "documentation"]
+categories = ["homelab", "private-server"]
+mermaid = true
 +++
 
 # From a GitHub clone to a production homelab: MongoDB, private CI, and automated deploy
 
 **Fork extension and Proxmox infrastructure (RCHE)**
+
+### https://rche.umi4.life/
 
 ---
 
