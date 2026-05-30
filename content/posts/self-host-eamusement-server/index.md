@@ -207,4 +207,4 @@ Deliberately **not** the focus of this project: claiming protocol reverse engine
 ## References
 
 - Upstream: [asphyxia-core/core](https://github.com/asphyxia-core/core), [community plugins](https://github.com/asphyxia-core/plugins)
-- This repo: [README.md](README.md) (runbook), [deploy/production/README.md](deploy/production/README.md) (first boot on deploy host)
+- This repo: [README.md](https://git.umi4.life/umi4life/rche/src/branch/master/README.md) (runbook), [deploy/production/README.md](https://git.umi4.life/umi4life/rche/src/branch/master/deploy/production/README.md) (first boot on deploy host) **need my private VPN to access
