@@ -34,7 +34,9 @@ Then I add the newer experiment: letting **Sky Feather** submit pull requests to
 
 In this story, **tsukishiro** is the primary Proxmox server/node: the main homelab virtualization host where the VM inventory, clone-managed machines, and tracked legacy machines actually live. The exact network details stay private, but the role is public-safe to say: tsukishiro is the Proxmox anchor that the IaC repository is describing.
 
+{{< gallery >}}
 ![Tsukishiro Proxmox node section art](./images/tsukishiro-proxmox-node.jpeg)
+{{< /gallery >}}
 
 Sensitive values are intentionally omitted: no API tokens, no private keys, no secret names beyond generic examples, no internal IPs, no state backend credentials, and no host-specific connection strings.
 
@@ -100,7 +102,9 @@ The important boundary is simple:
 
 The human-to-agent orchestration path was chat-native: the operator talked to a Discord bot, the bot routed the conversation into **Hermes Agent**, and Hermes ran the Sky Feather persona/workflow that inspected repositories, edited files, pushed branches, and opened pull requests. Discord was the control surface; Hermes Agent was the execution layer; Sky Feather was the playful operator face on top.
 
+{{< gallery >}}
 ![Sanitized Discord and Hermes interaction screenshot](./images/screenshot-discord-hermes.jpg)
+{{< /gallery >}}
 
 That is the difference between “helpful automation” and “a winged process with root access and too much confidence.”
 
@@ -204,7 +208,9 @@ Terraform local/CI client
 
 The private version includes credentials and exact backend URLs. Those stay out of this post.
 
+{{< gallery >}}
 ![Sanitized Gitea pull request screenshot](./images/screenshot-gitea-pr.jpg)
+{{< /gallery >}}
 
 The useful lesson: some public snippets point to old or wrong state URL patterns. The working shape for modern Gitea is the package registry style endpoint, not a made-up repository API path. Also, backend credentials belong in ignored files or CI secrets, never in the repository.
 
@@ -316,7 +322,9 @@ This is not glamorous. It is also the difference between “Configure works” a
 
 ![Proxmox section card](./images/proxmox.svg)
 
+{{< gallery >}}
 ![Sanitized Proxmox inventory/state screenshot](./images/screenshot-proxmox-inventory.jpg)
+{{< /gallery >}}
 
 The homelab did not start as a perfect Terraform repository. It had existing VMs built manually over time: ISO installs, edge services, DMZ services, experiments, and machines with different assumptions from the new cloud-init clones.
 
