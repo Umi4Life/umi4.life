@@ -42,9 +42,12 @@ Sensitive values are intentionally omitted: no API tokens, no private keys, no s
 
 ```mermaid
 flowchart TB
-    human["Human operator"] --> idea["Describe desired change"]
-    sky["Sky Feather agent"] --> inspect["Inspect repo + docs"]
-    idea --> sky
+    human["Human operator"] --> discord["Discord bot chat"]
+    discord --> hermes["Hermes Agent runtime"]
+    hermes --> sky["Sky Feather agent"]
+    sky --> idea["Interpret desired change"]
+    sky --> inspect["Inspect repo + docs"]
+    idea --> inspect
 
     subgraph privateForge ["Private Git forge"]
         iac["tsukishiro-iac"]
@@ -80,6 +83,8 @@ flowchart TB
 The important boundary is simple:
 
 > **The agent may propose changes. The infrastructure changes only after review, merge, and deliberate apply.**
+
+The human-to-agent orchestration path was chat-native: the operator talked to a Discord bot, the bot routed the conversation into **Hermes Agent**, and Hermes ran the Sky Feather persona/workflow that inspected repositories, edited files, pushed branches, and opened pull requests. Discord was the control surface; Hermes Agent was the execution layer; Sky Feather was the playful operator face on top.
 
 That is the difference between “helpful automation” and “a winged process with root access and too much confidence.”
 
