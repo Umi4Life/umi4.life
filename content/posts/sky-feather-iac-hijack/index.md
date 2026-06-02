@@ -38,7 +38,6 @@ In this story, **tsukishiro** is the primary Proxmox server/node: the main homel
 ![Tsukishiro Proxmox node section art](./images/tsukishiro-proxmox-node.jpeg)
 {{< /gallery >}}
 
-
 Sensitive values are intentionally omitted: no API tokens, no private keys, no secret names beyond generic examples, no internal IPs, no state backend credentials, and no host-specific connection strings.
 
 ---
