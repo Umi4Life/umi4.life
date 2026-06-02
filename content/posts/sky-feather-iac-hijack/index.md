@@ -100,7 +100,7 @@ The important boundary is simple:
 
 The human-to-agent orchestration path was chat-native: the operator talked to a Discord bot, the bot routed the conversation into **Hermes Agent**, and Hermes ran the Sky Feather persona/workflow that inspected repositories, edited files, pushed branches, and opened pull requests. Discord was the control surface; Hermes Agent was the execution layer; Sky Feather was the playful operator face on top.
 
-![Sanitized Discord and Hermes interaction screenshot](./images/screenshot-discord-hermes.svg)
+![Sanitized Discord and Hermes interaction screenshot](./images/screenshot-discord-hermes.jpg)
 
 That is the difference between “helpful automation” and “a winged process with root access and too much confidence.”
 
@@ -150,7 +150,27 @@ terraform/
 └── outputs.tf
 ```
 
-![Sanitized repository structure screenshot](./images/screenshot-repo-structure.svg)
+```text
+tsukishiro-iac/
+├── terraform/                     # Proxmox VM provisioning
+│   ├── modules/qemu-vm/
+│   ├── modules/qemu-vm-legacy/
+│   ├── main.tf, locals.tf, ...
+│   ├── ssh_keys.auto.tfvars
+│   ├── operators.auto.tfvars
+│   └── backend.hcl.example
+├── ansible/                       # Post-boot configuration
+│   ├── playbooks/site.yml
+│   ├── playbooks/aic.yml
+│   ├── roles/dev_sandbox/
+│   ├── roles/cursor_agent_clis/
+│   └── scripts/inventory-from-tf.sh
+├── .githooks/                     # optional pre-push terraform fmt
+└── .gitea/workflows/
+    ├── plan.yaml                  # push/PR → terraform plan
+    ├── apply.yaml                 # manual → terraform apply
+    └── configure.yaml             # manual → ansible-playbook
+```
 
 New clone-managed VMs became entries in a map instead of copy-paste resources:
 
@@ -184,7 +204,7 @@ Terraform local/CI client
 
 The private version includes credentials and exact backend URLs. Those stay out of this post.
 
-![Sanitized Gitea pull request screenshot](./images/screenshot-gitea-pr.svg)
+![Sanitized Gitea pull request screenshot](./images/screenshot-gitea-pr.jpg)
 
 The useful lesson: some public snippets point to old or wrong state URL patterns. The working shape for modern Gitea is the package registry style endpoint, not a made-up repository API path. Also, backend credentials belong in ignored files or CI secrets, never in the repository.
 
@@ -197,7 +217,7 @@ The final shape uses separate workflows:
 | Terraform Plan | push / pull request | format, validate, plan |
 | Terraform Apply | manual dispatch | plan again, then apply |
 
-![Sanitized Terraform plan output screenshot](./images/screenshot-terraform-plan.svg)
+![Sanitized Terraform plan output screenshot](./images/screenshot-terraform-plan.jpg)
 
 One workflow tried to be clever. It inspected detailed exit codes, conditionally applied, and depended on runner behavior that was not quite stable. The result was a very annoying kind of failure: logs said one thing, UI status said another.
 
@@ -296,7 +316,7 @@ This is not glamorous. It is also the difference between “Configure works” a
 
 ![Proxmox section card](./images/proxmox.svg)
 
-![Sanitized Proxmox inventory/state screenshot](./images/screenshot-proxmox-inventory.svg)
+![Sanitized Proxmox inventory/state screenshot](./images/screenshot-proxmox-inventory.jpg)
 
 The homelab did not start as a perfect Terraform repository. It had existing VMs built manually over time: ISO installs, edge services, DMZ services, experiments, and machines with different assumptions from the new cloud-init clones.
 
