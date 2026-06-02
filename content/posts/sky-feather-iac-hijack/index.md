@@ -4,13 +4,15 @@ cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/
 date = '2026-06-02T18:56:32+07:00'
 draft = false
 title = 'Sky Feather Hijacked My Homelab IaC Blog'
-description = 'A public-safe experiment log about Terraform, Ansible, Proxmox, private Gitea, GitHub, and letting an AI agent submit pull requests instead of touching infrastructure directly.'
-tags = ["proxmox", "terraform", "ansible", "gitea", "github", "automation", "ai-agent", "documentation"]
+description = 'A public-safe homelab GitOps story about Terraform, Ansible, Proxmox, private Gitea, GitHub pull requests, and an AI agent proposing infrastructure changes safely.'
+tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
 categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
 +++
 
 # Sky Feather Hijacked My Homelab IaC Blog
+
+**Subtitle:** Terraform, Ansible, Proxmox, GitOps, and an AI agent workflow for safer homelab infrastructure changes.
 
 ![Sky Feather experiment cover](./images/sky-feather-cover.jpeg)
 
@@ -80,13 +82,37 @@ flowchart TB
     configure --> vms
 ```
 
+A smaller version of the control loop looks like this:
+
+```mermaid
+flowchart LR
+    user["User"] --> discord["Discord"]
+    discord --> hermes["Hermes"]
+    hermes --> gitpr["Git PR"]
+    gitpr --> ci["CI plan / validation"]
+    ci --> infra["Terraform / Ansible"]
+    infra --> review["Human approval boundary"]
+```
+
 The important boundary is simple:
 
 > **The agent may propose changes. The infrastructure changes only after review, merge, and deliberate apply.**
 
 The human-to-agent orchestration path was chat-native: the operator talked to a Discord bot, the bot routed the conversation into **Hermes Agent**, and Hermes ran the Sky Feather persona/workflow that inspected repositories, edited files, pushed branches, and opened pull requests. Discord was the control surface; Hermes Agent was the execution layer; Sky Feather was the playful operator face on top.
 
+![Sanitized Discord and Hermes interaction screenshot](./images/screenshot-discord-hermes.jpg)
+
 That is the difference between “helpful automation” and “a winged process with root access and too much confidence.”
+
+---
+
+## Where this journey is going
+
+Before the Terraform and Ansible details, here is the destination: the homelab moved toward a **GitOps-shaped control loop**. A human describes the desired change in Discord, Hermes Agent turns that request into a branch and pull request, CI runs validation and planning, and the human keeps the final authority to merge, apply Terraform, and run Ansible against real machines.
+
+This is not a Terraform tutorial pretending to be a blog post. It is a story about making infrastructure changes easier to propose, harder to apply accidentally, and more visible before anything touches Proxmox.
+
+Mou... the agent is allowed to be helpful. It is not allowed to become a winged root shell with vibes.
 
 ---
 
@@ -124,6 +150,28 @@ terraform/
 └── outputs.tf
 ```
 
+```text
+tsukishiro-iac/
+├── terraform/                     # Proxmox VM provisioning
+│   ├── modules/qemu-vm/
+│   ├── modules/qemu-vm-legacy/
+│   ├── main.tf, locals.tf, ...
+│   ├── ssh_keys.auto.tfvars
+│   ├── operators.auto.tfvars
+│   └── backend.hcl.example
+├── ansible/                       # Post-boot configuration
+│   ├── playbooks/site.yml
+│   ├── playbooks/aic.yml
+│   ├── roles/dev_sandbox/
+│   ├── roles/cursor_agent_clis/
+│   └── scripts/inventory-from-tf.sh
+├── .githooks/                     # optional pre-push terraform fmt
+└── .gitea/workflows/
+    ├── plan.yaml                  # push/PR → terraform plan
+    ├── apply.yaml                 # manual → terraform apply
+    └── configure.yaml             # manual → ansible-playbook
+```
+
 New clone-managed VMs became entries in a map instead of copy-paste resources:
 
 ```hcl
@@ -156,6 +204,8 @@ Terraform local/CI client
 
 The private version includes credentials and exact backend URLs. Those stay out of this post.
 
+![Sanitized Gitea pull request screenshot](./images/screenshot-gitea-pr.jpg)
+
 The useful lesson: some public snippets point to old or wrong state URL patterns. The working shape for modern Gitea is the package registry style endpoint, not a made-up repository API path. Also, backend credentials belong in ignored files or CI secrets, never in the repository.
 
 ### Plan and apply are separate on purpose
@@ -166,6 +216,8 @@ The final shape uses separate workflows:
 |---|---|---|
 | Terraform Plan | push / pull request | format, validate, plan |
 | Terraform Apply | manual dispatch | plan again, then apply |
+
+![Sanitized Terraform plan output screenshot](./images/screenshot-terraform-plan.jpg)
 
 One workflow tried to be clever. It inspected detailed exit codes, conditionally applied, and depended on runner behavior that was not quite stable. The result was a very annoying kind of failure: logs said one thing, UI status said another.
 
@@ -263,6 +315,8 @@ This is not glamorous. It is also the difference between “Configure works” a
 ## Part 3 — Existing VMs were imported without pretending they were new
 
 ![Proxmox section card](./images/proxmox.svg)
+
+![Sanitized Proxmox inventory/state screenshot](./images/screenshot-proxmox-inventory.jpg)
 
 The homelab did not start as a perfect Terraform repository. It had existing VMs built manually over time: ISO installs, edge services, DMZ services, experiments, and machines with different assumptions from the new cloud-init clones.
 
@@ -410,20 +464,32 @@ Before side effects, the agent verifies:
 
 That allowed the agent to work on selected private GitHub repositories, such as firmware and blog repos, while refusing to wander into unrelated accounts or organizations.
 
+The implementation flow is deliberately plain:
+
+1. create a topic branch from the current upstream base
+2. make the smallest useful file changes
+3. run local validation checks before pushing
+4. push to a guarded branch or verified fork
+5. open a pull request with the intended change and test plan
+6. let CI produce a plan or build result
+7. wait for human review before merge, apply, configure, or publish
+
+The permission model is boring in a good way: dedicated agent identity, least useful repository scope, token-based API access, remote-owner checks before side effects, fork fallback when direct write is unavailable, and no secrets printed into logs. If a token can read but not push, that is not a crisis. It is a permission boundary doing its job.
+
 Again: boring guardrails are good. They are how a playful operator avoids becoming a public incident report.
 
 ---
 
-## What the agent can safely do now
+## What the agent can and cannot do
 
-| Area | Safe agent action | Human-controlled action |
+| Area | The agent can do | The agent cannot do without explicit human action |
 |---|---|---|
-| Terraform | edit config, run fmt/init/validate, open PR | merge, apply |
-| Proxmox | inspect when needed, summarize state | destructive/manual VM operations |
-| Ansible | edit roles/playbooks, generate inventory, open PR | run configure on live hosts |
-| Private Gitea | read allowed repos, push branches, open PRs | approve/merge/apply |
-| GitHub Umi4Life | read granted private repos, push branches, open PRs | approve/merge/deploy |
-| Blog | draft public-safe posts and assets | publish by merging |
+| Terraform | create branches, edit config, run fmt/init/validate, open PRs | merge, apply, or destroy live infrastructure |
+| Proxmox | inspect allowed state when needed and summarize public-safe context | casually run destructive VM operations |
+| Ansible | edit roles/playbooks, generate inventory, open PRs | run configure against live hosts as an unattended surprise |
+| Private Gitea | read allowed repos, push guarded branches, open PRs through API/forks | bypass review or write outside granted repositories |
+| GitHub Umi4Life | read granted repos, push branches, open PRs | wander into unrelated GitHub owners or mutate protected branches |
+| Blog | draft public-safe posts, diagrams, and assets | publish by itself; publishing is merge-controlled |
 
 This is a useful division of labor. The agent handles the repetitive chart. The human decides whether the chart should be played.
 
