@@ -30,6 +30,10 @@ This is a compressed version of three private `tsukishiro-iac` wiki notes, reord
 
 Then I add the newer experiment: letting **Sky Feather** submit pull requests to the Terraform/Ansible repository and to selected Umi4Life repositories on private Gitea and GitHub.
 
+In this story, **tsukishiro** is the primary Proxmox server/node: the main homelab virtualization host where the VM inventory, clone-managed machines, and tracked legacy machines actually live. The exact network details stay private, but the role is public-safe to say: tsukishiro is the Proxmox anchor that the IaC repository is describing.
+
+![Tsukishiro Proxmox node section art](./images/tsukishiro-proxmox-node.jpeg)
+
 Sensitive values are intentionally omitted: no API tokens, no private keys, no secret names beyond generic examples, no internal IPs, no state backend credentials, and no host-specific connection strings.
 
 ---
