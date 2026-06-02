@@ -10,7 +10,7 @@ categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
 +++
 
-# Sky Feather Hijacked My Homelab IaC Blog
+# Sky Feather Hijacked My Homelab IaC
 
 **Subtitle:** Terraform, Ansible, Proxmox, GitOps, and an AI agent workflow for safer homelab infrastructure changes.
 
