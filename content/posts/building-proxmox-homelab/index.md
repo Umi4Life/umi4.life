@@ -3,6 +3,7 @@ banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/building-proxmox-homelab/cover.jpg'
 date = '2026-04-04T10:35:08+07:00'
 draft = false
+translationKey = 'building-proxmox-homelab'
 title = 'Building a Proxmox Homelab'
 description = 'Own your infra'
 tags = ["proxmox", "linux", "homelab", "ai", "documentation"]

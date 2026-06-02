@@ -1,0 +1,14 @@
+{{- $page := . -}}
+{{- $enPage := false -}}
+{{- range $page.Translations -}}
+  {{- if eq .Lang "en" -}}
+    {{- $enPage = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $enPage -}}
+  {{- $enSite := index (where site.Sites "Language.Lang" site.DefaultContentLanguage) 0 -}}
+  {{- if $enSite -}}
+    {{- $enPage = $enSite.GetPage (printf "posts/%s" $page.File.ContentBaseName) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $enPage -}}

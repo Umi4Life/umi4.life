@@ -4,6 +4,7 @@ cover:
 title: "My first post"
 date: 2026-04-02
 draft: false
+translationKey: my-first-post
 description: "Starting a blog."
 tags: ["hugo", "personal"]
 categories: ["etc"]

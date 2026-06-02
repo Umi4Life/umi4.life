@@ -1,0 +1,5 @@
+{{- define "main" -}}
+  {{- $thPage := . -}}
+  {{- $enPage := partial "helpers/englishSourcePage.html" $thPage -}}
+  {{- partial "article-en-fallback.html" (dict "thPage" $thPage "enPage" $enPage) -}}
+{{- end -}}

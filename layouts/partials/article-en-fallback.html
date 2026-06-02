@@ -1,0 +1,156 @@
+{{- $thPage := .thPage -}}
+{{- $enPage := .enPage -}}
+{{- $site := $thPage.Site -}}
+<article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="{{ $site.Params.animation.options.article.whole }}"
+  >
+    <div class="article-meta">
+      {{- partial "post/date.html" $enPage -}}
+    </div>
+    {{- partial "post/summary.html" $enPage -}}
+    <div class="hr-line"></div>
+    {{- partial "post/gallery.html" $enPage -}}
+    <div class="e-content article-entry" itemprop="articleBody">
+      <blockquote class="alert-blockquote info" data-aos="{{ $site.Params.animation.options.article.tag }}">
+        <p>{{ i18n "post_english_only" }}</p>
+      </blockquote>
+      {{- if $enPage.Params.outdated -}}
+        <blockquote class="alert-blockquote warning">
+          <p class="alert-heading">WARNING</p>
+          <p>
+            {{ $msg := index $site.Params.outdate.message $thPage.Language.Lang | default "This article was last updated on {time}. Please note that the content may no longer be applicable." }}
+            {{ replace $msg "{time}" ($enPage.Lastmod.Format $site.Params.dateFormat) }}
+          </p>
+        </blockquote>
+      {{- else if and (not (isset $enPage.Params "outdated")) $site.Params.outdate.enable -}}
+        <blockquote
+          class="alert-blockquote warning"
+          id="outdate-blockquote"
+          style="display: none;"
+        >
+          <p class="alert-heading">WARNING</p>
+          <p></p>
+        </blockquote>
+      {{- end -}}
+      {{- if and $enPage.Params.excerpt $enPage.Params.link -}}
+        <p>{{ $enPage.Params.excerpt | safeHTML }}</p>
+        <p class="article-more-link">
+          <a
+            href="{{ $enPage.Params.link }}"
+            target="_blank"
+            itemprop="url"
+            rel="noopener nofollow noreferrer"
+            >{{ $site.Params.excerpt_link | default "Read More" }}</a
+          >
+        </p>
+      {{- else -}}
+        {{ $enPage.Content | safeHTML }}
+      {{- end -}}
+    </div>
+    <footer class="article-footer">
+      {{- if or (eq $enPage.Params.copyright true) (and (not (eq $enPage.Params.copyright false)) $site.Params.article_copyright.enable) -}}
+        {{- partial "post/copyright.html" $enPage -}}
+      {{- end -}}
+
+      {{- if or (eq $enPage.Params.sponsor true) (and (not (eq $enPage.Params.sponsor false)) $site.Params.sponsor.enable) -}}
+        {{- partial "post/sponsor.html" $enPage -}}
+      {{- end -}}
+
+      {{- if reflect.IsSlice $site.Params.share -}}
+        {{- partial "post/share.html" $enPage -}}
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.valine.enable $site.Params.valine.appId $site.Params.valine.appKey -}}
+        <a
+          data-aos="{{ $site.Params.animation.options.article.comment }}"
+          href="{{ $thPage.Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count valine-comment-count"
+            data-xid="{{ $thPage.Permalink | relURL | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.waline.enable $site.Params.waline.serverURL -}}
+        <a
+          data-aos="{{ $site.Params.animation.options.article.comment }}"
+          href="{{ $thPage.Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count waline-comment-count"
+            data-path="{{ $thPage.Permalink | relURL | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.twikoo.enable $site.Params.twikoo.envId -}}
+        <a
+          data-aos="{{ $site.Params.animation.options.article.comment }}"
+          href="{{ $thPage.Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count twikoo-comment-count"
+            data-path="{{ $thPage.Permalink | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.disqus.enable $site.Params.disqus.shortname $site.Params.disqus.count -}}
+        <a
+          data-aos="{{ $site.Params.animation.options.article.comment }}"
+          class="article-comment-link"
+          id="disqus-count"
+        >
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.valine.enable $site.Params.valine.appId $site.Params.valine.appKey $site.Params.valine.visitor -}}
+        <span
+          data-aos="{{ $site.Params.animation.options.article.reading }}"
+          id="{{ $thPage.Permalink | relURL }}"
+          class="leancloud_visitors article-visitor-link"
+          data-flag-title="{{ $enPage.Title }}"
+        >
+          <span class="leancloud-visitors-count">0</span>
+          <em class="post-meta-item-text">{{ i18n "reading" }}</em>
+        </span>
+      {{- end -}}
+
+      {{- if and (not (eq $thPage.Params.comments false)) $site.Params.waline.enable $site.Params.waline.serverURL $site.Params.waline.pageview -}}
+        <span
+          data-aos="{{ $site.Params.animation.options.article.reading }}"
+          class="article-visitor-link"
+        >
+          <span
+            class="waline-pageview-count"
+            data-path="{{ $thPage.Permalink | relURL }}"
+            >0</span
+          >
+          <em class="post-meta-item-text">{{ i18n "reading" }}</em>
+        </span>
+      {{- end -}}
+      {{- partial "post/category.html" $enPage -}}
+      {{- partial "post/tag.html" $enPage -}}
+    </footer>
+  </div>
+  {{- if in $site.Params.mainSections $thPage.Type -}}
+    {{- partial "post/nav.html" $thPage -}}
+  {{- end -}}
+</article>
+{{- partial "comment.html" $thPage -}}

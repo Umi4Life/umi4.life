@@ -3,6 +3,7 @@ banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/self-host-eamusement-server/cover.jpg'
 date = '2026-05-30T15:45:33+07:00'
 draft = false
+translationKey = 'self-host-eamusement-server'
 title = 'Self Host Eamusement Server'
 description = 'Rebuilding, refactoring and hosting bemani server'
 tags = ["proxmox", "mongo", "server", "documentation"]

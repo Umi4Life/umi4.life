@@ -1,0 +1,109 @@
+{{- $page := .page -}}
+{{- $index := .index -}}
+{{- $ctx := .ctx -}}
+{{- $displayPage := $page -}}
+{{- if eq $page.Layout "post-en-fallback" -}}
+  {{- with partial "helpers/englishSourcePage.html" $page -}}
+    {{- $displayPage = . -}}
+  {{- end -}}
+{{- end -}}
+
+<div class="post-wrapper">
+  <div
+    class="{{ if mod $index 2 }}
+      post-wrap right
+    {{ else }}
+      post-wrap left
+    {{ end }}"
+    data-aos="{{ $ctx.Site.Params.animation.options.home.post }}"
+  >
+    {{- if $page.Params.link -}}
+      <a
+        class="post-link"
+        href="{{ $page.Params.link }}"
+        itemprop="url"
+        target="_blank"
+        rel="noopener nofollow noreferrer"
+        aria-label="{{ $displayPage.Title }}"
+        title="{{ $displayPage.Title }}"
+      >
+      </a>
+    {{- else -}}
+      <a
+        class="post-link"
+        href="{{ $page.Permalink | relURL }}"
+        aria-label="{{ $displayPage.Title }}"
+        title="{{ $displayPage.Title }}"
+      >
+      </a>
+    {{- end -}}
+    {{- if and $page.Params.weight (or (eq $ctx.Site.Params.sort_order.home "default") (not $ctx.Site.Params.sort_order.home)) -}}
+      <div class="post-sticky">{{ i18n "sticky" }}</div>
+    {{- end -}}
+    <div
+      class="{{ if mod $index 2 }}
+        post-cover right
+      {{ else }}
+        post-cover left
+      {{ end }}"
+    >
+      {{- if and $displayPage.Params.cover (not (hasPrefix $displayPage.Params.cover "rgb")) -}}
+        <img
+          data-src="{{ $displayPage.Params.cover | relURL }}"
+          data-sizes="auto"
+          alt="{{ $displayPage.Title }}"
+          class="lazyload"
+        />
+      {{- else -}}
+        {{- $cover := partial "helpers/randomCover.html" $ctx -}}
+        {{- if $cover -}}
+          <img
+            data-src="{{ $cover | relURL }}"
+            data-sizes="auto"
+            alt="{{ $displayPage.Title }}"
+            class="lazyload"
+          />
+        {{- else -}}
+          <img
+            data-src="{{ $ctx.Site.Params.banner | relURL }}"
+            data-sizes="auto"
+            alt="{{ $displayPage.Title }}"
+            class="lazyload"
+          />
+        {{- end -}}
+      {{- end -}}
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >{{ $displayPage.Date.Format $ctx.Site.Params.dateFormat }}</span
+        >
+        {{- if $ctx.Site.Params.show_update_time -}}
+          <span
+            ><span class="icon-calendar-plus"></span
+            >{{ $displayPage.Lastmod.Format $ctx.Site.Params.dateFormat }}</span
+          >
+        {{- end -}}
+        <span
+          ><span class="icon-pencil"></span
+          >{{ i18n "post.count" $displayPage.WordCount }}</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >{{ i18n "post.time" $displayPage.ReadingTime }}</span
+        >
+      </div>
+      <h2 class="post-title">{{ $displayPage.Title }}</h2>
+      <article class="post-article">
+        {{- if $displayPage.Params.description -}}
+          {{- $displayPage.Params.description | plainify | truncate 300 -}}
+        {{- else if $displayPage.Summary -}}
+          {{- $displayPage.Summary | plainify | truncate 300 -}}
+        {{- else -}}
+          {{- $displayPage.RawContent | truncate 300 -}}
+        {{- end -}}
+      </article>
+    </div>
+  </div>
+</div>

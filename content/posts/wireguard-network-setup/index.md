@@ -1,6 +1,7 @@
 +++
 date = '2026-04-19T15:33:15+07:00'
 draft = false
+translationKey = 'wireguard-network-setup'
 title = 'WireGuard Network Setup'
 cover = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
 description = 'Creating VPN for people to my local network access'
