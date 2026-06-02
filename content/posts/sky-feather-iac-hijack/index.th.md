@@ -5,7 +5,7 @@ date = '2026-06-02T18:56:32+07:00'
 draft = false
 translationKey = 'sky-feather-iac-hijack'
 title = 'Sky Feather แฮก Homelab IaC ของผม'
-description = 'เรื่องราว GitOps homelab ที่ปลอดภัยต่อการเผยแพร่สาธารณะ เกี่ยวกับ Terraform, Ansible, Proxmox, Gitea ส่วนตัว, GitHub pull request และเอเจนต์ AI ที่เสนอการเปลี่ยนแปลงinfrastructureอย่างปลอดภัย'
+description = 'เรื่องราว GitOps homelab ที่ปลอดภัยต่อการเผยแพร่สาธารณะ เกี่ยวกับ Terraform, Ansible, Proxmox, Gitea ส่วนตัว, GitHub pull request และเอเจนต์ AI ที่เสนอการเปลี่ยนแปลง infrastructure อย่างปลอดภัย'
 tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
 categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
@@ -99,7 +99,7 @@ flowchart LR
 
 ขอบเขตที่สำคัญนั้นเรียบง่าย:
 
-> **เอเจนต์อาจเสนอการเปลี่ยนแปลง infrastructureเปลี่ยนก็ต่อเมื่อมีการ review, merge และ apply อย่างตั้งใจ**
+> **เอเจนต์อาจเสนอการเปลี่ยนแปลง infrastructure เปลี่ยนก็ต่อเมื่อมีการ review, merge และ apply อย่างตั้งใจ**
 
 เส้นทาง orchestration จากมนุษย์ไปเอเจนต์ใช้แชทเป็นหลัก: ผู้ปฏิบัติการคุยกับ Discord bot, bot ส่งบทสนทนาเข้า **Hermes Agent**, Hermes รัน persona/workflow Sky Feather ที่ตรวจ repo, แก้ไฟล์, push branch และเปิด pull request Discord คือพื้นผิวควบคุม Hermes Agent คือชั้นปฏิบัติการ Sky Feather คือหน้าผู้ปฏิบัติการที่ขี้เล่นบนสุด
 
