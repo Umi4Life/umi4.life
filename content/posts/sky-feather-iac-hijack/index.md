@@ -106,7 +106,6 @@ The human-to-agent orchestration path was chat-native: the operator talked to a 
 ![Sanitized Discord and Hermes interaction screenshot](./images/screenshot-discord-hermes.jpg)
 {{< /gallery >}}
 
-
 That is the difference between “helpful automation” and “a winged process with root access and too much confidence.”
 
 ---
