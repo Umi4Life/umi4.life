@@ -1,0 +1,89 @@
+categories: หมวดหมู่
+search: ค้นหา
+tags: แท็ก
+tagcloud: กลุ่มแท็ก
+tweets: ทวีต
+prev: ก่อนหน้า
+next: ถัดไป
+comment: ความคิดเห็น
+reading: อ่าน
+archive_a: คลังเก็บ
+archive_b: "คลังเก็บ: {{ . -}}"
+page: "หน้า {{ . -}}"
+recent_posts: โพสต์ล่าสุด
+newer: ใหม่กว่า
+older: เก่ากว่า
+share: แชร์
+powered_by: ขับเคลื่อนโดย
+rss_feed: ฟีด RSS
+category: หมวดหมู่
+tag: แท็ก
+toc: สารบัญ
+more: เพิ่มเติม
+
+home: หน้าแรก
+about: เกี่ยวกับ
+friend: เพื่อน
+archives: คลังเก็บ
+
+sidebar:
+  post: โพสต์
+  category: หมวดหมู่
+  tag: แท็ก
+
+not_found:
+  title: 4 0 4 (ﾟ⊿ﾟ)ﾂ
+  subtitle: ไม่พบหน้า
+
+post:
+  count:
+    one: "{{- . }} คำ"
+    other: "{{- . }} คำ"
+  time:
+    one: "{{- . }} นาที"
+    other: "{{- . }} นาที"
+
+busuanzi:
+  pv: จำนวนการเข้าชม
+  uv: จำนวนผู้เข้าชม
+
+sticky: ปักหมุด
+
+service_worker:
+  title: พบเวอร์ชันใหม่
+  content: ดูเหมือนเว็บไซต์จะมีเนื้อหาใหม่ ต้องการอัปเดตหรือไม่?
+  confirm: อัปเดต
+  cancel: ยกเลิก
+
+sponsor: สนับสนุน
+
+home_categories:
+  count:
+    one: "{{- . }} โพสต์"
+    other: "{{- . }} โพสต์"
+
+article_copyright:
+  author: "ผู้เขียน: "
+  permalink: "ลิงก์ถาวร: "
+  title: "ชื่อเรื่อง: "
+  date: "เผยแพร่: "
+  updated: "อัปเดต: "
+  license: "สัญญาอนุญาต: "
+  license_content: "บทความทั้งหมดในบล็อกนี้อยู่ภายใต้สัญญาอนุญาต {{ . }} เว้นแต่จะระบุไว้เป็นอย่างอื่น กรุณาระบุแหล่งที่มาเมื่อนำไปเผยแพร่ซ้ำ!"
+
+multi_language:
+  not_found: บทความนี้ยังไม่มีเวอร์ชันภาษานี้
+
+rss:
+  author: "ผู้เขียน: {{ .name }}({{ .email }})"
+  date: เผยแพร่เมื่อ {{ .pubDate }} ที่ {{ .content }} แก้ไขล่าสุดเมื่อ {{ .lastmod }}
+
+algolia:
+  input_placeholder: "ค้นหา....."
+  hits_empty: "ไม่พบผลลัพธ์สำหรับ 「${query}」"
+  hits_stats: "พบ ${hits} รายการ (ใช้เวลา ${time} ms)"
+
+heat_map_card:
+  no_articles: ไม่มีบทความ
+  words: คำ
+  total_articles: "$1 บทความ, $2 คำ"

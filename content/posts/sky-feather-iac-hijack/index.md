@@ -3,6 +3,7 @@ banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/sky-feather-iac-hijack/images/sky-feather-cover.jpeg'
 date = '2026-06-02T18:56:32+07:00'
 draft = false
+translationKey = 'sky-feather-iac-hijack'
 title = 'Sky Feather Hijacked My Homelab IaC'
 description = 'A public-safe homelab GitOps story about Terraform, Ansible, Proxmox, private Gitea, GitHub pull requests, and an AI agent proposing infrastructure changes safely.'
 tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
@@ -32,7 +33,7 @@ This is a compressed version of three private `tsukishiro-iac` wiki notes, reord
 
 Then I add the newer experiment: letting **Sky Feather** submit pull requests to the Terraform/Ansible repository and to selected Umi4Life repositories on private Gitea and GitHub.
 
-In this story, **tsukishiro** is the primary Proxmox server/node: the main homelab virtualization host where the VM inventory, clone-managed machines, and tracked legacy machines actually live. The exact network details stay private, but the role is public-safe to say: tsukishiro is the Proxmox anchor that the IaC repository is describing.
+In this story, **tsukishiro** is the primary Proxmox server/node: the main homelab virtualization host where the VM inventory, clone-managed machines, and tracked legacy machines actually live. The exact network details stay private, but the role is public-safe to say: tsukishiro is the Proxmox anchor that the IaC(Infrastracture as Code) repository is describing.
 
 {{< gallery >}}
 ![Tsukishiro Proxmox node section art](./images/tsukishiro-proxmox-node.jpeg)

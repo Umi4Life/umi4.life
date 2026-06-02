@@ -489,6 +489,7 @@ font:
   article:
     - Mulish
     - Noto Serif SC
+    - Noto Sans Thai
   code:
     # - Ubuntu Mono
     # - Source Code Pro

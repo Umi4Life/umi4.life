@@ -1,8 +1,20 @@
 baseURL = 'https://umi4.life/'
 locale = 'en-us'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
 title = "UmiLife's Blog"
 description = "test"
 theme = 'reimu'
+
+[languages.en]
+languageCode = 'en-us'
+languageName = 'English'
+weight = 1
+
+[languages.th]
+languageCode = 'th-th'
+languageName = 'ไทย'
+weight = 2
 
 [caches]
   [caches.images]
