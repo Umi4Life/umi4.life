@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+<title id="title">GitHub</title>
+<desc id="desc">Strictly scoped Umi4Life repository automation.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#101827"/>
+    <stop offset="0.55" stop-color="#162238"/>
+    <stop offset="1" stop-color="#0a0f1e"/>
+  </linearGradient>
+  <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#e5e7eb" stop-opacity="0.18"/>
+    <stop offset="1" stop-color="#7dd3fc" stop-opacity="0.45"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="420" rx="36" fill="url(#bg)"/>
+<circle cx="1030" cy="90" r="170" fill="#e5e7eb" opacity="0.14" filter="url(#soft)"/>
+<circle cx="160" cy="360" r="190" fill="#38bdf8" opacity="0.10" filter="url(#soft)"/>
+<path d="M88 322 C 270 230, 328 266, 460 178 S 726 96, 1120 150" fill="none" stroke="url(#glow)" stroke-width="5" opacity="0.9"/>
+<g transform="translate(82 70)">
+  <rect x="0" y="0" width="280" height="280" rx="44" fill="#0f172a" stroke="#e5e7eb" stroke-width="4" opacity="0.95"/>
+  <text x="140" y="178" text-anchor="middle" font-size="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#e5e7eb">GH</text>
+</g>
+<text x="410" y="150" font-size="64" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="#e5f6ff">GitHub</text>
+<text x="410" y="220" font-size="28" font-family="Inter, ui-sans-serif, system-ui, sans-serif" fill="#b9d8e8">Strictly scoped Umi4Life repository automation.</text>
+<text x="410" y="285" font-size="22" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#7dd3fc">build → observe → patch → pull request</text>
+</svg>
