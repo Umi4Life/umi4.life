@@ -33,7 +33,7 @@ This document is about that engineering work: persistence, fork layout, and oper
 
 ## What Asphyxia CORE is (briefly)
 
-Asphyxia CORE is a **Node.js / Express** application that stands in for Konami's **eAmusement** online services used by arcade cabinets (Beatmania IIDX, DDR, Sound Voltex, and others). Cabinets and the operator WebUI talk HTTP to the server; **per-game plugins** under `plugins/<identifier>/` supply title-specific save logic.
+Asphyxia CORE is a **Node.js / Express** application that stands in for Konami's **eAmusement** online services used by arcade cabinets (Beatmania IIDX, DDR, Sound Voltex, and others). Cabinets and the operator WebUI talk HTTP to the server; **per-game plugins** under `plugins/{identifier}/` supply title-specific save logic.
 
 Out of the box, persistence is **NeDB**: Mongo-like document files under `savedata/` on the same machine as the app (`core.db` for cards and profiles, one file per plugin). That is simple for development and single-node installs.
 
@@ -163,7 +163,7 @@ After each successful CI push, Watchtower detects a new digest for `:latest` and
 
 ### Plugins on the deploy host
 
-Game plugins are **public GitHub repositories** ([plugin index](https://github.com/asphyxia-core/plugins)). The deploy VM can clone them into `plugins/<identifier>/` even though it cannot reach private Gitea. A one-time scaffold (`tsconfig.json`, `package.json`, type definitions) is copied via `deploy/production/scripts/init-plugins.sh`.
+Game plugins are **public GitHub repositories** ([plugin index](https://github.com/asphyxia-core/plugins)). The deploy VM can clone them into `plugins/{identifier}/` even though it cannot reach private Gitea. A one-time scaffold (`tsconfig.json`, `package.json`, type definitions) is copied via `deploy/production/scripts/init-plugins.sh`.
 
 ---
 

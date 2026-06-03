@@ -8,7 +8,7 @@ tags = ["truenas", "nfs", "proxmox", "homelab", "hermes-agent", "documentation"]
 categories = ["homelab"]
 +++
 
-> **Operator note:** Internal IPs and UID/GID values in this post are placeholders for a public write-up. Table cells use `<NAS_IP>`-style markers—substitute your own values before copy-paste.
+> **Operator note:** Internal IPs and UID/GID values in this post are placeholders for a public write-up. Table cells use `{NAS_IP}`-style markers—substitute your own values before copy-paste.
 
 ## Goal
 
@@ -48,17 +48,17 @@ This was not meant to be a general-purpose shared NAS mount. Hermes is the only 
 | --- | --- |
 | Proxmox host | `tsukishiro` |
 | TrueNAS VM | TrueNAS VM |
-| TrueNAS IP | `<NAS_IP>` |
-| Hermes VM IP | `<HERMES_VM_IP>` |
+| TrueNAS IP | `{NAS_IP}` |
+| Hermes VM IP | `{HERMES_VM_IP}` |
 
 ### Storage layout
 
 | Role | Path |
 | --- | --- |
 | TrueNAS dataset | `/mnt/lamia/data/hermes` |
-| NFS export | `<NAS_IP>:/mnt/lamia/data/hermes` |
+| NFS export | `{NAS_IP}:/mnt/lamia/data/hermes` |
 | Hermes mount point | `/mnt/truenas/hermes` |
-| Hermes user | `uid=<HERMES_UID>(hermes)`, `gid=<HERMES_GID>(hermes)` |
+| Hermes user | `uid={HERMES_UID}(hermes)`, `gid={HERMES_GID}(hermes)` |
 
 ---
 
@@ -94,8 +94,8 @@ mode=755
 Hermes user:
 
 ```text
-uid=<HERMES_UID>
-gid=<HERMES_GID>
+uid={HERMES_UID}
+gid={HERMES_GID}
 ```
 
 This prevented Hermes from creating files at `/mnt/truenas/hermes`.
@@ -131,7 +131,7 @@ sudo mkdir -p /mnt/truenas/hermes
 
 ```bash
 sudo mount -t nfs -o vers=4,_netdev \
-  <NAS_IP>:/mnt/lamia/data/hermes \
+  {NAS_IP}:/mnt/lamia/data/hermes \
   /mnt/truenas/hermes
 ```
 
@@ -143,7 +143,7 @@ findmnt /mnt/truenas/hermes
 
 ```text
 TARGET              SOURCE                               FSTYPE
-/mnt/truenas/hermes <NAS_IP>:/mnt/lamia/data/hermes     nfs4
+/mnt/truenas/hermes {NAS_IP}:/mnt/lamia/data/hermes     nfs4
 ```
 
 ### Persist mount across reboot
@@ -151,7 +151,7 @@ TARGET              SOURCE                               FSTYPE
 Add to `/etc/fstab` on the Hermes VM:
 
 ```fstab
-<NAS_IP>:/mnt/lamia/data/hermes  /mnt/truenas/hermes  nfs4  defaults,_netdev,vers=4  0  0
+{NAS_IP}:/mnt/lamia/data/hermes  /mnt/truenas/hermes  nfs4  defaults,_netdev,vers=4  0  0
 ```
 
 Apply and verify:
@@ -170,7 +170,7 @@ TrueNAS NFS share configuration:
 ```text
 Path: /mnt/lamia/data/hermes
 Read Only: false
-Authorized Host: <HERMES_VM_IP>
+Authorized Host: {HERMES_VM_IP}
 ```
 
 Restricting the share to the Hermes VM IP reduces unnecessary exposure on the LAN.
@@ -184,7 +184,7 @@ Instead of writable subfolders or NFS user mapping, the entire dataset was desig
 On TrueNAS:
 
 ```bash
-sudo chown -R <HERMES_UID>:<HERMES_GID> /mnt/lamia/data/hermes
+sudo chown -R {HERMES_UID}:{HERMES_GID} /mnt/lamia/data/hermes
 sudo chmod -R 775 /mnt/lamia/data/hermes
 ```
 
@@ -195,8 +195,8 @@ Ownership after alignment:
 ```text
 owner=hermes
 group=hermes
-uid=<HERMES_UID>
-gid=<HERMES_GID>
+uid={HERMES_UID}
+gid={HERMES_GID}
 mode=775
 ```
 
@@ -214,7 +214,7 @@ findmnt /mnt/truenas/hermes
 
 ```text
 TARGET              SOURCE
-/mnt/truenas/hermes <NAS_IP>:/mnt/lamia/data/hermes
+/mnt/truenas/hermes {NAS_IP}:/mnt/lamia/data/hermes
 ```
 
 ```bash
@@ -226,7 +226,7 @@ stat -c \
 ```text
 path=/mnt/truenas/hermes
 owner=hermes:hermes
-uid=<HERMES_UID> gid=<HERMES_GID>
+uid={HERMES_UID} gid={HERMES_GID}
 mode=775
 type=directory
 ```
@@ -257,9 +257,9 @@ Delete: OK
 | Item | Value |
 | --- | --- |
 | TrueNAS dataset | `/mnt/lamia/data/hermes` |
-| NFS export | `<NAS_IP>:/mnt/lamia/data/hermes` |
+| NFS export | `{NAS_IP}:/mnt/lamia/data/hermes` |
 | Hermes mount | `/mnt/truenas/hermes` |
-| Dataset owner | `<HERMES_UID>:<HERMES_GID>` |
+| Dataset owner | `{HERMES_UID}:{HERMES_GID}` |
 | Permissions | `775` |
 | Access mode | Read/Write |
 | Intended usage | Blog media, screenshots, videos, generated assets |

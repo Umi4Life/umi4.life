@@ -1,0 +1,131 @@
+/* Compact tool/logo row (use {{< icon-row >}} instead of gallery for small SVGs) */
+
+.article-entry .post-icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 20px;
+  margin: 12px 0 20px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.article-entry .post-icon-row img,
+.article-entry .post-icon-row a img {
+  width: 44px !important;
+  height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 4px;
+  box-sizing: content-box;
+  border-radius: 8px;
+  opacity: 1 !important;
+  background: var(--color-wrap, transparent);
+}
+
+.article-entry .post-icon-row a {
+  display: inline-flex;
+  line-height: 0;
+}
+
+@media (min-width: 480px) {
+  .article-entry .post-icon-row {
+    gap: 14px 24px;
+  }
+
+  .article-entry .post-icon-row img,
+  .article-entry .post-icon-row a img {
+    width: 52px !important;
+    height: 52px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+  }
+}
+
+/* Blog post tables: layout, wrapping, and readable columns (overrides Reimu max-content tables) */
+
+.article-entry .table-wrapper {
+  overflow-x: auto;
+  margin: 16px 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.article-entry .table-wrapper table,
+.article-entry > table {
+  display: table;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.article-entry .table-wrapper thead,
+.article-entry > table thead {
+  display: table-header-group;
+}
+
+.article-entry .table-wrapper tbody,
+.article-entry > table tbody {
+  display: table-row-group;
+}
+
+.article-entry .table-wrapper tr,
+.article-entry > table tr {
+  display: table-row;
+}
+
+.article-entry .table-wrapper th,
+.article-entry .table-wrapper td,
+.article-entry > table th,
+.article-entry > table td {
+  display: table-cell;
+  padding: 8px 12px;
+  vertical-align: top;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  border-bottom: 1px solid var(--color-border, rgba(128, 128, 128, 0.35));
+}
+
+.article-entry .table-wrapper th,
+.article-entry > table th {
+  font-weight: bold;
+  border-bottom-width: 3px;
+}
+
+/* Narrow label column when tables have 3+ columns */
+.article-entry .table-wrapper table:has(thead tr > *:nth-child(3)) th:first-child,
+.article-entry .table-wrapper table:has(thead tr > *:nth-child(3)) td:first-child,
+.article-entry > table:has(thead tr > *:nth-child(3)) th:first-child,
+.article-entry > table:has(thead tr > *:nth-child(3)) td:first-child {
+  width: 22%;
+}
+
+/* Respect markdown align-right (e.g. |---:|) */
+.article-entry .table-wrapper th[style*="text-align:right"],
+.article-entry .table-wrapper td[style*="text-align:right"],
+.article-entry > table th[style*="text-align:right"],
+.article-entry > table td[style*="text-align:right"] {
+  text-align: right;
+}
+
+@media (max-width: 767px) {
+  .article-entry .table-wrapper th,
+  .article-entry .table-wrapper td,
+  .article-entry > table th,
+  .article-entry > table td {
+    padding: 8px 10px;
+    font-size: 0.95em;
+  }
+}

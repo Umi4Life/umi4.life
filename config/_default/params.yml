@@ -862,6 +862,7 @@ injector:
   head_begin: # Inject code snippet right after <head>
   head_end: |
     <link rel="stylesheet" href="/css/persistent-meting.css">
+    <link rel="stylesheet" href="/css/article-extras.css">
   body_begin: # Inject code snippet right after <body>
   body_end: |
     <script src="/js/persistent-meting.js" defer></script>

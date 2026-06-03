@@ -12,13 +12,13 @@ categories = ["homelab", "infrastructure", "automation"]
 
 **คำบรรยาย:** เราแค่อยากเปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แต่ดันไปสะกิด tech debt เก่าใน routing/auth stack จนต้องไล่แก้ปมทั้ง Traefik, Authelia OIDC, split DNS และ LiteLLM
 
-{{< gallery >}}
+{{< icon-row >}}
 ![Traefik Proxy](./images/icons/traefik-proxy.svg)
 ![Cloudflare](./images/icons/cloudflare.svg)
 ![Docker](./images/icons/docker.svg)
 ![Authelia](./images/icons/authelia.svg)
 ![LiteLLM](./images/icons/litellm.svg)
-{{< /gallery >}}
+{{< /icon-row >}}
 
 งานนี้ไม่ได้ควรจะกลายเป็น incident ใหญ่เลย
 

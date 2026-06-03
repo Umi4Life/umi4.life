@@ -112,13 +112,13 @@ The WireGuard admin UI will now be accessible in `vpn.domain.name`
 On admin UI, create a new configuration and download it. The file will be something like this
 ```cfg
 [Interface]
-PrivateKey = <PRIVATE_KEY>
+PrivateKey = {PRIVATE_KEY}
 Address = 10.8.0.2/32, fdcc:ad94:bacf:61a4::cafe:4/128
 ...
 
 [Peer]
-PublicKey = <PUBLIC_KEY>
-PresharedKey = <PRESHARED_KEY>
+PublicKey = {PUBLIC_KEY}
+PresharedKey = {PRESHARED_KEY}
 ...
 Endpoint = vpn.domain.name:51820
 ```
@@ -136,7 +136,7 @@ sudo nano /etc/wireguard/wg0.conf
 ```
 ```cfg
 [Interface]
-PrivateKey = <PRIVATE_KEY>
+PrivateKey = {PRIVATE_KEY}
 Address = 10.8.0.2/32
 MTU = 1420
 DNS = 192.168.1.2, 1.1.1.1
@@ -151,8 +151,8 @@ PostDown = iptables -D FORWARD -i wg0 -o ens18 -j ACCEPT
 PostDown = iptables -D FORWARD -i ens18 -o wg0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 [Peer]
-PublicKey = <PUBLIC_KEY>
-PresharedKey = <PRESHARED_KEY>
+PublicKey = {PUBLIC_KEY}
+PresharedKey = {PRESHARED_KEY}
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 Endpoint = vpn.domain.name:51820

@@ -466,7 +466,7 @@ Only operate on repositories under github.com/Umi4Life.
 
 Before side effects, the agent verifies:
 
-1. the remote URL resolves to `github.com/Umi4Life/<repo>`
+1. the remote URL resolves to `github.com/Umi4Life/{repo}`
 2. the configured token has the needed repo permission
 3. the current branch is not the base branch
 4. the action is a branch push or pull request, not a direct change to `master`

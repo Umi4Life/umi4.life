@@ -12,13 +12,13 @@ categories = ["homelab", "infrastructure", "automation"]
 
 **Subtitle:** We tried to expose one dashboard, tripped over old routing and auth tech debt, broke a few things, then used the incident to make the stack less cursed.
 
-{{< gallery >}}
+{{< icon-row >}}
 ![Traefik Proxy](./images/icons/traefik-proxy.svg)
 ![Cloudflare](./images/icons/cloudflare.svg)
 ![Docker](./images/icons/docker.svg)
 ![Authelia](./images/icons/authelia.svg)
 ![LiteLLM](./images/icons/litellm.svg)
-{{< /gallery >}}
+{{< /icon-row >}}
 
 This was not supposed to become an infrastructure incident.
 
