@@ -78,7 +78,7 @@ The first mount attempt failed with:
 mount: /mnt/truenas/hermes: fsconfig() failed: NFS: mount program didn't pass remote address.
 ```
 
-The root cause was that the Hermes VM did not have NFS client tooling installed.
+The failure pointed to missing NFS client tooling on the Hermes VM—not a TrueNAS export or NFS share misconfiguration. Installing `nfs-common` fixed it.
 
 ### Dataset ownership prevented writes
 
