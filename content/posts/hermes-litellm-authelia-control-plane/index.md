@@ -2,13 +2,13 @@
 date = '2026-06-03T18:30:00+07:00'
 draft = false
 translationKey = 'hermes-litellm-authelia-control-plane'
-title = 'Unfucking the Homelab After a Hermes Dashboard Setup Went Sideways'
+title = 'Untangling the Homelab After a Hermes Dashboard Setup Went Sideways'
 description = 'A homelab incident story: setting up Hermes Dashboard exposed old routing and auth tech debt, broke Traefik and Authelia OIDC assumptions, and ended with a cleaner LiteLLM public API plus private admin workflow.'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
 +++
 
-# Unfucking the Homelab After a Hermes Dashboard Setup Went Sideways
+# Untangling the Homelab After a Hermes Dashboard Setup Went Sideways
 
 **Subtitle:** We tried to expose one dashboard, tripped over old routing and auth tech debt, broke a few things, then used the incident to make the stack less cursed.
 
@@ -46,7 +46,7 @@ Admin browser on LAN/VPN
 
 But the real story is not “how to configure LiteLLM.”
 
-The story is: we set up Hermes Dashboard, uncovered a pile of homelab infrastructure debt, broke Traefik and Authelia in educational ways, then unfucked the stack until the public API/private control-plane model was actually intentional instead of accidental.
+The story is: we set up Hermes Dashboard, uncovered a pile of homelab infrastructure debt, broke Traefik and Authelia in educational ways, then untangled the stack until the public API/private control-plane model was actually intentional instead of accidental.
 
 Interesting. Version 1 produced data. Version 2 produced more data. Version 3 finally stopped being rude.
 

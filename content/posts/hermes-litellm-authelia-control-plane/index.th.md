@@ -2,15 +2,15 @@
 date = '2026-06-03T18:30:00+07:00'
 draft = false
 translationKey = 'hermes-litellm-authelia-control-plane'
-title = 'Unfucking Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่'
+title = 'Untangling Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่'
 description = 'บันทึก incident จากการตั้ง Hermes Dashboard ที่ลาก tech debt ใน homelab ออกมาให้เห็น ตั้งแต่ Traefik, Authelia OIDC, split DNS จนถึง LiteLLM workflow ที่แยก public API กับ private admin UI'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
 +++
 
-# Unfucking Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่
+# Untangling Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่
 
-**คำบรรยาย:** เราแค่อยากเปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แต่ดันไปสะกิด tech debt เก่าใน routing/auth stack จนต้องไล่ unfuck ทั้ง Traefik, Authelia OIDC, split DNS และ LiteLLM
+**คำบรรยาย:** เราแค่อยากเปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แต่ดันไปสะกิด tech debt เก่าใน routing/auth stack จนต้องไล่แก้ปมทั้ง Traefik, Authelia OIDC, split DNS และ LiteLLM
 
 ![Traefik Proxy](./images/icons/traefik-proxy.svg) ![Cloudflare](./images/icons/cloudflare.svg) ![Docker](./images/icons/docker.svg) ![Authelia](./images/icons/authelia.svg) ![LiteLLM](./images/icons/litellm.svg)
 
@@ -46,7 +46,7 @@ Admin browser on LAN/VPN
 
 แต่ story จริงไม่ใช่ “วิธีตั้ง LiteLLM” อย่างเดียว
 
-story จริงคือ เราตั้ง Hermes Dashboard แล้วเจอ tech debt ใน homelab infra พัง Traefik/Authelia แบบได้ข้อมูล แล้วค่อย ๆ unfuck จน public API/private control plane กลายเป็น design ที่ตั้งใจ ไม่ใช่ของที่บังเอิญใช้ได้
+story จริงคือ เราตั้ง Hermes Dashboard แล้วเจอ tech debt ใน homelab infra พัง Traefik/Authelia แบบได้ข้อมูล แล้วค่อย ๆ แก้ปมจน public API/private control plane กลายเป็น design ที่ตั้งใจ ไม่ใช่ของที่บังเอิญใช้ได้
 
 ---
 
