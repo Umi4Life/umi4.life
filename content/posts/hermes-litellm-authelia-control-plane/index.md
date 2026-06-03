@@ -12,6 +12,10 @@ categories = ["homelab", "infrastructure", "automation"]
 
 **Subtitle:** Hermes Dashboard, Traefik, Authelia OIDC, and the small typo that made LiteLLM SSO look much more cursed than it was.
 
+![Traefik Proxy](./images/icons/traefik-proxy.svg) ![Cloudflare](./images/icons/cloudflare.svg) ![Docker](./images/icons/docker.svg) ![Authelia](./images/icons/authelia.svg) ![LiteLLM](./images/icons/litellm.svg)
+
+The cast of tools was very homelab-coded: Hermes Agent for the control surface, Traefik for routing, Cloudflare tunnel for public reachability, Authelia for SSO, Docker for the runtime boundary, and LiteLLM for the public model API.
+
 This started as a simple goal:
 
 > Make the Hermes Dashboard reachable from the LAN, then make LiteLLM usable as a public API endpoint while keeping the admin UI behind local SSO.
@@ -53,6 +57,8 @@ The fix was to start the dashboard on all interfaces:
 0.0.0.0:9119
 ```
 
+![Hermes Dashboard after it became reachable from the LAN. Recent session details are redacted.](./images/hermes-dashboard-redacted.png)
+
 Then the dashboard became reachable from the Hermes VM's LAN IP. A small watchdog script was added so the dashboard could stay boring: silent when healthy, noisy only when it failed to start.
 
 The useful lesson here was not “dashboards are hard.” It was this:
@@ -83,6 +89,12 @@ But this should not be freely usable from the public internet:
 https://litellm.umi4.life/ui
 ```
 
+This part was intentional, not accidental. The security model was: any service may use the local LLM through API keys, but nobody should be able to configure the gateway unless their browser is connected to the LAN/VPN and can complete the Authelia SSO flow.
+
+So the current “I can’t access LiteLLM UI from outside the LAN” behavior is not always a bug. For the admin UI, it is the desired failure mode. Public API traffic is allowed; public control-plane access is not.
+
+![A public-facing route returning a plain 404 while the underlying routing story was being debugged.](./images/404-homepage.png)
+
 The intended shape became:
 
 ```text
@@ -95,6 +107,8 @@ LAN/VPN admin browser
   -> Authelia OIDC
   -> auth.umi4.life on LAN only
 ```
+
+![Traefik dashboard showing the router table. The broad service inventory is redacted; the interesting rows were auth, Hermes, LiteLLM, and the broken homepage route.](./images/traefik-dashboard-redacted.png)
 
 This is a valid pattern: public API, private control plane.
 
@@ -122,7 +136,13 @@ LiteLLM backend -> Authelia token endpoint
 LiteLLM backend -> Authelia userinfo endpoint
 ```
 
-That last part matters. LiteLLM itself must be able to reach Authelia, not just the browser.
+That last part matters. LiteLLM itself must be able to reach Authelia, not just the browser. When it could not resolve the private issuer hostname, the callback path failed with the very unhelpful-looking but actually precise error:
+
+```text
+httpx.ConnectError: [Errno -2] Name or service not known
+```
+
+That was not LDAP. It was not the user's password. It was the LiteLLM container failing to resolve the Authelia issuer hostname during the server-side OIDC exchange.
 
 Because Authelia was intentionally LAN-only, the solution was not “publish Authelia to the internet.” The solution was to make LAN/VPN clients and the LiteLLM container resolve the same issuer hostname correctly:
 
@@ -180,6 +200,17 @@ YAML treats `*` as an alias marker. It needs quotes:
 
 ```yaml
 FORWARDED_ALLOW_IPS: "*"
+```
+
+A useful sanity check was the UI config endpoint. Once the proxy settings were correct, it reported the public URL correctly:
+
+```json
+{
+  "proxy_base_url": "https://litellm.umi4.life",
+  "auto_redirect_to_sso": true,
+  "admin_ui_disabled": false,
+  "sso_configured": true
+}
 ```
 
 After that, `/ui` redirecting to `/ui/` was no longer a bug. That 307 is normal.
@@ -247,8 +278,10 @@ This was one of those tiny operational mistakes that looks like the system is ha
 After fixing routing, DNS, HTTPS, and Authelia client settings, LiteLLM still returned an internal server error at the callback URL:
 
 ```text
-https://litellm.umi4.life/sso/callback?code=...
+GET /sso/callback?code=... -> 500 Internal Server Error
 ```
+
+In the browser it looked like this was still an OIDC or Authelia problem. In reality, LiteLLM had already received the code and was failing after that.
 
 The bad line was this:
 

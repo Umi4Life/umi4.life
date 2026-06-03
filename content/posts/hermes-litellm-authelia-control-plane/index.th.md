@@ -12,6 +12,10 @@ categories = ["homelab", "infrastructure", "automation"]
 
 **คำบรรยาย:** จาก Hermes Dashboard ไปถึง Traefik, Authelia OIDC และ LiteLLM SSO ที่พังเพราะ endpoint เล็ก ๆ หนึ่งบรรทัด
 
+![Traefik Proxy](./images/icons/traefik-proxy.svg) ![Cloudflare](./images/icons/cloudflare.svg) ![Docker](./images/icons/docker.svg) ![Authelia](./images/icons/authelia.svg) ![LiteLLM](./images/icons/litellm.svg)
+
+ตัวละครหลักในรอบนี้คือ Hermes Agent, Traefik, Cloudflare tunnel, Authelia, Docker และ LiteLLM — homelab stack แบบที่พังทีละชั้น แต่แก้แล้วได้ architecture ที่ชัดขึ้น
+
 โพสต์นี้เริ่มจากเป้าหมายที่ดูง่ายมาก:
 
 > เปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แล้วทำให้ LiteLLM ใช้เป็น public API ได้ โดยที่ admin UI ยังต้องผ่าน SSO ใน LAN/VPN เท่านั้น
@@ -51,6 +55,8 @@ Admin browser on LAN/VPN
 0.0.0.0:9119
 ```
 
+![Hermes Dashboard หลังเปิดให้เข้าจาก LAN ได้ ข้อมูล recent sessions ถูก redacted แล้ว](./images/hermes-dashboard-redacted.png)
+
 หลังจากนั้นก็เพิ่ม watchdog แบบเงียบ ๆ: ถ้าปกติไม่ต้องพูดอะไร ถ้า dashboard start ไม่ขึ้นค่อยแจ้งเตือน
 
 ---
@@ -75,7 +81,15 @@ curl https://litellm.umi4.life/v1/models \
 https://litellm.umi4.life/ui
 ```
 
+เหตุผลคือเรื่อง security โดยตรง: service ไหน ๆ ก็ใช้ local LLM ผ่าน API key ได้ แต่ไม่ควรมีใคร config gateway ได้ ถ้า browser ไม่ได้ต่อ LAN/VPN และผ่าน Authelia SSO ที่ตั้งไว้
+
+ดังนั้นอาการ “เข้า LiteLLM UI จากข้างนอกไม่ได้” ไม่ได้เป็น bug เสมอไป สำหรับ admin UI มันคือ desired failure mode: API public ได้ แต่ control plane ต้อง private
+
+![Route ที่ตอบ 404 ตอนกำลังไล่ debug routing](./images/404-homepage.png)
+
 นี่เป็น pattern ที่ตั้งใจ: API ใช้ public ได้ แต่ control plane อยู่ใน LAN
+
+![Traefik dashboard พร้อม router table โดย redacted รายละเอียด service inventory แล้ว](./images/traefik-dashboard-redacted.png)
 
 ---
 
@@ -99,7 +113,13 @@ LiteLLM backend -> Authelia token endpoint
 LiteLLM backend -> Authelia userinfo endpoint
 ```
 
-จุดสำคัญคือ LiteLLM container เองต้องเรียก Authelia ได้ด้วย ไม่ใช่แค่ browser เข้าได้
+จุดสำคัญคือ LiteLLM container เองต้องเรียก Authelia ได้ด้วย ไม่ใช่แค่ browser เข้าได้ ถ้า container resolve hostname ของ issuer ไม่ได้ จะเห็น error ประมาณนี้:
+
+```text
+httpx.ConnectError: [Errno -2] Name or service not known
+```
+
+อันนี้ไม่ใช่ LDAP ไม่ใช่ password แต่เป็น server-side OIDC exchange ที่ LiteLLM หา `auth.umi4.life` ไม่เจอ
 
 เพราะ Authelia ตั้งใจให้เป็น LAN-only เลยต้องให้ทั้ง browser ฝั่ง LAN/VPN และ LiteLLM container resolve hostname เดียวกันได้ เช่น:
 
@@ -141,6 +161,17 @@ FORWARDED_ALLOW_IPS: *
 
 # right
 FORWARDED_ALLOW_IPS: "*"
+```
+
+ตอน proxy setting ถูกแล้ว UI config จะเริ่มบอก public URL ถูกต้อง:
+
+```json
+{
+  "proxy_base_url": "https://litellm.umi4.life",
+  "auto_redirect_to_sso": true,
+  "admin_ui_disabled": false,
+  "sso_configured": true
+}
 ```
 
 หลังจากแก้แล้ว `/ui` redirect ไป `/ui/` ด้วย 307 เป็นเรื่องปกติ ไม่ใช่ bug
@@ -202,8 +233,10 @@ PY
 หลังจากแก้ proxy, DNS, HTTPS และ Authelia client แล้ว LiteLLM ยังพังที่ callback:
 
 ```text
-https://litellm.umi4.life/sso/callback?code=...
+GET /sso/callback?code=... -> 500 Internal Server Error
 ```
+
+ตอนเห็นใน browser มันเหมือน Authelia/OIDC ยังพังอยู่ แต่จริง ๆ LiteLLM รับ code กลับมาได้แล้ว และไปตายในขั้นหลังจากนั้น
 
 บรรทัดที่ผิดคือ:
 
