@@ -80,11 +80,11 @@ mount: /mnt/truenas/hermes: fsconfig() failed: NFS: mount program didn't pass re
 
 The root cause was that the Hermes VM did not have NFS client tooling installed.
 
-### Permission mismatch
+### Dataset ownership prevented writes
 
-After the NFS mount succeeded, Hermes could read the share but could not write directly to the export root.
+After the NFS mount succeeded, Hermes could read the share but could not write directly to the export root. This was not a Hermes UID problem—the service account was already `{HERMES_UID}:{HERMES_GID}`. The export root on TrueNAS was still `root:root` with mode `755`, which blocked writes at `/mnt/truenas/hermes`.
 
-Dataset permissions:
+Dataset permissions on the export root:
 
 ```text
 owner=root:root
@@ -161,7 +161,7 @@ sudo mount -a
 findmnt /mnt/truenas/hermes
 ```
 
-A systemd `.mount` unit works the same way; fstab is what I used on the Hermes VM.
+A systemd `.mount` unit works the same way; fstab is what I used on the Hermes VM. The mount is reboot-persistent once this entry is in place.
 
 ### Configure NFS share
 
@@ -175,11 +175,22 @@ Authorized Host: {HERMES_VM_IP}
 
 Restricting the share to the Hermes VM IP reduces unnecessary exposure on the LAN.
 
-> This setup assumes the NFS export preserves client UID/GID semantics—no mapall or root-squash behavior that rewrites Hermes to an unrelated account.
+### Why UID/GID alignment was chosen
+
+Alternatives such as NFS Mapall User/Group, writable subfolders (`docs-media`), ACL exceptions, and aggressive root-squash tuning were considered.
+
+For a dedicated `/mnt/lamia/data/hermes` dataset with Hermes as the only writer, matching dataset ownership to `{HERMES_UID}:{HERMES_GID}` was preferred because:
+
+- File ownership stays meaningful on the client (`ls`, backups, audits).
+- No Mapall rule that maps every client user to one NAS account.
+- Files created by Hermes appear as `hermes:hermes` without extra NFS mapping.
+- Easier to debug than wondering why a file shows up as `nobody`.
+
+This setup assumes the NFS export preserves client UID/GID semantics—no mapall or root-squash behavior that rewrites Hermes to an unrelated account.
 
 ### Align dataset ownership
 
-Instead of writable subfolders or NFS user mapping, the entire dataset was designated as Hermes-managed storage.
+Instead of writable subfolders or NFS user mapping, the entire dataset was designated as Hermes-managed storage. This is the ownership model the Mapall alternative would have papered over.
 
 On TrueNAS:
 
@@ -276,13 +287,13 @@ Hermes now reads and writes documentation assets at `/mnt/truenas/hermes` on NAS
 
 Before any write test, run `findmnt /mnt/truenas/hermes` and confirm the source is the NFS export—not an empty local directory left behind from a failed mount.
 
-For a dedicated application dataset, UID/GID alignment is cleaner than writable subfolders, ACL exceptions, or NFS remapping. The important constraint is isolation: Hermes owns `/mnt/lamia/data/hermes` because that dataset is only for Hermes-generated documentation and blog assets.
+The important constraint is isolation: Hermes owns `/mnt/lamia/data/hermes` because that dataset is only for Hermes-generated documentation and blog assets.
 
 ---
 
 ## Final status
 
-Hermes NAS media storage is operational. Preferred path for documentation assets:
+Hermes NAS media storage is operational and reboot-persistent via `/etc/fstab` on the Hermes VM (see above). Preferred path for documentation assets:
 
 ```text
 /mnt/truenas/hermes
