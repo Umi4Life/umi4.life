@@ -2,25 +2,36 @@
 date = '2026-06-03T18:30:00+07:00'
 draft = false
 translationKey = 'hermes-litellm-authelia-control-plane'
-title = 'Building a Public LiteLLM API with a LAN-Only Authelia Control Plane'
-description = 'A homelab debugging story about exposing LiteLLM for API use while keeping the admin UI behind LAN-only Authelia OIDC, after setting up Hermes Dashboard and breaking Traefik more than once.'
+title = 'Unfucking the Homelab After a Hermes Dashboard Setup Went Sideways'
+description = 'A homelab incident story: setting up Hermes Dashboard exposed old routing and auth tech debt, broke Traefik and Authelia OIDC assumptions, and ended with a cleaner LiteLLM public API plus private admin workflow.'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
 +++
 
-# Building a Public LiteLLM API with a LAN-Only Authelia Control Plane
+# Unfucking the Homelab After a Hermes Dashboard Setup Went Sideways
 
-**Subtitle:** Hermes Dashboard, Traefik, Authelia OIDC, and the small typo that made LiteLLM SSO look much more cursed than it was.
+**Subtitle:** We tried to expose one dashboard, tripped over old routing and auth tech debt, broke a few things, then used the incident to make the stack less cursed.
 
 ![Traefik Proxy](./images/icons/traefik-proxy.svg) ![Cloudflare](./images/icons/cloudflare.svg) ![Docker](./images/icons/docker.svg) ![Authelia](./images/icons/authelia.svg) ![LiteLLM](./images/icons/litellm.svg)
 
-The cast of tools was very homelab-coded: Hermes Agent for the control surface, Traefik for routing, Cloudflare tunnel for public reachability, Authelia for SSO, Docker for the runtime boundary, and LiteLLM for the public model API.
+This was not supposed to become an infrastructure incident.
 
-This started as a simple goal:
+The original task was small: make the Hermes Dashboard reachable from the LAN so the agent had a proper web control surface. That should have been a tidy fifteen-minute homelab change.
 
-> Make the Hermes Dashboard reachable from the LAN, then make LiteLLM usable as a public API endpoint while keeping the admin UI behind local SSO.
+Instead, it pulled on a thread.
 
-That sounds clean. Public data plane, private control plane:
+First the dashboard was only listening on `localhost`. Then Traefik routing assumptions surfaced. Then HTTPS forwarding broke OIDC redirects. Then Authelia rejected token exchange requests. Then the LiteLLM container could not resolve the LAN-only identity provider. Then, after all of that, the final bug was a tiny copy-paste mistake: LiteLLM's `userinfo` endpoint pointed at the `token` endpoint.
+
+The funny part is that every failure was real signal. The setup did not merely break; it showed where the homelab had accumulated tech debt:
+
+- unclear boundary between public routes and LAN-only routes
+- split DNS assumptions that were not documented well enough
+- reverse-proxy auth and OIDC being treated as if they were the same shape
+- forwarded-header behavior depending on implicit proxy trust
+- container debugging commands assuming friendly base images
+- config values that looked close enough to be right, until they were not
+
+The end result was still the architecture we wanted:
 
 ```text
 Public services
@@ -33,15 +44,15 @@ Admin browser on LAN/VPN
   -> LAN-only Authelia
 ```
 
-The actual journey was less clean.
+But the real story is not “how to configure LiteLLM.”
 
-We set up the Hermes Dashboard, broke access by binding it to localhost, fixed it to listen on the LAN, added a watchdog, moved to LiteLLM SSO, broke Traefik assumptions, broke Authelia OIDC in several different ways, and finally found the one endpoint typo that made the whole flow fail at the callback step.
+The story is: we set up Hermes Dashboard, uncovered a pile of homelab infrastructure debt, broke Traefik and Authelia in educational ways, then unfucked the stack until the public API/private control-plane model was actually intentional instead of accidental.
 
 Interesting. Version 1 produced data. Version 2 produced more data. Version 3 finally stopped being rude.
 
 ---
 
-## Step 1 — Hermes Dashboard needed to listen beyond localhost
+## Step 1 — The innocent dashboard change exposed the first assumption
 
 The first issue was not exotic. Hermes Dashboard was running, but only on the loopback interface:
 
@@ -69,7 +80,7 @@ Mou... obvious after the fact. Most infrastructure bugs are.
 
 ---
 
-## Step 2 — LiteLLM needed two different security stories
+## Step 2 — The stack needed a real public/private boundary
 
 The LiteLLM goal was intentionally split:
 
@@ -116,7 +127,7 @@ It is also where OIDC starts being picky.
 
 ---
 
-## Step 3 — OIDC needs both browser reachability and backend reachability
+## Step 3 — OIDC revealed the split-DNS debt
 
 Authelia reverse-proxy auth already worked for other LAN services like Coder and Hermes. That made the LiteLLM failure look suspicious at first.
 
@@ -165,7 +176,7 @@ docker compose up -d --force-recreate litellm
 
 ---
 
-## Step 4 — The HTTPS redirect problem
+## Step 4 — Traefik and forwarded headers made HTTPS trust explicit
 
 Early in the debugging, LiteLLM generated redirects with `http://` instead of `https://`.
 
@@ -217,7 +228,7 @@ After that, `/ui` redirecting to `/ui/` was no longer a bug. That 307 is normal.
 
 ---
 
-## Step 5 — Authelia rejected the token exchange
+## Step 5 — Authelia made bad issuer assumptions visible
 
 The next failure appeared in Authelia logs:
 
@@ -248,7 +259,7 @@ If the hostname is LAN-only, use split DNS or Docker `extra_hosts`, but keep the
 
 ---
 
-## Step 6 — Minimal containers do not have friendly tools
+## Step 6 — Minimal containers made debugging assumptions visible
 
 At one point, the LiteLLM container could not run:
 
@@ -273,7 +284,7 @@ This was one of those tiny operational mistakes that looks like the system is ha
 
 ---
 
-## Step 7 — The final bug was a copy-paste endpoint typo
+## Step 7 — The final boss was one wrong endpoint
 
 After fixing routing, DNS, HTTPS, and Authelia client settings, LiteLLM still returned an internal server error at the callback URL:
 
@@ -381,20 +392,35 @@ Or, more simply:
 
 ---
 
-## What this debugging session taught
+## What this incident taught
 
-The failures were not random. They were layered:
+The important lesson was not any single LiteLLM setting. The important lesson was that the homelab had several undocumented contracts hiding under the surface.
 
-1. Hermes Dashboard was bound to localhost.
-2. LiteLLM needed its public base URL.
-3. YAML needed `"*"`, not `*`.
-4. Authelia OIDC needed exact redirect URIs.
-5. LiteLLM needed HTTPS issuer endpoints, not internal HTTP endpoints.
-6. The LiteLLM container needed LAN DNS or `extra_hosts` for the private issuer.
-7. The userinfo endpoint had to be `/api/oidc/userinfo`, not `/api/oidc/token`.
+The incident forced those contracts into the open:
 
-Each failure was useful once isolated.
+1. **Listener scope matters.** `127.0.0.1` inside a VM is not LAN access.
+2. **Public routes and private control planes need names.** If a route is intentionally unavailable from outside LAN/VPN, document that as desired behavior, not as a mystery outage.
+3. **Reverse-proxy auth is not OIDC.** Forward-auth can work while OIDC fails because OIDC has browser-side and backend-side calls.
+4. **Split DNS is infrastructure, not vibes.** If `auth.umi4.life` means LAN-only, both browsers and containers need a deterministic way to resolve it.
+5. **Proxies need explicit trust.** `PROXY_BASE_URL` and `FORWARDED_ALLOW_IPS: "*"` were not decoration; they decided whether callbacks used `https://` or broke.
+6. **Minimal containers change the debugging playbook.** If `getent` is missing, use `docker exec -i ... python` or another tool that actually exists in the image.
+7. **Almost-right endpoints are still wrong.** `/api/oidc/token` and `/api/oidc/userinfo` are one copy-paste apart and completely different in the flow.
 
-That is the homelab rhythm: break one assumption, read the logs, make a smaller hypothesis, test again.
+## What should improve next time
 
-Yoshi. The chart was cursed, but the final architecture is clean.
+Version 2 of this homelab workflow should make the intended shape harder to break:
+
+- document each public hostname as either `public API`, `public app`, or `LAN-only control plane`
+- keep split-DNS records and Docker `extra_hosts`/network exceptions near the service config
+- add a small smoke-test script for each exposed service: public API check, LAN UI check, and auth callback check
+- keep known-good OIDC snippets for Authelia clients and LiteLLM env vars
+- prefer reusable watchdog/scripts over one-off manual commands
+- write down “expected failure modes,” especially cases where public UI access should fail by design
+
+That last point matters. “I cannot access the admin UI from outside the LAN” sounds like an outage until the architecture says otherwise.
+
+For this setup, that failure is the lock on the door.
+
+Public data plane. Private control plane. Fewer spooky assumptions next time.
+
+Yoshi. The chart was cursed, but the final architecture is cleaner than where we started.

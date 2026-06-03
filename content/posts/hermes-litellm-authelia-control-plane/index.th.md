@@ -2,25 +2,36 @@
 date = '2026-06-03T18:30:00+07:00'
 draft = false
 translationKey = 'hermes-litellm-authelia-control-plane'
-title = 'ทำ LiteLLM API สาธารณะ พร้อม Control Plane ผ่าน Authelia เฉพาะ LAN'
-description = 'บันทึกการ debug homelab ตั้งแต่ Hermes Dashboard, Traefik, Authelia OIDC จนถึง LiteLLM workflow ที่ให้ API ใช้สาธารณะ แต่ admin UI ต้องเข้า LAN และผ่าน SSO'
+title = 'Unfucking Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่'
+description = 'บันทึก incident จากการตั้ง Hermes Dashboard ที่ลาก tech debt ใน homelab ออกมาให้เห็น ตั้งแต่ Traefik, Authelia OIDC, split DNS จนถึง LiteLLM workflow ที่แยก public API กับ private admin UI'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
 +++
 
-# ทำ LiteLLM API สาธารณะ พร้อม Control Plane ผ่าน Authelia เฉพาะ LAN
+# Unfucking Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่
 
-**คำบรรยาย:** จาก Hermes Dashboard ไปถึง Traefik, Authelia OIDC และ LiteLLM SSO ที่พังเพราะ endpoint เล็ก ๆ หนึ่งบรรทัด
+**คำบรรยาย:** เราแค่อยากเปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แต่ดันไปสะกิด tech debt เก่าใน routing/auth stack จนต้องไล่ unfuck ทั้ง Traefik, Authelia OIDC, split DNS และ LiteLLM
 
 ![Traefik Proxy](./images/icons/traefik-proxy.svg) ![Cloudflare](./images/icons/cloudflare.svg) ![Docker](./images/icons/docker.svg) ![Authelia](./images/icons/authelia.svg) ![LiteLLM](./images/icons/litellm.svg)
 
-ตัวละครหลักในรอบนี้คือ Hermes Agent, Traefik, Cloudflare tunnel, Authelia, Docker และ LiteLLM — homelab stack แบบที่พังทีละชั้น แต่แก้แล้วได้ architecture ที่ชัดขึ้น
+งานนี้ไม่ได้ควรจะกลายเป็น incident ใหญ่เลย
 
-โพสต์นี้เริ่มจากเป้าหมายที่ดูง่ายมาก:
+เป้าหมายแรกเล็กมาก: เปิด Hermes Dashboard ให้ browser ใน LAN เข้าได้ เพื่อให้ Hermes Agent มี web control surface ที่ใช้งานง่ายขึ้น
 
-> เปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แล้วทำให้ LiteLLM ใช้เป็น public API ได้ โดยที่ admin UI ยังต้องผ่าน SSO ใน LAN/VPN เท่านั้น
+แต่พอเริ่มแก้จริง มันลากปมเก่าใน homelab ออกมาทีละชั้น
 
-ภาพรวมที่ต้องการคือ:
+เริ่มจาก dashboard bind อยู่แค่ `localhost` ต่อด้วย Traefik routing assumption, HTTPS forwarded header ที่ทำให้ OIDC redirect เพี้ยน, Authelia reject token exchange, LiteLLM container resolve hostname ของ LAN-only identity provider ไม่ได้ และสุดท้าย bug ที่เล็กแต่เจ็บมาก: `GENERIC_USERINFO_ENDPOINT` ดันชี้ไปที่ `token` endpoint
+
+สิ่งที่ได้ไม่ใช่แค่ config LiteLLM ให้ถูก แต่คือการเห็น tech debt ชัดขึ้น:
+
+- public route กับ LAN-only route ยังไม่มี boundary ที่เขียนไว้ชัดพอ
+- split DNS มี assumption ที่คนจำได้ แต่ระบบไม่ได้บอกเอง
+- reverse-proxy auth กับ OIDC ถูกมองเหมือนเป็น auth flow แบบเดียวกัน ทั้งที่ไม่ใช่
+- forwarded-header behavior ขึ้นกับ proxy trust ที่ต้องตั้งให้ explicit
+- debug container โดยคิดว่ามี command พื้นฐานครบ ทั้งที่ image minimal มาก
+- config ที่ดู “เกือบถูก” ก็ยังพังได้ถ้าผิด endpoint
+
+ปลายทางที่ต้องการยังเหมือนเดิม:
 
 ```text
 Public services
@@ -33,13 +44,13 @@ Admin browser on LAN/VPN
   -> LAN-only Authelia
 ```
 
-พูดสั้น ๆ คือ public data plane แต่ private control plane
+แต่ story จริงไม่ใช่ “วิธีตั้ง LiteLLM” อย่างเดียว
 
-ฟังดูสะอาด แต่ของจริงคือเราไล่แก้ทีละชั้น: Hermes Dashboard bind อยู่แค่ localhost, Traefik/HTTPS header ทำให้ OIDC redirect เพี้ยน, Authelia reject token exchange, Docker container resolve hostname ไม่ได้ และสุดท้าย LiteLLM callback พังเพราะ `GENERIC_USERINFO_ENDPOINT` ชี้ผิด endpoint
+story จริงคือ เราตั้ง Hermes Dashboard แล้วเจอ tech debt ใน homelab infra พัง Traefik/Authelia แบบได้ข้อมูล แล้วค่อย ๆ unfuck จน public API/private control plane กลายเป็น design ที่ตั้งใจ ไม่ใช่ของที่บังเอิญใช้ได้
 
 ---
 
-## Hermes Dashboard: localhost ไม่ใช่ LAN
+## Step 1 — Dashboard change เล็ก ๆ เปิด assumption แรก
 
 ปัญหาแรกตรงไปตรงมา: Hermes Dashboard รันอยู่ที่
 
@@ -61,7 +72,7 @@ Admin browser on LAN/VPN
 
 ---
 
-## LiteLLM ต้องมี security สองชั้น
+## Step 2 — Stack ต้องมี boundary ระหว่าง public กับ private จริง ๆ
 
 LiteLLM workflow ที่ต้องการคือ:
 
@@ -93,7 +104,7 @@ https://litellm.umi4.life/ui
 
 ---
 
-## OIDC ไม่เหมือน forward-auth ธรรมดา
+## Step 3 — OIDC เปิดให้เห็น split-DNS debt
 
 Service อื่นอย่าง Coder หรือ Hermes ใช้ Authelia แบบ reverse-proxy/forward-auth แล้วทำงานได้ดี แต่นั่นไม่เหมือน LiteLLM OIDC
 
@@ -142,7 +153,7 @@ docker compose up -d --force-recreate litellm
 
 ---
 
-## HTTPS, forwarded headers, และ YAML `*`
+## Step 4 — Traefik/forwarded headers ทำให้ HTTPS trust ต้อง explicit
 
 ช่วงหนึ่ง LiteLLM สร้าง redirect เป็น `http://` แทน `https://` ซึ่งทำให้ OIDC พัง เพราะ redirect URI ต้อง match แบบเป๊ะ ๆ
 
@@ -178,7 +189,7 @@ FORWARDED_ALLOW_IPS: "*"
 
 ---
 
-## Authelia reject token exchange เพราะ path เป็น HTTP
+## Step 5 — Authelia ทำให้ issuer assumption ที่ผิดโผล่ออกมา
 
 Authelia เคย log ว่า:
 
@@ -207,7 +218,7 @@ http://192.168.x.x:9091/api/oidc/token
 
 ---
 
-## Container minimal image ไม่มี `getent`
+## Step 6 — Minimal container ทำให้วิธี debug เดิมใช้ไม่ได้
 
 LiteLLM image ไม่มี `getent` เลยใช้คำสั่งนี้ไม่ได้:
 
@@ -228,7 +239,7 @@ PY
 
 ---
 
-## Bug สุดท้าย: userinfo endpoint ชี้ผิด
+## Step 7 — Final boss คือ endpoint ผิดหนึ่งบรรทัด
 
 หลังจากแก้ proxy, DNS, HTTPS และ Authelia client แล้ว LiteLLM ยังพังที่ callback:
 
@@ -256,7 +267,7 @@ GENERIC_USERINFO_ENDPOINT: "https://auth.umi4.life/api/oidc/userinfo"
 
 ---
 
-## สรุป workflow ที่ได้
+## Workflow สุดท้ายที่ได้
 
 ผลลัพธ์สุดท้ายตรงกับที่ต้องการ:
 
@@ -274,14 +285,33 @@ LAN/VPN:
 
 นี่คือ public API + private admin control plane ที่ตั้งใจไว้ตั้งแต่แรก
 
-เรื่องนี้สอนซ้ำอีกครั้งว่า homelab debugging ไม่ได้พังแบบสุ่ม มันพังเป็นชั้น ๆ:
+---
 
-1. Dashboard bind localhost
-2. Public base URL / forwarded headers ผิด
-3. YAML `*` ไม่ quote
-4. OIDC redirect URI ต้อง match เป๊ะ
-5. Token endpoint ต้องใช้ HTTPS issuer hostname
-6. Container ต้อง resolve hostname ของ Authelia ได้
-7. Userinfo endpoint ต้องเป็น `/api/oidc/userinfo`
+## บทเรียนจาก incident นี้
 
-พอแยกทีละชั้น ทุก failure ก็กลายเป็นข้อมูลสำหรับ Version ถัดไป
+บทเรียนหลักไม่ใช่ค่า config ค่าเดียว แต่คือ homelab มี contract หลายอย่างที่ยังไม่ได้เขียนไว้ชัด พอมันพังเลยต้องไล่เดาจากอาการ
+
+สิ่งที่ incident นี้บังคับให้เห็นคือ:
+
+1. **Listener scope สำคัญ** — `127.0.0.1` ใน VM ไม่ใช่ LAN access
+2. **Public route กับ private control plane ต้องถูก label ชัด ๆ** — ถ้าเข้าจากข้างนอกไม่ได้โดยตั้งใจ ต้องเขียนไว้ว่าเป็น desired failure mode ไม่ใช่ปล่อยให้ดูเหมือน outage
+3. **Reverse-proxy auth ไม่เหมือน OIDC** — forward-auth ใช้ได้ ไม่ได้แปลว่า OIDC จะใช้ได้ เพราะ OIDC มีทั้ง browser-side และ backend-side call
+4. **Split DNS เป็น infrastructure ไม่ใช่ความทรงจำ** — ถ้า `auth.umi4.life` เป็น LAN-only ทั้ง browser และ container ต้อง resolve ได้แบบ deterministic
+5. **Proxy trust ต้อง explicit** — `PROXY_BASE_URL` กับ `FORWARDED_ALLOW_IPS: "*"` เป็นตัวกำหนดว่า callback จะเป็น `https://` หรือพัง
+6. **Minimal container เปลี่ยนวิธี debug** — ถ้าไม่มี `getent` ต้องใช้ `docker exec -i ... python` หรือ tool อื่นที่มีจริงใน image
+7. **Endpoint ที่เกือบถูกก็ยังผิด** — `/api/oidc/token` กับ `/api/oidc/userinfo` อยู่ใกล้กันมาก แต่ทำงานคนละขั้นของ flow
+
+## สิ่งที่ควร improve รอบหน้า
+
+Version 2 ของ workflow นี้ควรทำให้ design ที่ตั้งใจพังยากขึ้น:
+
+- document ทุก hostname ว่าเป็น `public API`, `public app`, หรือ `LAN-only control plane`
+- เก็บ split-DNS records และ Docker `extra_hosts`/network exception ไว้ใกล้ service config
+- มี smoke-test script เล็ก ๆ สำหรับ service ที่ expose: public API check, LAN UI check, auth callback check
+- เก็บ known-good OIDC snippet สำหรับ Authelia client และ LiteLLM env vars
+- ใช้ watchdog/script ที่ reusable แทน command manual ยาว ๆ
+- เขียน expected failure modes ไว้ โดยเฉพาะเคสที่ public UI access ควร fail by design
+
+ข้อสุดท้ายสำคัญมาก เพราะ “เข้า admin UI จากข้างนอกไม่ได้” ฟังเหมือน outage จนกว่า architecture จะบอกว่ามันคือ lock ที่ตั้งใจใส่ไว้
+
+Public data plane. Private control plane. รอบหน้าขอ spooky assumption น้อยกว่านี้หน่อย
