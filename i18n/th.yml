@@ -7,8 +7,8 @@ prev: ก่อนหน้า
 next: ถัดไป
 comment: ความคิดเห็น
 reading: อ่าน
-archive_a: คลังเก็บ
-archive_b: "คลังเก็บ: {{ . -}}"
+archive_a: รวมบทความทั้งหมด
+archive_b: "รวมบทความ: {{ . -}}"
 page: "หน้า {{ . -}}"
 recent_posts: โพสต์ล่าสุด
 newer: ใหม่กว่า
@@ -24,7 +24,7 @@ more: เพิ่มเติม
 home: หน้าแรก
 about: เกี่ยวกับ
 friend: เพื่อน
-archives: คลังเก็บ
+archives: รวมบทความ
 
 sidebar:
   post: โพสต์
