@@ -37,9 +37,6 @@
       >
       </a>
     {{- end -}}
-    {{- if and $page.Params.weight (or (eq $ctx.Site.Params.sort_order.home "default") (not $ctx.Site.Params.sort_order.home)) -}}
-      <div class="post-sticky">{{ i18n "sticky" }}</div>
-    {{- end -}}
     <div
       class="{{ if mod $index 2 }}
         post-cover right
@@ -47,6 +44,9 @@
         post-cover left
       {{ end }}"
     >
+      {{- if and $page.Params.weight (or (eq $ctx.Site.Params.sort_order.home "default") (not $ctx.Site.Params.sort_order.home)) -}}
+        <div class="post-sticky">{{ i18n "sticky" }}</div>
+      {{- end -}}
       {{- if and $displayPage.Params.cover (not (hasPrefix $displayPage.Params.cover "rgb")) -}}
         <img
           data-src="{{ $displayPage.Params.cover | relURL }}"

@@ -8,7 +8,8 @@ tags = ["truenas", "nfs", "proxmox", "homelab", "hermes-agent", "documentation"]
 categories = ["homelab"]
 +++
 
-> **Operator note:** Internal IPs and UID/GID values in this post are placeholders for a public write-up. Table cells use `{NAS_IP}`-style markers—substitute your own values before copy-paste.
+> [!NOTE]
+> Internal IPs and UID/GID values in this post are placeholders for a public write-up. Table cells use `{NAS_IP}`-style markers, substitute your own values before copy-paste.
 
 ## Goal
 
@@ -78,11 +79,11 @@ The first mount attempt failed with:
 mount: /mnt/truenas/hermes: fsconfig() failed: NFS: mount program didn't pass remote address.
 ```
 
-The failure pointed to missing NFS client tooling on the Hermes VM—not a TrueNAS export or NFS share misconfiguration. Installing `nfs-common` fixed it.
+The failure pointed to missing NFS client tooling on the Hermes VM, not a TrueNAS export or NFS share misconfiguration. Installing `nfs-common` fixed it.
 
 ### Dataset ownership prevented writes
 
-After the NFS mount succeeded, Hermes could read the share but could not write directly to the export root. This was not a Hermes UID problem—the service account was already `{HERMES_UID}:{HERMES_GID}`. The export root on TrueNAS was still `root:root` with mode `755`, which blocked writes at `/mnt/truenas/hermes`.
+After the NFS mount succeeded, Hermes could read the share but could not write directly to the export root. This was not a Hermes UID problem, the service account was already `{HERMES_UID}:{HERMES_GID}`. The export root on TrueNAS was still `root:root` with mode `755`, which blocked writes at `/mnt/truenas/hermes`.
 
 Dataset permissions on the export root:
 
@@ -186,7 +187,7 @@ For a dedicated `/mnt/lamia/data/hermes` dataset with Hermes as the only writer,
 - Files created by Hermes appear as `hermes:hermes` without extra NFS mapping.
 - Easier to debug than wondering why a file shows up as `nobody`.
 
-This setup assumes the NFS export preserves client UID/GID semantics—no mapall or root-squash behavior that rewrites Hermes to an unrelated account.
+This setup assumes the NFS export preserves client UID/GID semantics, no mapall or root-squash behavior that rewrites Hermes to an unrelated account.
 
 ### Align dataset ownership
 
@@ -199,7 +200,7 @@ sudo chown -R {HERMES_UID}:{HERMES_GID} /mnt/lamia/data/hermes
 sudo chmod -R 775 /mnt/lamia/data/hermes
 ```
 
-`775` is blunt, but acceptable here because `/mnt/lamia/data/hermes` is isolated to Hermes-only documentation assets—not a general shared pool.
+`775` is blunt, but acceptable here because `/mnt/lamia/data/hermes` is isolated to Hermes-only documentation assets, not a general shared pool.
 
 Ownership after alignment:
 
@@ -242,7 +243,7 @@ mode=775
 type=directory
 ```
 
-A mount-point directory can exist even when NFS failed—always confirm the source is the TrueNAS export before write tests.
+A mount-point directory can exist even when NFS failed, always confirm the source is the TrueNAS export before write tests.
 
 ### Write, read, delete
 
@@ -285,9 +286,10 @@ Hermes now reads and writes documentation assets at `/mnt/truenas/hermes` on NAS
 
 ## Lessons learned
 
-Before any write test, run `findmnt /mnt/truenas/hermes` and confirm the source is the NFS export—not an empty local directory left behind from a failed mount.
+Before any write test, run `findmnt /mnt/truenas/hermes` and confirm the source is the NFS export, not an empty local directory left behind from a failed mount.
 
-The important constraint is isolation: Hermes owns `/mnt/lamia/data/hermes` because that dataset is only for Hermes-generated documentation and blog assets.
+> [!TIP]
+> The important constraint is isolation: Hermes owns `/mnt/lamia/data/hermes` because that dataset is only for Hermes-generated documentation and blog assets.
 
 ---
 
@@ -298,3 +300,9 @@ Hermes NAS media storage is operational and reboot-persistent via `/etc/fstab` o
 ```text
 /mnt/truenas/hermes
 ```
+
+## Related posts
+
+{{< link path="posts/hermes-litellm-authelia-control-plane" cover="auto" >}}
+{{< link path="posts/sky-feather-iac-hijack" cover="auto" >}}
+{{< link path="posts/building-proxmox-homelab" cover="auto" >}}

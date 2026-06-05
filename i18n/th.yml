@@ -35,7 +35,7 @@ not_found:
   title: 4 0 4 (ﾟ⊿ﾟ)ﾂ
   subtitle: ไม่พบหน้า
 
-post_english_only: "โพสต์นี้ยังไม่มีฉบับภาษาไทย — แสดงเนื้อหาภาษาอังกฤษ"
+post_english_only: "โพสต์นี้ยังไม่มีฉบับภาษาไทย, แสดงเนื้อหาภาษาอังกฤษ"
 
 post:
   count:
@@ -49,7 +49,7 @@ busuanzi:
   pv: จำนวนการเข้าชม
   uv: จำนวนผู้เข้าชม
 
-sticky: ปักหมุด
+sticky: Must Read
 
 service_worker:
   title: พบเวอร์ชันใหม่

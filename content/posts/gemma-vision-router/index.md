@@ -7,6 +7,7 @@ description = 'A Hermes vision-routing experiment using local Gemma through Lite
 tags = ["hermes-agent", "litellm", "gemma", "local-llm", "vision", "benchmark", "routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
 mermaid = true
+weight = 2
 +++
 
 # Reducing GPT Vision Calls with a Fail-Closed Gemma Router
@@ -303,7 +304,7 @@ The router has to inspect the actual visible content.
 
 Escalation reason legend:
 
-- `—`: no escalation; Gemma output was accepted.
+- `-`: no escalation; Gemma output was accepted.
 - `empty_gemma_response`: Gemma returned no usable visible text, so the router escalated to GPT/Codex.
 - `ocr_or_quality_risk`: the router escalated because the image looked OCR-heavy, text-sensitive, screenshot/UI-like, hardware-label-heavy, or otherwise risky for Gemma-only handling.
 
@@ -321,7 +322,7 @@ Each image card keeps the full recorded text from the benchmark logs. Empty Gemm
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -423,7 +424,7 @@ Full-body anime character illustration on a mostly black/transparent background.
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -460,7 +461,7 @@ A domestic cat is the main subject, sitting upright on a wooden floor.
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -491,7 +492,7 @@ This image features a single chibi-style anime character against a plain white b
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -643,7 +644,7 @@ Photo of a PC build/test bench area. On the right is an open computer case with 
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -734,7 +735,7 @@ Close-up photo of a white PCB with many hot-swap switch sockets, SMD components,
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -762,7 +763,7 @@ This image features a graphics card as the main subject.
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 
@@ -913,7 +914,7 @@ Photo of a desktop/tower PC on a table beneath two wall outlet plates. One plug 
 
 
 - **Route:** `gemma_only`
-- **Escalation reason:** `—`
+- **Escalation reason:** `-`
 
 #### GPT/Codex baseline description
 

@@ -21,9 +21,9 @@ mermaid = true
 
 ## How this started
 
-A friend wanted to run a private Bemani-style arcade backend after discovering [Asphyxia CORE](https://github.com/asphyxia-core/core) on GitHub—a community, open-source eAmusement server that recently became publicly available. In theory that could have been a weekend job: clone the repo, run Docker, keep the default embedded database on disk, and call it done.
+A friend wanted to run a private Bemani-style arcade backend after discovering [Asphyxia CORE](https://github.com/asphyxia-core/core) on GitHub, a community, open-source eAmusement server that recently became publicly available. In theory that could have been a weekend job: clone the repo, run Docker, keep the default embedded database on disk, and call it done.
 
-I went further. The goal became a setup that could live on my **Proxmox homelab**: a dedicated database VM, an application host on a restricted network segment, **private Git** and a **container registry**, and **automated deploys** when I push to `master`—without the deploy host ever needing access to Gitea. I also wanted to **merge upstream releases** without re-fighting a giant diff every time.
+I went further. The goal became a setup that could live on my **Proxmox homelab**: a dedicated database VM, an application host on a restricted network segment, **private Git** and a **container registry**, and **automated deploys** when I push to `master`, without the deploy host ever needing access to Gitea. I also wanted to **merge upstream releases** without re-fighting a giant diff every time.
 
 This document is about that engineering work: persistence, fork layout, and operations. The upstream project already implements the cabinet HTTP layer; I did not write the emulator from scratch.
 
@@ -47,7 +47,7 @@ Out of the box, persistence is **NeDB**: Mongo-like document files under `saveda
 
 ---
 
-## Why MongoDB—and why keep the fork rebase-friendly
+## Why MongoDB, and why keep the fork rebase-friendly
 
 The hosting layout drove the database choice, not curiosity about alternative databases.
 
@@ -114,7 +114,7 @@ Collections mirror the old file split: a `core` collection for cards, profiles, 
 
 - Track **upstream tags** on [asphyxia-core/core](https://github.com/asphyxia-core/core).
 - Keep **database** and **deploy** commits in separate, named commits on top of upstream.
-- After a merge, re-apply only the thin hooks in `EamuseIO.ts` / boot order if they conflict—most new logic stays in `src/db/`, which upstream does not touch.
+- After a merge, re-apply only the thin hooks in `EamuseIO.ts` / boot order if they conflict, most new logic stays in `src/db/`, which upstream does not touch.
 
 ---
 
@@ -148,18 +148,18 @@ flowchart TB
 
 **Private Gitea** hosts the fork. Pushing to `master` triggers **Gitea Actions** (`.gitea/workflows/deploy.yaml`): the runner builds the repo `Dockerfile` and pushes `registry.example.internal/rche:latest` and a commit SHA tag. Registry credentials live in Gitea secrets.
 
-**Container registry** runs on NAS (HTTP registry on the LAN). The deploy VM is **network-isolated** from Gitea—it cannot `git clone` private repos. It only **pulls images** from the registry, the same pattern I use for other stacks on that host.
+**Container registry** runs on NAS (HTTP registry on the LAN). The deploy VM is **network-isolated** from Gitea, it cannot `git clone` private repos. It only **pulls images** from the registry, the same pattern I use for other stacks on that host.
 
 **Deploy VM** runs Docker Compose from `deploy/production/`:
 
 - `rche` service: image from registry, `.env` for Mongo URI, volumes for `plugins/`, `savedata/`, and `config.ini`.
 - **Watchtower 1.7.1** with `WATCHTOWER_LABEL_ENABLE` so only labeled containers update; registry auth via mounted `~/.docker/config.json` and `DOCKER_CONFIG=/`.
 
-After each successful CI push, Watchtower detects a new digest for `:latest` and recreates the `rche` container within a few minutes—no manual `docker compose pull` for routine app updates.
+After each successful CI push, Watchtower detects a new digest for `:latest` and recreates the `rche` container within a few minutes, no manual `docker compose pull` for routine app updates.
 
 **MongoDB VM** (`db-host`, e.g. `10.0.0.9:27017`) runs `mongo:7` in Docker with authentication. The firewall allows **only** the deploy VM to reach port 27017. One operational lesson: on Proxmox, a CPU type without **AVX** (e.g. generic `x86-64-v2`) can make Mongo 5+ crash with illegal instruction; setting the VM CPU to **host** or a newer type fixed startup.
 
-**HTTPS for operators**: Cloudflare Tunnel terminates TLS and forwards to **port 8083** on the deploy host—the only port needed for the WebUI. Mongo is never exposed to the internet.
+**HTTPS for operators**: Cloudflare Tunnel terminates TLS and forwards to **port 8083** on the deploy host, the only port needed for the WebUI. Mongo is never exposed to the internet.
 
 ### Plugins on the deploy host
 
@@ -169,8 +169,8 @@ Game plugins are **public GitHub repositories** ([plugin index](https://github.c
 
 ## How the running system fits together (light touch)
 
-- **Port 8083**: the only HTTP listener—WebUI and cabinet API share it (`config.ini` / CLI `port`).
-- **Port 5700**: advertised in core `facility.get` for matchmaking; the core process does not open a separate UDP/TCP server on 5700 in this codebase—compose may publish it for plugin compatibility.
+- **Port 8083**: the only HTTP listener, WebUI and cabinet API share it (`config.ini` / CLI `port`).
+- **Port 5700**: advertised in core `facility.get` for matchmaking; the core process does not open a separate UDP/TCP server on 5700 in this codebase, compose may publish it for plugin compatibility.
 - **Traffic split**: non-browser User-Agents hit `EamuseMiddleware` (parse KBin/XML, route by `module.method`); browsers skip to the WebUI router.
 
 Enough context to read the architecture; not a protocol specification.
@@ -181,7 +181,7 @@ Enough context to read the architecture; not a protocol specification.
 
 **1. Docker WebUI returned 500 behind a reverse proxy**
 
-Logs showed views loaded from `/app/build-env/build-env/assets/views`—a doubled path. In the container, `WORKDIR` is already `/app/build-env`, but asset resolution still appended `build-env/assets`. Fix: detect layout on disk (`assets/views` next to cwd vs under `build-env/assets`).
+Logs showed views loaded from `/app/build-env/build-env/assets/views`, a doubled path. In the container, `WORKDIR` is already `/app/build-env`, but asset resolution still appended `build-env/assets`. Fix: detect layout on disk (`assets/views` next to cwd vs under `build-env/assets`).
 
 **2. Watchtower did not update images**
 

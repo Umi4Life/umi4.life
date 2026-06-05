@@ -8,7 +8,7 @@ tags = ["truenas", "nfs", "proxmox", "homelab", "hermes-agent", "documentation"]
 categories = ["homelab"]
 +++
 
-> **หมายเหตุสำหรับผู้ดูแล:** IP ภายในและค่า UID/GID ในโพสต์นี้เป็น placeholder สำหรับบทความสาธารณะ ช่องในตารางใช้ marker แบบ `{NAS_IP}` — ให้แทนด้วยค่าของระบบคุณเองก่อน copy-paste
+> **หมายเหตุสำหรับผู้ดูแล:** IP ภายในและค่า UID/GID ในโพสต์นี้เป็น placeholder สำหรับบทความสาธารณะ ช่องในตารางใช้ marker แบบ `{NAS_IP}`, ให้แทนด้วยค่าของระบบคุณเองก่อน copy-paste
 
 ## เป้าหมาย
 
@@ -186,7 +186,7 @@ Authorized Host: {HERMES_VM_IP}
 - ไฟล์ที่ Hermes สร้างจะแสดงเป็น `hermes:hermes` โดยไม่ต้องมี NFS mapping เพิ่ม
 - Debug ง่ายกว่าไม่ต้องไล่ว่าทำไมไฟล์ถึงโผล่มาเป็น `nobody`
 
-Setup นี้สมมติว่า NFS export รักษา semantics ของ client UID/GID ไว้ — ไม่มี mapall หรือ root-squash behavior ที่ rewrite Hermes ไปเป็น account อื่นที่ไม่เกี่ยวข้อง
+Setup นี้สมมติว่า NFS export รักษา semantics ของ client UID/GID ไว้, ไม่มี mapall หรือ root-squash behavior ที่ rewrite Hermes ไปเป็น account อื่นที่ไม่เกี่ยวข้อง
 
 ### Align dataset ownership
 

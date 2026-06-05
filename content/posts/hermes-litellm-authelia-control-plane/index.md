@@ -58,7 +58,10 @@ Interesting. Version 1 produced data. Version 2 produced more data. Version 3 fi
 
 ---
 
-## Step 1 — The innocent dashboard change exposed the first assumption
+> [!WARNING]
+> Split DNS is infrastructure, not vibes. If `auth.umi4.life` resolves differently inside the LAN than on the public internet, document that before you debug OIDC callbacks.
+
+## Step 1: The innocent dashboard change exposed the first assumption
 
 The first issue was not exotic. Hermes Dashboard was running, but only on the loopback interface:
 
@@ -86,7 +89,7 @@ Mou... obvious after the fact. Most infrastructure bugs are.
 
 ---
 
-## Step 2 — The stack needed a real public/private boundary
+## Step 2: The stack needed a real public/private boundary
 
 The LiteLLM goal was intentionally split:
 
@@ -133,7 +136,7 @@ It is also where OIDC starts being picky.
 
 ---
 
-## Step 3 — OIDC revealed the split-DNS debt
+## Step 3: OIDC revealed the split-DNS debt
 
 Authelia reverse-proxy auth already worked for other LAN services like Coder and Hermes. That made the LiteLLM failure look suspicious at first.
 
@@ -182,7 +185,7 @@ docker compose up -d --force-recreate litellm
 
 ---
 
-## Step 4 — Traefik and forwarded headers made HTTPS trust explicit
+## Step 4: Traefik and forwarded headers made HTTPS trust explicit
 
 Early in the debugging, LiteLLM generated redirects with `http://` instead of `https://`.
 
@@ -234,7 +237,7 @@ After that, `/ui` redirecting to `/ui/` was no longer a bug. That 307 is normal.
 
 ---
 
-## Step 5 — Authelia made bad issuer assumptions visible
+## Step 5: Authelia made bad issuer assumptions visible
 
 The next failure appeared in Authelia logs:
 
@@ -265,7 +268,7 @@ If the hostname is LAN-only, use split DNS or Docker `extra_hosts`, but keep the
 
 ---
 
-## Step 6 — Minimal containers made debugging assumptions visible
+## Step 6: Minimal containers made debugging assumptions visible
 
 At one point, the LiteLLM container could not run:
 
@@ -290,7 +293,7 @@ This was one of those tiny operational mistakes that looks like the system is ha
 
 ---
 
-## Step 7 — The final boss was one wrong endpoint
+## Step 7: The final boss was one wrong endpoint
 
 After fixing routing, DNS, HTTPS, and Authelia client settings, LiteLLM still returned an internal server error at the callback URL:
 
@@ -392,6 +395,17 @@ LAN/VPN:
 
 This keeps the useful part public and the dangerous part local.
 
+{{< tabs 1 >}}
+<!-- tab Public API -->
+**URL:** `https://litellm.umi4.life/v1/...`  
+**Auth:** LiteLLM API key  
+**Reachable from:** internet
+<!-- tab Admin UI -->
+**URL:** `https://litellm.umi4.life/ui`  
+**Auth:** OIDC via LAN-only Authelia  
+**Reachable from:** LAN/VPN only
+{{< /tabs >}}
+
 Or, more simply:
 
 > Public data plane. Private control plane.
@@ -430,3 +444,9 @@ For this setup, that failure is the lock on the door.
 Public data plane. Private control plane. Fewer spooky assumptions next time.
 
 Yoshi. The chart was cursed, but the final architecture is cleaner than where we started.
+
+## Related posts
+
+{{< link path="posts/sky-feather-iac-hijack" cover="auto" >}}
+{{< link path="posts/hermes-nas-storage" cover="auto" >}}
+{{< link path="posts/gemma-vision-router" cover="auto" >}}

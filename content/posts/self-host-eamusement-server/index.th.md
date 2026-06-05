@@ -21,9 +21,9 @@ mermaid = true
 
 ## จุดเริ่มต้น
 
-เพื่อนคนหนึ่งอยากรัน backend อาร์เคดสไตล์ Bemani แบบ private หลังจากเจอ [Asphyxia CORE](https://github.com/asphyxia-core/core) บน GitHub—เซิร์ฟเวอร์ eAmusement แบบโอเพนซอร์สจากชุมชนที่เพิ่งเปิด public เมื่อไม่นานมานี้ ตามทฤษฎีแล้วงานนี้อาจจบได้ในสุดสัปดาห์เดียว: clone repo, รัน Docker, ใช้ embedded database ดีฟอลต์เก็บบนดิสก์ แล้วถือว่าเสร็จ
+เพื่อนคนหนึ่งอยากรัน backend อาร์เคดสไตล์ Bemani แบบ private หลังจากเจอ [Asphyxia CORE](https://github.com/asphyxia-core/core) บน GitHub, เซิร์ฟเวอร์ eAmusement แบบโอเพนซอร์สจากชุมชนที่เพิ่งเปิด public เมื่อไม่นานมานี้ ตามทฤษฎีแล้วงานนี้อาจจบได้ในสุดสัปดาห์เดียว: clone repo, รัน Docker, ใช้ embedded database ดีฟอลต์เก็บบนดิสก์ แล้วถือว่าเสร็จ
 
-แต่ผมไปไกลกว่านั้น เป้าหมายกลายเป็น setup ที่อยู่บน **Proxmox homelab** ของผมได้จริง: VM สำหรับฐานข้อมูลแยกต่างหาก, application host บน network segment ที่ถูกจำกัด, **private Git** และ **container registry**, รวมถึง **automated deploys** ทุกครั้งที่ push ไป `master`—โดยที่ deploy host ไม่จำเป็นต้องเข้าถึง Gitea ได้เลย ผมยังอยากให้สามารถ **merge upstream releases** ได้โดยไม่ต้องกลับมาสู้กับ diff ก้อนใหญ่ทุกครั้ง
+แต่ผมไปไกลกว่านั้น เป้าหมายกลายเป็น setup ที่อยู่บน **Proxmox homelab** ของผมได้จริง: VM สำหรับฐานข้อมูลแยกต่างหาก, application host บน network segment ที่ถูกจำกัด, **private Git** และ **container registry**, รวมถึง **automated deploys** ทุกครั้งที่ push ไป `master`, โดยที่ deploy host ไม่จำเป็นต้องเข้าถึง Gitea ได้เลย ผมยังอยากให้สามารถ **merge upstream releases** ได้โดยไม่ต้องกลับมาสู้กับ diff ก้อนใหญ่ทุกครั้ง
 
 เอกสารนี้พูดถึงงานวิศวกรรมส่วนนั้น: persistence, โครงสร้าง fork และ operations ส่วน upstream project ทำ cabinet HTTP layer ไว้อยู่แล้ว ผมไม่ได้เขียน emulator จากศูนย์
 
@@ -47,7 +47,7 @@ Asphyxia CORE เป็นแอป **Node.js / Express** ที่ทำหน�
 
 ---
 
-## ทำไมต้อง MongoDB—และทำไม fork ต้อง rebase-friendly
+## ทำไมต้อง MongoDB, และทำไม fork ต้อง rebase-friendly
 
 รูปแบบการโฮสต์เป็นตัวกำหนดการเลือก database ไม่ใช่เพราะอยากลอง database ทางเลือกเฉย ๆ
 
@@ -114,7 +114,7 @@ Collections สะท้อนการแยกไฟล์แบบเดิ�
 
 - Track **upstream tags** บน [asphyxia-core/core](https://github.com/asphyxia-core/core)
 - เก็บ commit ของ **database** และ **deploy** แยกเป็น commit ชัดเจนไว้บน upstream
-- หลัง merge ให้ re-apply เฉพาะ thin hooks ใน `EamuseIO.ts` / boot order ถ้ามี conflict—logic ใหม่ส่วนใหญ่อยู่ใน `src/db/` ซึ่ง upstream ไม่ได้แตะ
+- หลัง merge ให้ re-apply เฉพาะ thin hooks ใน `EamuseIO.ts` / boot order ถ้ามี conflict, logic ใหม่ส่วนใหญ่อยู่ใน `src/db/` ซึ่ง upstream ไม่ได้แตะ
 
 ---
 
@@ -148,18 +148,18 @@ flowchart TB
 
 **Private Gitea** โฮสต์ fork นี้ การ push ไป `master` จะ trigger **Gitea Actions** (`.gitea/workflows/deploy.yaml`): runner build repo `Dockerfile` แล้ว push `registry.example.internal/rche:latest` และ tag เป็น commit SHA ส่วน registry credentials เก็บใน Gitea secrets
 
-**Container registry** รันบน NAS (HTTP registry บน LAN) ส่วน deploy VM ถูก **แยก network** ออกจาก Gitea—มัน `git clone` private repos ไม่ได้ มันทำได้แค่ **pull images** จาก registry ซึ่งเป็น pattern เดียวกับที่ผมใช้กับ stack อื่น ๆ บน host นี้
+**Container registry** รันบน NAS (HTTP registry บน LAN) ส่วน deploy VM ถูก **แยก network** ออกจาก Gitea, มัน `git clone` private repos ไม่ได้ มันทำได้แค่ **pull images** จาก registry ซึ่งเป็น pattern เดียวกับที่ผมใช้กับ stack อื่น ๆ บน host นี้
 
 **Deploy VM** รัน Docker Compose จาก `deploy/production/`:
 
 - service `rche`: image จาก registry, `.env` สำหรับ Mongo URI, volumes สำหรับ `plugins/`, `savedata/` และ `config.ini`
 - **Watchtower 1.7.1** พร้อม `WATCHTOWER_LABEL_ENABLE` เพื่อให้ update เฉพาะ containers ที่ติด label; registry auth ผ่าน `~/.docker/config.json` ที่ mount เข้ามา และ `DOCKER_CONFIG=/`
 
-หลัง CI push สำเร็จแต่ละครั้ง Watchtower จะ detect digest ใหม่ของ `:latest` แล้ว recreate container `rche` ภายในไม่กี่นาที—ไม่ต้อง `docker compose pull` เองสำหรับการอัปเดตแอปตามปกติ
+หลัง CI push สำเร็จแต่ละครั้ง Watchtower จะ detect digest ใหม่ของ `:latest` แล้ว recreate container `rche` ภายในไม่กี่นาที, ไม่ต้อง `docker compose pull` เองสำหรับการอัปเดตแอปตามปกติ
 
 **MongoDB VM** (`db-host` เช่น `10.0.0.9:27017`) รัน `mongo:7` ใน Docker พร้อม authentication firewall อนุญาตให้ **เฉพาะ** deploy VM เข้าถึง port 27017 ได้ บทเรียนหนึ่งใน operation: บน Proxmox ถ้า CPU type ไม่มี **AVX** (เช่น generic `x86-64-v2`) อาจทำให้ Mongo 5+ crash ด้วย illegal instruction ได้ การตั้ง CPU ของ VM เป็น **host** หรือ type ที่ใหม่กว่าช่วยแก้ startup ได้
 
-**HTTPS สำหรับ operators**: Cloudflare Tunnel terminate TLS แล้ว forward ไปที่ **port 8083** บน deploy host—เป็น port เดียวที่ WebUI ต้องใช้ Mongo ไม่เคยถูก expose สู่อินเทอร์เน็ต
+**HTTPS สำหรับ operators**: Cloudflare Tunnel terminate TLS แล้ว forward ไปที่ **port 8083** บน deploy host, เป็น port เดียวที่ WebUI ต้องใช้ Mongo ไม่เคยถูก expose สู่อินเทอร์เน็ต
 
 ### Plugins บน deploy host
 
@@ -169,8 +169,8 @@ Game plugins เป็น **public GitHub repositories** ([plugin index](https:/
 
 ## ภาพรวมระบบที่กำลังรันอยู่ (แบบพอเข้าใจ)
 
-- **Port 8083**: HTTP listener เดียว—WebUI และ cabinet API ใช้ร่วมกัน (`config.ini` / CLI `port`)
-- **Port 5700**: advertise ใน core `facility.get` สำหรับ matchmaking; core process ใน codebase นี้ไม่ได้เปิด UDP/TCP server แยกบน 5700—compose อาจ publish ไว้เพื่อ compatibility กับ plugin
+- **Port 8083**: HTTP listener เดียว, WebUI และ cabinet API ใช้ร่วมกัน (`config.ini` / CLI `port`)
+- **Port 5700**: advertise ใน core `facility.get` สำหรับ matchmaking; core process ใน codebase นี้ไม่ได้เปิด UDP/TCP server แยกบน 5700, compose อาจ publish ไว้เพื่อ compatibility กับ plugin
 - **Traffic split**: User-Agents ที่ไม่ใช่ browser จะเข้า `EamuseMiddleware` (parse KBin/XML, route ตาม `module.method`); browsers จะข้ามไป WebUI router
 
 บริบทเท่านี้พอสำหรับอ่าน architecture แต่ไม่ใช่ protocol specification
@@ -181,7 +181,7 @@ Game plugins เป็น **public GitHub repositories** ([plugin index](https:/
 
 **1. Docker WebUI คืนค่า 500 เมื่ออยู่หลัง reverse proxy**
 
-Logs แสดงว่า views ถูกโหลดจาก `/app/build-env/build-env/assets/views`—path ซ้ำกัน ใน container นั้น `WORKDIR` เป็น `/app/build-env` อยู่แล้ว แต่ asset resolution ยัง append `build-env/assets` เพิ่มเข้าไป วิธีแก้: detect layout บนดิสก์ (`assets/views` ถัดจาก cwd เทียบกับใต้ `build-env/assets`)
+Logs แสดงว่า views ถูกโหลดจาก `/app/build-env/build-env/assets/views`, path ซ้ำกัน ใน container นั้น `WORKDIR` เป็น `/app/build-env` อยู่แล้ว แต่ asset resolution ยัง append `build-env/assets` เพิ่มเข้าไป วิธีแก้: detect layout บนดิสก์ (`assets/views` ถัดจาก cwd เทียบกับใต้ `build-env/assets`)
 
 **2. Watchtower ไม่ update images**
 

@@ -7,6 +7,7 @@ description = 'การทดลอง route งาน vision ใน Hermes โ
 tags = ["hermes-agent", "litellm", "gemma", "local-llm", "vision", "benchmark", "routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
 mermaid = true
+weight = 2
 +++
 
 # ลดการเรียก GPT Vision ด้วย Gemma Router แบบ Fail-Closed
@@ -303,7 +304,7 @@ router ต้อง inspect visible content จริง ๆ
 
 legend ของเหตุผลการ escalate:
 
-- `—`: ไม่มี escalation; Gemma output ถูกยอมรับ
+- `-`: ไม่มี escalation; Gemma output ถูกยอมรับ
 - `empty_gemma_response`: Gemma ไม่คืน visible text ที่ใช้งานได้ router จึง escalate ไป GPT/Codex
 - `ocr_or_quality_risk`: router escalate เพราะรูปดู OCR-heavy, sensitive ต่อ text, เป็น screenshot/UI-like, มี hardware label เยอะ หรือเสี่ยงเกินกว่าจะให้ Gemma-only จัดการ
 
@@ -323,7 +324,7 @@ route log ต้นฉบับใช้ internal label ที่ยาวกว
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -425,7 +426,7 @@ Full-body anime character illustration on a mostly black/transparent background.
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -462,7 +463,7 @@ A domestic cat is the main subject, sitting upright on a wooden floor.
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -493,7 +494,7 @@ This image features a single chibi-style anime character against a plain white b
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -645,7 +646,7 @@ Photo of a PC build/test bench area. On the right is an open computer case with 
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -736,7 +737,7 @@ Close-up photo of a white PCB with many hot-swap switch sockets, SMD components,
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -764,7 +765,7 @@ This image features a graphics card as the main subject.
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 
@@ -915,7 +916,7 @@ Photo of a desktop/tower PC on a table beneath two wall outlet plates. One plug 
 
 
 - **Route:** `gemma_only`
-- **เหตุผลที่ escalate:** `—`
+- **เหตุผลที่ escalate:** `-`
 
 #### คำอธิบายจาก GPT/Codex baseline
 

@@ -348,10 +348,20 @@ In the end, I ended up with infrastructure that I own 100% and have complete con
 
 I ended up tearing and re-doing lots of things along the way, broke many stuff, got my whole house wifi down while my family is streaming movie. But I did not regret a single step, *the point of homelab is to make and break things to learn more stuff and be able to fix things on the go*. That's the philosophy I came across in multiple guides I came across during research of making a homelab.
 
-### Furure plan
+> [!TIP]
+> Homelab progress is rarely linear. Break things on purpose, document the failure, then build Version 2 with fewer hidden assumptions.
+
+### Future plan
 
 There's still a lot to do. As of now there is 0 backup plan and recovery strategy. That's something I need to work on asap to have something to rollback to. How I'd probably implement is to create each day snapshot of central DBs into my NAS.
 
 I'm also planning to integrate [Terraform](https://developer.hashicorp.com/terraform) and [Ansible](https://github.com/ansible/ansible) to turn my whole Proxmox environment into Infrastructure as a Code and version control everything into my private git, so that's something to look forward to.
 
+{{< link path="posts/sky-feather-iac-hijack" cover="auto" >}}
+
 As mentioned, my current AI capability is very limited, anything LLM model over 9b spilled to RAM and slowed down token/s significantly, 3090 is one of the top priority hardware upgrade I want, second from RAM upgrade
+
+## Related posts
+
+{{< link path="posts/wireguard-network-setup" cover="auto" >}}
+{{< link path="posts/hermes-litellm-authelia-control-plane" cover="auto" >}}

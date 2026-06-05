@@ -9,6 +9,7 @@ description = 'เรื่องราว GitOps homelab ที่ปลอด�
 tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
 categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
+weight = 1
 +++
 
 # Sky Feather แฮก Homelab IaC ของผม
@@ -121,7 +122,7 @@ flowchart LR
 
 ---
 
-## ส่วนที่ 1 — Terraform ทำให้ Proxmox ทำซ้ำได้
+## ส่วนที่ 1: Terraform ทำให้ Proxmox ทำซ้ำได้
 
 ![การ์ดส่วน Terraform](./images/terraform.svg)
 
@@ -241,7 +242,7 @@ Apply is manual.
 
 ---
 
-## ส่วนที่ 2 — Ansible ทำให้ VM ใหม่ใช้งานได้
+## ส่วนที่ 2: Ansible ทำให้ VM ใหม่ใช้งานได้
 
 ![การ์ดส่วน Ansible](./images/ansible.svg)
 
@@ -319,7 +320,7 @@ workflow CI เขียน private key อย่างระมัดระว�
 
 ---
 
-## ส่วนที่ 3 — นำเข้า VM ที่มีอยู่โดยไม่แกล้งว่าเป็นของใหม่
+## ส่วนที่ 3: นำเข้า VM ที่มีอยู่โดยไม่แกล้งว่าเป็นของใหม่
 
 ![การ์ดส่วน Proxmox](./images/proxmox.svg)
 
@@ -382,7 +383,7 @@ Terraform แสดง IP และ MAC ของ VM ได้ แต่กา�
 
 ---
 
-## ส่วนที่ 4 — แล้ว Sky Feather ถูกต่อเข้าเวิร์กโฟลว์
+## ส่วนที่ 4: แล้ว Sky Feather ถูกต่อเข้าเวิร์กโฟลว์
 
 ![การ์ดส่วน Git](./images/git.svg)
 
@@ -398,7 +399,7 @@ Terraform แสดง IP และ MAC ของ VM ได้ แต่กา�
 - push a branch
 - open a PR with a clear plan summary
 
-นั่นคืองานที่เอเจนต์ทำได้ — ถ้าขอบเขต blast radius ถูกจำกัด
+นั่นคืองานที่เอเจนต์ทำได้, ถ้าขอบเขต blast radius ถูกจำกัด
 
 Sky Feather ถูกตั้งเป็น pull-request operator ไม่ใช่ infrastructure operator ที่ไม่มีการตรวจ
 

@@ -1,0 +1,79 @@
+- name: realStepdog
+  url: https://x.com/realStepdog
+  desc: X / Twitter
+  image: https://unavatar.io/x/realStepdog
+
+- name: Puz
+  url: https://github.com/Aeph1edur
+  desc: GitHub
+  image: https://avatars.githubusercontent.com/u/84175063?v=4
+
+- name: Phuchay "Mayo" M.
+  url: https://github.com/Curfewshino
+  desc: A random guy who wanna be a software engineer or automation engineer in thailand
+  image: https://avatars.githubusercontent.com/u/100069205?v=4
+
+- name: DJkevinadam
+  url: https://x.com/DJkevinadam
+  desc: X / Twitter
+  image: https://unavatar.io/x/DJkevinadam
+
+- name: Ring
+  url: https://www.youtube.com/@Ring_-or2hy
+  desc: YouTube
+  image: https://unavatar.io/youtube/Ring_-or2hy
+
+- name: tadano2sh1
+  url: https://x.com/tadano2sh1
+  desc: X / Twitter
+  image: https://unavatar.io/x/tadano2sh1
+
+- name: commi_jump
+  url: https://x.com/commi_jump
+  desc: X / Twitter
+  image: https://unavatar.io/x/commi_jump
+
+- name: leapleap
+  url: https://x.com/leapleap
+  desc: X / Twitter
+  image: https://unavatar.io/x/leapleap
+
+- name: Mark Rober
+  url: https://www.youtube.com/@MarkRober
+  desc: Former NASA engineer. CrunchLabs founder and friend of science.
+  image: https://unavatar.io/youtube/MarkRober
+
+- name: Lure Addict Fishing
+  url: https://www.youtube.com/@LureAddictFishing
+  desc: Fishing diary of Nat & Zen
+  image: https://unavatar.io/youtube/LureAddictFishing
+
+- name: PewDiePie
+  url: https://www.youtube.com/@PewDiePie
+  desc: I make videos.
+  image: https://unavatar.io/youtube/PewDiePie
+
+- name: Gawr Gura Ch. hololive-EN
+  url: https://www.youtube.com/@GawrGura
+  desc: Shark-girl idol of hololive EN.
+  image: https://unavatar.io/youtube/GawrGura
+
+- name: Fitzroy
+  url: https://www.youtube.com/@Fitzroy21
+  desc: YouTube
+  image: https://unavatar.io/youtube/Fitzroy21
+
+- name: TVFilthyFrank
+  url: https://www.youtube.com/@TVFilthyFrank
+  desc: Filthy Frank is the embodiment of everything a person should not be.
+  image: https://unavatar.io/youtube/TVFilthyFrank
+
+- name: tokaku
+  url: https://www.youtube.com/@tokaku
+  desc: osu! and rhythm game videos from Singapore.
+  image: https://unavatar.io/youtube/tokaku
+
+- name: SpeedyPotato
+  url: https://www.youtube.com/@SpeedyPotato_
+  desc: Owner of speedylabs.us
+  image: https://unavatar.io/youtube/SpeedyPotato_

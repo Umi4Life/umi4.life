@@ -129,3 +129,58 @@
     font-size: 0.95em;
   }
 }
+
+/* Footer: "Powered by Hugo Theme.Reimu" → Colophon */
+
+#footer .footer-powered-wrap {
+  margin: 8px 0;
+}
+
+#footer .footer-powered-link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2em;
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-decoration: none !important;
+  color: var(--grey-9);
+  background: var(--red-5-5);
+  border: 1px solid var(--red-4);
+  box-shadow: var(--shadow-meta);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+  letter-spacing: 0.01em;
+}
+
+#footer .footer-powered-link:hover {
+  text-decoration: none !important;
+  color: var(--grey-9);
+  background: var(--red-5);
+  border-color: var(--red-2);
+  box-shadow: 0 2px 14px var(--color-red-3-shadow);
+  transform: translateY(-1px);
+}
+
+#footer .footer-powered-brand {
+  color: var(--red-1);
+  font-weight: 600;
+}
+
+#footer .footer-powered-muted {
+  opacity: 0.88;
+}
+
+/* Homepage Must Read badge: anchor to cover image, flip corner on right-side layouts */
+.post-cover.right .post-sticky {
+  left: auto;
+  right: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}

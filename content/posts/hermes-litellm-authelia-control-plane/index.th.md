@@ -56,7 +56,7 @@ story จริงคือ เราตั้ง Hermes Dashboard แล้ว�
 
 ---
 
-## Step 1 — Dashboard change เล็ก ๆ เปิด assumption แรก
+## Step 1: Dashboard change เล็ก ๆ เปิด assumption แรก
 
 ปัญหาแรกตรงไปตรงมา: Hermes Dashboard รันอยู่ที่
 
@@ -78,7 +78,7 @@ story จริงคือ เราตั้ง Hermes Dashboard แล้ว�
 
 ---
 
-## Step 2 — Stack ต้องมี boundary ระหว่าง public กับ private จริง ๆ
+## Step 2: Stack ต้องมี boundary ระหว่าง public กับ private จริง ๆ
 
 LiteLLM workflow ที่ต้องการคือ:
 
@@ -110,7 +110,7 @@ https://litellm.umi4.life/ui
 
 ---
 
-## Step 3 — OIDC เปิดให้เห็น split-DNS debt
+## Step 3: OIDC เปิดให้เห็น split-DNS debt
 
 Service อื่นอย่าง Coder หรือ Hermes ใช้ Authelia แบบ reverse-proxy/forward-auth แล้วทำงานได้ดี แต่นั่นไม่เหมือน LiteLLM OIDC
 
@@ -159,7 +159,7 @@ docker compose up -d --force-recreate litellm
 
 ---
 
-## Step 4 — Traefik/forwarded headers ทำให้ HTTPS trust ต้อง explicit
+## Step 4: Traefik/forwarded headers ทำให้ HTTPS trust ต้อง explicit
 
 ช่วงหนึ่ง LiteLLM สร้าง redirect เป็น `http://` แทน `https://` ซึ่งทำให้ OIDC พัง เพราะ redirect URI ต้อง match แบบเป๊ะ ๆ
 
@@ -195,7 +195,7 @@ FORWARDED_ALLOW_IPS: "*"
 
 ---
 
-## Step 5 — Authelia ทำให้ issuer assumption ที่ผิดโผล่ออกมา
+## Step 5: Authelia ทำให้ issuer assumption ที่ผิดโผล่ออกมา
 
 Authelia เคย log ว่า:
 
@@ -224,7 +224,7 @@ http://192.168.x.x:9091/api/oidc/token
 
 ---
 
-## Step 6 — Minimal container ทำให้วิธี debug เดิมใช้ไม่ได้
+## Step 6: Minimal container ทำให้วิธี debug เดิมใช้ไม่ได้
 
 LiteLLM image ไม่มี `getent` เลยใช้คำสั่งนี้ไม่ได้:
 
@@ -245,7 +245,7 @@ PY
 
 ---
 
-## Step 7 — Final boss คือ endpoint ผิดหนึ่งบรรทัด
+## Step 7: Final boss คือ endpoint ผิดหนึ่งบรรทัด
 
 หลังจากแก้ proxy, DNS, HTTPS และ Authelia client แล้ว LiteLLM ยังพังที่ callback:
 
@@ -299,13 +299,13 @@ LAN/VPN:
 
 สิ่งที่ incident นี้บังคับให้เห็นคือ:
 
-1. **Listener scope สำคัญ** — `127.0.0.1` ใน VM ไม่ใช่ LAN access
-2. **Public route กับ private control plane ต้องถูก label ชัด ๆ** — ถ้าเข้าจากข้างนอกไม่ได้โดยตั้งใจ ต้องเขียนไว้ว่าเป็น desired failure mode ไม่ใช่ปล่อยให้ดูเหมือน outage
-3. **Reverse-proxy auth ไม่เหมือน OIDC** — forward-auth ใช้ได้ ไม่ได้แปลว่า OIDC จะใช้ได้ เพราะ OIDC มีทั้ง browser-side และ backend-side call
-4. **Split DNS เป็น infrastructure ไม่ใช่ความทรงจำ** — ถ้า `auth.umi4.life` เป็น LAN-only ทั้ง browser และ container ต้อง resolve ได้แบบ deterministic
-5. **Proxy trust ต้อง explicit** — `PROXY_BASE_URL` กับ `FORWARDED_ALLOW_IPS: "*"` เป็นตัวกำหนดว่า callback จะเป็น `https://` หรือพัง
-6. **Minimal container เปลี่ยนวิธี debug** — ถ้าไม่มี `getent` ต้องใช้ `docker exec -i ... python` หรือ tool อื่นที่มีจริงใน image
-7. **Endpoint ที่เกือบถูกก็ยังผิด** — `/api/oidc/token` กับ `/api/oidc/userinfo` อยู่ใกล้กันมาก แต่ทำงานคนละขั้นของ flow
+1. **Listener scope สำคัญ**: `127.0.0.1` ใน VM ไม่ใช่ LAN access
+2. **Public route กับ private control plane ต้องถูก label ชัด ๆ**: ถ้าเข้าจากข้างนอกไม่ได้โดยตั้งใจ ต้องเขียนไว้ว่าเป็น desired failure mode ไม่ใช่ปล่อยให้ดูเหมือน outage
+3. **Reverse-proxy auth ไม่เหมือน OIDC**: forward-auth ใช้ได้ ไม่ได้แปลว่า OIDC จะใช้ได้ เพราะ OIDC มีทั้ง browser-side และ backend-side call
+4. **Split DNS เป็น infrastructure ไม่ใช่ความทรงจำ**: ถ้า `auth.umi4.life` เป็น LAN-only ทั้ง browser และ container ต้อง resolve ได้แบบ deterministic
+5. **Proxy trust ต้อง explicit**: `PROXY_BASE_URL` กับ `FORWARDED_ALLOW_IPS: "*"` เป็นตัวกำหนดว่า callback จะเป็น `https://` หรือพัง
+6. **Minimal container เปลี่ยนวิธี debug**: ถ้าไม่มี `getent` ต้องใช้ `docker exec -i ... python` หรือ tool อื่นที่มีจริงใน image
+7. **Endpoint ที่เกือบถูกก็ยังผิด**: `/api/oidc/token` กับ `/api/oidc/userinfo` อยู่ใกล้กันมาก แต่ทำงานคนละขั้นของ flow
 
 ## สิ่งที่ควร improve รอบหน้า
 

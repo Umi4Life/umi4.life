@@ -9,6 +9,7 @@ description = 'A public-safe homelab GitOps story about Terraform, Ansible, Prox
 tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
 categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
+weight = 1
 +++
 
 # Sky Feather Hijacked My Homelab IaC
@@ -121,7 +122,7 @@ Mou... the agent is allowed to be helpful. It is not allowed to become a winged 
 
 ---
 
-## Part 1 — Terraform made Proxmox repeatable
+## Part 1: Terraform made Proxmox repeatable
 
 ![Terraform section card](./images/terraform.svg)
 
@@ -241,7 +242,7 @@ Boring is good when the alternative is a VM being recreated because the YAML got
 
 ---
 
-## Part 2 — Ansible made new VMs useful
+## Part 2: Ansible made new VMs useful
 
 ![Ansible section card](./images/ansible.svg)
 
@@ -319,7 +320,7 @@ This is not glamorous. It is also the difference between “Configure works” a
 
 ---
 
-## Part 3 — Existing VMs were imported without pretending they were new
+## Part 3: Existing VMs were imported without pretending they were new
 
 ![Proxmox section card](./images/proxmox.svg)
 
@@ -382,7 +383,7 @@ So IP output is useful, but it is not an oracle. The system has layers, and each
 
 ---
 
-## Part 4 — Then Sky Feather was integrated into the workflow
+## Part 4: Then Sky Feather was integrated into the workflow
 
 ![Git section card](./images/git.svg)
 
@@ -398,7 +399,7 @@ The previous workflow still required the human to edit files, run validations, p
 - push a branch
 - open a PR with a clear plan summary
 
-That is exactly the kind of work an agent can do — if the blast radius is constrained.
+That is exactly the kind of work an agent can do, if the blast radius is constrained.
 
 So Sky Feather was configured as a pull-request operator, not as an unchecked infrastructure operator.
 
@@ -622,3 +623,9 @@ Version 3: Sky Feather drafts the change, opens the PR, and waits for review.
 Good. That is a real improvement.
 
 Now the next interesting question is what this unlocks without making the homelab rage-quit.
+
+## Related posts
+
+{{< link path="posts/hermes-litellm-authelia-control-plane" cover="auto" >}}
+{{< link path="posts/hermes-nas-storage" cover="auto" >}}
+{{< link path="posts/building-proxmox-homelab" cover="auto" >}}
