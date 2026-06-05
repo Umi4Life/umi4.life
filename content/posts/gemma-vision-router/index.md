@@ -69,6 +69,47 @@ Mou… “seems fine” is not a benchmark.
 
 ---
 
+## Why I Narrowed the Scope
+
+Before this benchmark, I originally wanted Gemma4 26B to act as a broader fallback model for Hermes/Sky Feather.
+
+That was too ambitious for the first production use case. In one Discord gateway session, Gemma failed assistant-identity preservation and identified itself as the backend model instead of Sky Feather, with responses like:
+
+```text
+I am Gemma 4, a large language model developed by Google DeepMind.
+```
+
+Later qualification showed the issue was more nuanced. Raw LiteLLM, Postman, and fresh Hermes CLI tests passed when given a clear identity instruction:
+
+```text
+I am Sky Feather in this session.
+```
+
+The suspicious parts were the dirty Discord gateway session and ambiguous model-switch wording such as:
+
+```text
+Adjust your self-identification accordingly
+```
+
+The better operational wording was:
+
+```text
+Backend model/provider changed to Gemma4 26B. Assistant identity remains Sky Feather.
+```
+
+So I did not conclude that Gemma could never preserve the assistant identity. I concluded that using it as a full fallback agent had too many session, prompt, and gateway risks for the first deployment.
+
+That changed the goal:
+
+```text
+Not: Gemma replaces the main assistant.
+But: Gemma performs bounded image triage for the main assistant.
+```
+
+That narrower scope is what this benchmark tests.
+
+---
+
 ## Experiment Goal
 
 The experiment was designed around a practical routing question:
