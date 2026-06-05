@@ -300,6 +300,14 @@ The router has to inspect the actual visible content.
 
 ## Model Output Comparison
 
+Escalation reason legend:
+
+- `—`: no escalation; Gemma output was accepted.
+- `empty_gemma_response`: Gemma returned no usable visible text, so the router escalated to GPT/Codex.
+- `ocr_or_quality_risk`: the router escalated because the image looked OCR-heavy, text-sensitive, screenshot/UI-like, hardware-label-heavy, or otherwise risky for Gemma-only handling.
+
+The original route log used the longer internal label `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`; this post shortens it to `ocr_or_quality_risk` for readability.
+
 This section consolidates the benchmark image set, route decision, and recorded model interpretations into one place. The earlier standalone image gallery and wide comparison table were removed because they repeated the same information and rendered poorly on mobile.
 
 Each image card keeps the full recorded text from the benchmark logs. Empty Gemma outputs are shown explicitly rather than repaired by hand.
@@ -336,7 +344,7 @@ The scene is set indoors,
 ![Benchmark image 2: image_02.jpeg](./images/image_02.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -373,7 +381,7 @@ Anime-style image of a stern-looking woman in a black suit holding a tablet in a
 ![Benchmark image 3: image_03.png](./images/image_03.png)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -489,7 +497,7 @@ An anime-style illustration of a girl with long, pale blue or white hair.
 ![Benchmark image 7: image_07.jpeg](./images/image_07.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -520,7 +528,7 @@ Hand-drawn meme-style image of a blonde anime girl with blue eyes and a flower c
 ![Benchmark image 8: image_08.jpeg](./images/image_08.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -625,7 +633,7 @@ An image showing a partially assembled 3D printer frame next to a completed 3D p
 ![Benchmark image 12: image_12.jpeg](./images/image_12.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -732,7 +740,7 @@ A hand is holding a black electrical power inlet (likely an IEC C14 type) in fro
 ![Benchmark image 16: image_16.jpeg](./images/image_16.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
@@ -814,7 +822,7 @@ Photo of a rack-mounted or small lab network/server setup inside a rack. An oran
 ![Benchmark image 19: image_19.jpeg](./images/image_19.jpeg)
 
 - **Route:** `gemma_then_gpt`
-- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+- **Escalation reason:** `ocr_or_quality_risk`
 
 #### GPT/Codex baseline description
 
