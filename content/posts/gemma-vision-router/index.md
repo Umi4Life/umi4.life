@@ -299,6 +299,8 @@ The router has to inspect the actual visible content.
 
 ## Model Output Comparison
 
+Some Gemma outputs below are visibly truncated because the table preserves the recorded benchmark output rather than manually repairing it.
+
 The table below includes the actual image used, the router decision, the GPT/Codex baseline description, and the Gemma-first description recorded in the benchmark logs. Empty Gemma outputs are shown as the recorded failure/bookkeeping note.
 
 | # | Image | Route | Escalation reason | GPT/Codex baseline | Gemma first |
