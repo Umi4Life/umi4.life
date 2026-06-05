@@ -1,6 +1,6 @@
 +++
 date = '2026-06-05T17:28:00+07:00'
-draft = true
+draft = false
 translationKey = 'gemma-vision-router'
 title = 'Reducing GPT Vision Calls with a Fail-Closed Gemma Router'
 description = 'A Hermes vision-routing experiment using local Gemma through LiteLLM as a first-pass image triage layer, with GPT/Codex escalation for empty, OCR-heavy, or risky cases.'
