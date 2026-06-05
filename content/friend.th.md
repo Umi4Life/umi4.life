@@ -26,14 +26,12 @@ comment: true
 
 ถ้าอยากให้เพิ่มในรายชื่อนี้หรืออยากให้ผมติดตามกลับ ฝากข้อความในคอมเมนต์ด้านล่าง (Waline ในหน้านี้) หรือติดต่อทางอื่นก็ได้ วางแบบนี้:
 
-````yml
 ```yml
 - name: YourHandle
   url: https://your-site-that-is-not-down.example/
   desc: "Engineering ที่พังแล้วสอนอะไรได้, Rhythm Game, หรือ debug เกินเวลานอน"
   image: https://yoursite.example/avatar-that-actually-loads.webp
 ```
-````
 
 ช่องทางอื่น: [อีเมล](mailto:zekamashi@umi4.life), [GitHub](https://github.com/Umi4Life), [Discord](https://discordapp.com/users/zekamashi)
 
