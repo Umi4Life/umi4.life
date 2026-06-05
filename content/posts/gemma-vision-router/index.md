@@ -171,49 +171,9 @@ Describe this image accurately. Include:
 Avoid unsupported guesses. Keep it concise but complete.
 ```
 
-### Images used
+### Images and recognition outputs
 
-These are the actual 20 benchmark images copied from the experiment dataset into this post bundle.
-
-![Benchmark image 1: image_01.jpeg](./images/image_01.jpeg)
-
-![Benchmark image 2: image_02.jpeg](./images/image_02.jpeg)
-
-![Benchmark image 3: image_03.png](./images/image_03.png)
-
-![Benchmark image 4: image_04.jpeg](./images/image_04.jpeg)
-
-![Benchmark image 5: image_05.jpeg](./images/image_05.jpeg)
-
-![Benchmark image 6: image_06.jpeg](./images/image_06.jpeg)
-
-![Benchmark image 7: image_07.jpeg](./images/image_07.jpeg)
-
-![Benchmark image 8: image_08.jpeg](./images/image_08.jpeg)
-
-![Benchmark image 9: image_09.jpeg](./images/image_09.jpeg)
-
-![Benchmark image 10: image_10.jpeg](./images/image_10.jpeg)
-
-![Benchmark image 11: image_11.jpeg](./images/image_11.jpeg)
-
-![Benchmark image 12: image_12.jpeg](./images/image_12.jpeg)
-
-![Benchmark image 13: image_13.jpeg](./images/image_13.jpeg)
-
-![Benchmark image 14: image_14.jpeg](./images/image_14.jpeg)
-
-![Benchmark image 15: image_15.jpeg](./images/image_15.jpeg)
-
-![Benchmark image 16: image_16.jpeg](./images/image_16.jpeg)
-
-![Benchmark image 17: image_17.jpeg](./images/image_17.jpeg)
-
-![Benchmark image 18: image_18.jpeg](./images/image_18.jpeg)
-
-![Benchmark image 19: image_19.jpeg](./images/image_19.jpeg)
-
-![Benchmark image 20: image_20.jpeg](./images/image_20.jpeg)
+The benchmark images are shown together with the recorded model outputs in [Model Output Comparison](#model-output-comparison), so the article does not repeat the same image set in multiple places.
 
 ---
 
@@ -340,50 +300,24 @@ The router has to inspect the actual visible content.
 
 ## Model Output Comparison
 
-Some Gemma outputs below are visibly truncated because the table preserves the recorded benchmark output rather than manually repairing it.
+This section consolidates the benchmark image set, route decision, and recorded model interpretations into one place. The earlier standalone image gallery and wide comparison table were removed because they repeated the same information and rendered poorly on mobile.
 
-The table below includes the actual image used, the router decision, the GPT/Codex baseline description, and the Gemma-first description recorded in the benchmark logs. Empty Gemma outputs are shown as the recorded failure/bookkeeping note.
-
-| # | Image | Route | Escalation reason | GPT/Codex baseline | Gemma first |
-|---:|---|---|---|---|---|
-| 1 | ![Image 1](./images/image_01.jpeg) | `gemma_only` | `—` | A plush anime-style doll sits on a bed or soft surface. It has pale lavender-gray hair, a small black hat with purple rose decorations, a black-and-white outfit with a large bow, and striped stockings. The bac… | **Main subject or scene:** A plush toy of an anime-style character with lavender hair, sitting upright on a white, wrinkled surface (likely a bed). **Important objects/details:** * **Plushie features:** The ch… |
-| 2 | ![Image 2](./images/image_02.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | An anime-style woman in a black suit stands in an office or classroom-like room holding a tablet. A large speech bubble says, "Sensei, stop assigning static IP addresses inside the DHCP range." Her badge reads… | An anime-style illustration of a woman with a stern expression. 1. **Main subject**: A woman with long black hair, red eyes, and a serious facial expression. She is wearing a black blazer over a white turtlene… |
-| 3 | ![Image 3](./images/image_03.png) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A full-body anime character illustration on a dark/transparent-looking background with a tall red rectangle at the right edge. The character has pale hair with colorful streaks, a dark hat, oversized teal card… | An anime-style female character is the main subject, set against a solid black background. **Important objects/details:** * **Character Appearance:** She has white hair with rainbow-colored streaks and green e… |
-| 4 | ![Image 4](./images/image_04.jpeg) | `gemma_only` | `—` | A close-up photo of a tabby-and-white cat sitting on a reddish-brown wooden floor. The cat has green eyes, white chest/muzzle/legs, tabby markings on the head and back, and a collar with a bell. The framing cr… | A domestic cat is the main subject, sitting upright on a wooden floor. **Important objects/details:** * The cat has a white and grey tabby coat, with white fur on its chest, face, and legs, and grey tabby mark… |
-| 5 | ![Image 5](./images/image_05.jpeg) | `gemma_only` | `—` | A chibi-style digital drawing of a pale/white-haired girl standing with one hand near her mouth. She wears a dark gray-green school-uniform-like outfit with a bow, pleated skirt, tall socks/boots, and oversize… | This image features a single chibi-style anime character against a plain white background. 1. **Main subject:** A young girl with long, flowing white hair and reddish-brown eyes. She is posed thoughtfully with… |
-| 6 | ![Image 6](./images/image_06.jpeg) | `gemma_only` | `—` | An anime-style illustration of a pale-haired girl wearing an ornate blue-white outfit and a large decorative hat. She is smiling slightly and raising one gloved hand upward; the clothing includes lace, floral/… | An anime-style illustration of a girl with long, pale blue or white hair. * **Main subject:** A girl with a slight smile, pale eyes, and long, straight, light-colored hair, dressed in an ornate, Victorian-insp… |
-| 7 | ![Image 7](./images/image_07.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A meme-like drawing of a blonde anime girl with blue eyes and a flower crown holding a sign in front of a grassy/wooded background. A gray figure or shadow stands behind her near a tree. The sign reads: "Fun F… | An anime-style illustration of a young girl holding a sign. * **Main subject or scene:** A young girl with long blonde hair and blue eyes, wearing a crown of brown flowers, holding a white rectangular sign. *… |
-| 8 | ![Image 8](./images/image_08.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A work-in-progress electronics or arcade-controller-like circular panel is lying on a bed with a cream plaid blanket. The assembly has a large circular ring, many red/blue/black wires, copper contacts or pads… | An image of an electronic or DIY project component resting on a bed. 1. **Main subject or scene:** A large, square white panel with a circular transparent center, featuring an intricate black geometric pattern… |
-| 9 | ![Image 9](./images/image_09.jpeg) | `gemma_then_gpt` | `empty_gemma_response` | A close-up of a hand holding a white PCB in a cluttered electronics workspace. The board appears to be a controller/keyboard-style PCB with many labeled switch or connector footprints and a USB-C port. Readabl… | Primary Gemma call returned empty text; reran once. If retry stayed empty, marked failed_empty_response to satisfy non-empty-output verification. |
-| 10 | ![Image 10](./images/image_10.jpeg) | `gemma_then_gpt` | `empty_gemma_response` | A PC hardware build scene with an open small-form-factor case or frame on a desk mat. A large triple-fan graphics card is installed, with additional fans visible above it and braided cables routed through the… | Primary Gemma call returned empty text; reran once. If retry stayed empty, marked failed_empty_response to satisfy non-empty-output verification. |
-| 11 | ![Image 11](./images/image_11.jpeg) | `gemma_only` | `—` | A partially assembled 3D-printer/CNC-style frame is shown, apparently rotated sideways in the photo. Visible parts include black and blue aluminum extrusions, clear panels, brackets, a spool of turquoise filam… | An image showing a partially assembled 3D printer frame next to a completed 3D printer. 1. **Main subject or scene:** A rectangular frame made of black aluminum extrusions, likely part of a 3D printer under co… |
-| 12 | ![Image 12](./images/image_12.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A disassembled hardware or machine assembly lies on a wooden floor beside a cabinet/wall. Visible parts include a black metal/plastic frame, wiring harnesses, red/yellow/black wires, a silver power-supply-like… | This image shows a collection of disassembled electronic components and hardware lying on a wooden floor. 1. **Main subject or scene:** A pile of various electronic parts, including metal chassis pieces, a pow… |
-| 13 | ![Image 13](./images/image_13.jpeg) | `gemma_then_gpt` | `empty_gemma_response` | A close-up of a white PCB populated with small black switches and white LEDs, likely part of a keyboard/controller. It has an anime-style face illustration, a QR code, and multiple silkscreen labels. Readable… | Primary Gemma call returned empty text; reran once. If retry stayed empty, marked failed_empty_response to satisfy non-empty-output verification. |
-| 14 | ![Image 14](./images/image_14.jpeg) | `gemma_only` | `—` | A black NVIDIA-style graphics card is resting on a table. The side shroud clearly reads "GEFORCE RTX" in white letters, with a blower-style fan opening and PCIe connector visible. Background objects include a… | This image features a graphics card as the main subject. * **Main subject:** A black NVIDIA GeForce RTX graphics card. * **Important objects/details:** The card has a glossy black shroud with a visible cooling… |
-| 15 | ![Image 15](./images/image_15.jpeg) | `gemma_only` | `—` | A very blurry close-up of a hand holding a black electrical or mechanical component with multiple metal screw terminals/lugs. The background appears to be an electronics or machine work area with pink straps,… | A hand is holding a black electrical power inlet (likely an IEC C14 type) in front of a wooden surface. * **Main subject:** A person's hand holding a black plastic electrical component with three metal termina… |
-| 16 | ![Image 16](./images/image_16.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A rendered product-style image of a black USB dongle or adapter with a USB-A plug on the right and a beige label with a QR code. Readable label text includes "PART NO.", "000-0000-000X", "SERIAL NO.", "A02E-00… | This image features a single electronic device, likely a USB flash drive or similar peripheral, set against a plain white background. 1. **Main subject:** A black, rectangular electronic device with a USB Type… |
-| 17 | ![Image 17](./images/image_17.jpeg) | `gemma_then_gpt` | `empty_gemma_response` | A smartphone screenshot of a dark-themed rh3d.xyz page showing a 3D model of a box-frame 3D printer. The phone status bar shows "20:27", "4G", and battery "60". Page text includes "rh3d.xyz", "MODEL: VIRTU E3"… | Primary Gemma call returned empty text with completion_tokens=700; reran once and replaced the primary record to preserve one logical record per image. |
-| 18 | ![Image 18](./images/image_18.jpeg) | `gemma_then_gpt` | `empty_gemma_response` | A rack-mounted or portable networking/computing setup inside a black rack/case. The front module has an orange panel with multiple Ethernet/USB ports and cables plugged in; a small display is visible on the le… | Primary Gemma call returned empty text with completion_tokens=700; reran once and replaced the primary record to preserve one logical record per image. |
-| 19 | ![Image 19](./images/image_19.jpeg) | `gemma_then_gpt` | `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload` | A computer or server case sits on a shelf against a wood-paneled wall, with two wall outlets above it and black power cords plugged in. The case has a black mesh front, wood-tone trim, a glowing circular power… | A black computer tower is the main subject, sitting on a light-colored wooden surface. **Important objects/details:** * **Computer Case:** A black tower with a mesh front panel and a horizontal strip with a wo… |
-| 20 | ![Image 20](./images/image_20.jpeg) | `gemma_only` | `—` | A sashimi platter on a boat or near open water. It includes a fish head and body section, translucent sliced raw fish arranged over shredded daikon, cucumber slices fanned in two groups, lemon slices, and wasa… | **Main subject or scene:** A platter of sashimi, featuring a fish head and slices of white fish, presented on a woven tray. **Important objects/details:** * **Sashimi:** Numerous slices of translucent white fi… |
-
-### Full recorded interpretations
-
-The full text below is copied from the benchmark JSONL logs.
+Each image card keeps the full recorded text from the benchmark logs. Empty Gemma outputs are shown explicitly rather than repaired by hand.
 
 ### Image 1: `image_01.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 1: image_01.jpeg](./images/image_01.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A plush anime-style doll sits on a bed or soft surface. It has pale lavender-gray hair, a small black hat with purple rose decorations, a black-and-white outfit with a large bow, and striped stockings. The background shows gray curtains, bedding/pillows, a dark headboard, and partial anime character art on pillows/posters. Visible text is limited to cropped Japanese characters on the red/white art at the upper right; the exact text is not fully readable. Some background character details are cropped.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 **Main subject or scene:**
@@ -397,24 +331,20 @@ A plush toy of an anime-style character with lavender hair, sitting upright on a
 The scene is set indoors,
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 2: `image_02.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 2: image_02.jpeg](./images/image_02.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 An anime-style woman in a black suit stands in an office or classroom-like room holding a tablet. A large speech bubble says, "Sensei, stop assigning static IP addresses inside the DHCP range." Her badge reads "70", "WinRAR", and "STAFF". The background includes large windows, blue sky, books, a desk, and office supplies. No major ambiguity besides the fictional/stylized nature of the scene.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An anime-style illustration of a woman with a stern expression.
@@ -432,32 +362,26 @@ An anime-style illustration of a woman with a stern expression.
 5.  **Ambiguity/uncertainty**: The specific identity of the character is not provided.
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Anime-style image of a stern-looking woman in a black suit holding a tablet in an office/classroom-like setting. She has long black hair, red eyes, a white turtleneck, a staff badge, and stands in front of windows, a desk, books, and stationery. Visible text in the speech bubble reads: 'Sensei, stop assigning static IP addresses inside the DHCP range.' Her badge reads 'WinRAR' and 'STAFF' with a stylized '70' or similar mark above it. Some small badge/logo details are too small to read with certainty.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 3: `image_03.png`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 3: image_03.png](./images/image_03.png)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A full-body anime character illustration on a dark/transparent-looking background with a tall red rectangle at the right edge. The character has pale hair with colorful streaks, a dark hat, oversized teal cardigan, short skirt/shorts, tall black socks, chunky shoes with yellow laces, and a large white fluffy tail or scarf ending in a rainbow sloth-like face. I do not see readable text. The red/black edges may be an artifact or cropped design element.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An anime-style female character is the main subject, set against a solid black background.
@@ -467,32 +391,26 @@ An anime-style female character is the main subject, set against a solid black b
 * **Clothing:** Her outfit consists of an oversized teal cardigan with white stripes on the cuffs, a white collared shirt, a dark tie, and a dark plaid skirt. A large, fluffy white and grey fur stole is draped over her shoulders. Attached to or part of this stole is a large, colorful sloth-like head with rainbow-colored fur around its face.
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Full-body anime character illustration on a mostly black/transparent background. The character has pale hair with colored streaks, a black plaid beret, teal oversized cardigan, short skirt, black knee socks, yellow-laced shoes, and a large fluffy white tail-like accessory ending in a rainbow-colored sloth face. A large red rectangle with narrow colored stripes appears behind/right of the character, likely a graphic artifact or background block. No clearly readable text is visible.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 4: `image_04.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 4: image_04.jpeg](./images/image_04.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A close-up photo of a tabby-and-white cat sitting on a reddish-brown wooden floor. The cat has green eyes, white chest/muzzle/legs, tabby markings on the head and back, and a collar with a bell. The framing crops the top and lower parts slightly, but the cat is the clear subject. No visible text. Background is mainly wood flooring with a dark strip near the top.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 A domestic cat is the main subject, sitting upright on a wooden floor.
@@ -513,24 +431,20 @@ A domestic cat is the main subject, sitting upright on a wooden floor.
 * The specific breed of the cat cannot be determined.
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 5: `image_05.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 5: image_05.jpeg](./images/image_05.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A chibi-style digital drawing of a pale/white-haired girl standing with one hand near her mouth. She wears a dark gray-green school-uniform-like outfit with a bow, pleated skirt, tall socks/boots, and oversized shoes; a small purple blob-like creature with sleepy eyes sits beside her. The background is plain white. Faint watermark text across the body appears to read "@mt_LOO" or similar, but it is partially transparent and uncertain.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 This image features a single chibi-style anime character against a plain white background.
@@ -545,24 +459,20 @@ This image features a single chibi-style anime character against a plain white b
 5.  **Ambiguity/uncertainty:** The identity of the small purple object is unclear; it could be a small pet, a spirit, or a decorative element.
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 6: `image_06.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 6: image_06.jpeg](./images/image_06.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 An anime-style illustration of a pale-haired girl wearing an ornate blue-white outfit and a large decorative hat. She is smiling slightly and raising one gloved hand upward; the clothing includes lace, floral/rose decorations, beads, a blue pendant, and dangling cross-like ornaments. The background is plain white. I do not see visible readable text.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An anime-style illustration of a girl with long, pale blue or white hair.
@@ -574,24 +484,20 @@ An anime-style illustration of a girl with long, pale blue or white hair.
 * **Ambiguity or uncertainty:** The dark color of the
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 7: `image_07.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 7: image_07.jpeg](./images/image_07.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A meme-like drawing of a blonde anime girl with blue eyes and a flower crown holding a sign in front of a grassy/wooded background. A gray figure or shadow stands behind her near a tree. The sign reads: "Fun Fact! You can't look up while your tongue is out"; the lower line is partly cropped but still inferable. No other clear text is visible.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An anime-style illustration of a young girl holding a sign.
@@ -603,32 +509,26 @@ An anime-style illustration of a young girl holding a sign.
 * **Ambiguity or uncertainty:** The background is blurry, making the exact landscape difficult to identify. The bottom edge of the sign is slightly cut off.
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Hand-drawn meme-style image of a blonde anime girl with blue eyes and a flower crown holding a sign outdoors near a tree. The sign reads: 'Fun Fact! You can't look up while your tongue is out'. The scene is lightly sketched/painted with a grassy background. The lower part of the sign is close to the crop edge, but the sentence is still readable.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 8: `image_08.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 8: image_08.jpeg](./images/image_08.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A work-in-progress electronics or arcade-controller-like circular panel is lying on a bed with a cream plaid blanket. The assembly has a large circular ring, many red/blue/black wires, copper contacts or pads around the ring, tape/adhesive, zip ties, and loose red wiring on the right. A small white tag near the lower right appears to read "DNG" or similar, but it is unclear. Background includes bedding and a blue tool at the right.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An image of an electronic or DIY project component resting on a bed.
@@ -640,94 +540,76 @@ An image of an electronic or DIY project component resting on a bed.
     *   **Pattern:** A black, maze-
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Photo of a large circular electronics/mechanical assembly lying on a cream plaid blanket. The ring has many small copper/silver contact pads or modules around it, with red, blue, black, and white wires routed around the circumference and bundled on the right. A blue-handled tool is at the right edge, and part of a character pillow is visible at the left. No meaningful readable text is visible; some tiny labels on parts may be present but are not legible.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 9: `image_09.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 9: image_09.jpeg](./images/image_09.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `empty_gemma_response`
+
+#### GPT/Codex baseline description
 
 ```text
 A close-up of a hand holding a white PCB in a cluttered electronics workspace. The board appears to be a controller/keyboard-style PCB with many labeled switch or connector footprints and a USB-C port. Readable labels include "Maji Pico Lite", "USB1", "BT1", "BT2", "BT3", "BT4", "BT5", "BT6", "BT7", "AUX2", "AUX3", "AUX4", "SWCLK", many GPIO/GND labels such as "GP0"-style markings, "3V3", "VREF", "AGND", "RUN", "U1", and partial long numeric strings. Some tiny silkscreen text is too small or cropped to read reliably.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 _No visible model output recorded._
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Close-up photo of a white custom keyboard PCB held in front of a cluttered electronics workspace. The PCB has a USB-C port, many labeled switch/diode footprints, and a small sheep/mascot graphic near a stained or flux-marked area. Visible text includes 'Mai Pico Lite', 'USB1', labels such as AUX1/AUX2/AUX3/AUX4, BT1/BT2/BT3/BT4/BT5/BT6/BT7/BT8, MPR1/MPR2/MPR3/MPR4, SWCLK, GND, GP0–GP28, RUN, AGND, VREF, 3V3, and diode/capacitor labels like D13/D14/D15/D18/D19 and '100n'. Some labels are partially cut off or blurred.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `empty_gemma_response`
-
 ### Image 10: `image_10.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 10: image_10.jpeg](./images/image_10.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `empty_gemma_response`
+
+#### GPT/Codex baseline description
 
 ```text
 A PC hardware build scene with an open small-form-factor case or frame on a desk mat. A large triple-fan graphics card is installed, with additional fans visible above it and braided cables routed through the chassis. The desk mat has green grid labels including "MK-000011", "MK-000012", "MK-000013", "MK-000014", "MK-000015", "MK-000016", "MK-000017", and other partial markings. The graphics card side shows "GEFORCE RTX" and "GAMING"/branding partially visible. A power-supply label with small warning/specification text is present but too small to read fully.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 _No visible model output recorded._
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Photo of a PC build/test bench area. On the right is an open computer case with multiple fans and a graphics card visible; black sleeved cables and a power supply occupy the lower right. The surface underneath is a green/purple cutting mat or desk mat with printed grid-like labels. Visible text includes 'MX0132', 'MK-000012', '01010', 'MX0133', 'MK-000013', 'MX0134', 'MK-000014', 'MX0135', 'MK-000015', 'MX0136', 'MK-000016', and partial 'MX0137/MK-000017'. A label on the PSU/case contains Chinese and other tiny certification text, but most is too small to read accurately.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `empty_gemma_response`
-
 ### Image 11: `image_11.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 11: image_11.jpeg](./images/image_11.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A partially assembled 3D-printer/CNC-style frame is shown, apparently rotated sideways in the photo. Visible parts include black and blue aluminum extrusions, clear panels, brackets, a spool of turquoise filament feeding into the mechanism, and another black frame beside it. It is sitting on or near a wooden tabletop/floor. No clearly readable text is visible. The exact machine model is uncertain from this crop.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 An image showing a partially assembled 3D printer frame next to a completed 3D printer.
@@ -738,24 +620,20 @@ An image showing a partially assembled 3D printer frame next to a completed 3D p
     *   **Enclosed 3D printer:** Located on the left, featuring a transparent enclosure and black structural components. A spool of
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 12: `image_12.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 12: image_12.jpeg](./images/image_12.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A disassembled hardware or machine assembly lies on a wooden floor beside a cabinet/wall. Visible parts include a black metal/plastic frame, wiring harnesses, red/yellow/black wires, a silver power-supply-like metal box, pink straps, connectors, and green-handled pliers. Small warning/spec labels are present on the power-supply-like part, but the text is too small/blurred to read reliably. The exact device is uncertain.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 This image shows a collection of disassembled electronic components and hardware lying on a wooden floor.
@@ -769,63 +647,51 @@ This image shows a collection of disassembled electronic components and hardware
     *   A pinkish-red strap or ribbon and a black strap.
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Photo of a partially disassembled machine or electronics/mechanical assembly on a wooden floor. It shows black metal/plastic frame parts, motors or hinges, wiring harnesses, a gray power-supply-like module, connectors, and loose tools including pliers. Pink straps or bands are looped near the top/right, and a large beige/gray panel is at the side. Some small labels are visible on components, but the text is too small or blurred to read confidently.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 13: `image_13.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 13: image_13.jpeg](./images/image_13.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `empty_gemma_response`
+
+#### GPT/Codex baseline description
 
 ```text
 A close-up of a white PCB populated with small black switches and white LEDs, likely part of a keyboard/controller. It has an anime-style face illustration, a QR code, and multiple silkscreen labels. Readable or partly readable text includes "Made by Zekamashi/Umi4Life", "v2", "5zf60_0001", component labels such as "D11", "D12", "D13", "D14", "D15", "D17", "D18", "D19", "C19", and "100n". Some small text is blurred/cropped and cannot be read confidently.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 _No visible model output recorded._
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Close-up photo of a white PCB with many hot-swap switch sockets, SMD components, and diode/capacitor labels. There is a small anime-style face graphic printed near the top center and a QR code on the right. Visible text includes 'Made by Zekamashi/Umi4Life' or similar (partially blurred), 'v2', 'D13', 'D14', 'D15', 'D17', 'D18', 'D19', 'C18', 'C19', and repeated '100n' capacitor markings. Under the QR code is '5zf60_0001' or similar; exact characters are slightly blurred.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `empty_gemma_response`
-
 ### Image 14: `image_14.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 14: image_14.jpeg](./images/image_14.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A black NVIDIA-style graphics card is resting on a table. The side shroud clearly reads "GEFORCE RTX" in white letters, with a blower-style fan opening and PCIe connector visible. Background objects include a patterned box, a black case or wallet-like item, and window light/reflections. No other clear text is visible.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 This image features a graphics card as the main subject.
@@ -837,24 +703,20 @@ This image features a graphics card as the main subject.
 * **Ambiguity:** The specific model of the GeForce RTX graphics card cannot be determined from the visible information.
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 15: `image_15.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 15: image_15.jpeg](./images/image_15.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A very blurry close-up of a hand holding a black electrical or mechanical component with multiple metal screw terminals/lugs. The background appears to be an electronics or machine work area with pink straps, wires, tools, and a gray/metal box, but most details are out of focus. There may be molded markings on the black component, but no text is reliably readable. The exact part type is uncertain due to blur.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 A hand is holding a black electrical power inlet (likely an IEC C14 type) in front of a wooden surface.
@@ -865,24 +727,20 @@ A hand is holding a black electrical power inlet (likely an IEC C14 type) in fro
 * **Visible text:** The text "10A 250V
 ```
 
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 ### Image 16: `image_16.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 16: image_16.jpeg](./images/image_16.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A rendered product-style image of a black USB dongle or adapter with a USB-A plug on the right and a beige label with a QR code. Readable label text includes "PART NO.", "000-0000-000X", "SERIAL NO.", "A02E-00X0000", and "SDVX ST IH". The background is plain white. It may be a 3D render rather than a physical photo.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 This image features a single electronic device, likely a USB flash drive or similar peripheral, set against a plain white background.
@@ -895,94 +753,76 @@ This image features a single electronic device, likely a USB flash drive or simi
     *
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Rendered product-style image of a black USB dongle or cartridge-like device with a USB-A connector. A beige label on top includes a QR code and printed fields. Visible text reads 'PART NO.' with '000-0000-000X' or similar, 'SERIAL NO.' with 'A02E-00X0000', and 'SDVX STH'. Some zero/X characters are ambiguous because of resolution and perspective.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 17: `image_17.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 17: image_17.jpeg](./images/image_17.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `empty_gemma_response`
+
+#### GPT/Codex baseline description
 
 ```text
 A smartphone screenshot of a dark-themed rh3d.xyz page showing a 3D model of a box-frame 3D printer. The phone status bar shows "20:27", "4G", and battery "60". Page text includes "rh3d.xyz", "MODEL: VIRTU E3", "FULLSCREEN", "Thank you :)", "page rev 0.82", and a lower copyright line beginning "Copyright © 2026 Radek Honc. E3NG, VIRTU and V-ION by RH3D are...". Some top text is cropped and faint; lower copyright text is partially cut off.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 _No visible model output recorded._
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Mobile screenshot of the rh3d.xyz site showing a 3D model viewer for a 3D printer. The model is labeled 'MODEL: VIRTU E3' with a 'FULLSCREEN' button. The page shows a cube/view icon, 'page rev 0.82', and footer text beginning 'Copyright © 2026 Radek Honc. E3NG, VIRTU and V-ION by RH3D are ...'. At the top, the phone status bar shows 20:27, 4G, and 60% battery, and nearby text includes 'rh3d.xyz', 'Thank you :)', and a faint cropped note ending 'Patreon), please keep it for yourself.' Some footer text is cropped off.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `empty_gemma_response`
-
 ### Image 18: `image_18.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 18: image_18.jpeg](./images/image_18.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `empty_gemma_response`
+
+#### GPT/Codex baseline description
 
 ```text
 A rack-mounted or portable networking/computing setup inside a black rack/case. The front module has an orange panel with multiple Ethernet/USB ports and cables plugged in; a small display is visible on the left, and a switch or router sits above it. Readable text includes "001" on a top label and "rocstor" on the lower rack/case. The network switch label appears to include "2.5G" and "PoE", but much of the small text is too small to read confidently.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 _No visible model output recorded._
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Photo of a rack-mounted or small lab network/server setup inside a rack. An orange-front modular unit has several Ethernet/USB ports and cables connected; above it is a switch labeled '8-Port 2.5G PoE Switch with 2*10G SFP+' or similar. A small display on the orange unit shows status text, and a label at top reads '001'. The rack/base branding at the bottom appears to read 'rocstor'. Port labels and small screen details are too small to read fully.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `empty_gemma_response`
-
 ### Image 19: `image_19.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 19: image_19.jpeg](./images/image_19.jpeg)
+
+- **Route:** `gemma_then_gpt`
+- **Escalation reason:** `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
+
+#### GPT/Codex baseline description
 
 ```text
 A computer or server case sits on a shelf against a wood-paneled wall, with two wall outlets above it and black power cords plugged in. The case has a black mesh front, wood-tone trim, a glowing circular power button, status LEDs, USB/front-panel ports, and a decorative sticker showing a small anime figure and a house/building. The sticker includes stylized text and Japanese/Chinese-looking characters, but the exact wording is not fully readable. A cardboard box rests partly on top of the case.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 A black computer tower is the main subject, sitting on a light-colored wooden surface.
@@ -993,32 +833,26 @@ A black computer tower is the main subject, sitting on a light-colored wooden su
 * **Electrical:** Two white wall outlets are mounted on the wall above the case. One has a power cable plugged into
 ```
 
-</details>
-<details>
-<summary>GPT/Codex escalation description</summary>
+#### GPT/Codex escalation description
 
 ```text
 Photo of a desktop/tower PC on a table beneath two wall outlet plates. One plug is in the left outlet and a loose cable is plugged into the right plate; a cardboard piece rests on top of the PC. The PC front has a lit power button, green status LEDs, front USB/audio ports, and a decorative sticker featuring an anime character and a house/watermill scene. The sticker includes stylized text and Japanese/Chinese characters, but they are too small/blurred to read confidently. No other clear text is visible.
 ```
 
-</details>
-
-Route: `gemma_then_gpt`
-Escalation reason: `v2_policy_ocr_or_quality_risk_from_prior_scored_regular_workload`
-
 ### Image 20: `image_20.jpeg`
 
-<details>
-<summary>GPT/Codex baseline description</summary>
+![Benchmark image 20: image_20.jpeg](./images/image_20.jpeg)
+
+- **Route:** `gemma_only`
+- **Escalation reason:** `—`
+
+#### GPT/Codex baseline description
 
 ```text
 A sashimi platter on a boat or near open water. It includes a fish head and body section, translucent sliced raw fish arranged over shredded daikon, cucumber slices fanned in two groups, lemon slices, and wasabi on the right. The basket/tray rim and blue-green water are visible in the background. No visible text. The exact fish species is uncertain from the image alone.
 ```
 
-</details>
-
-<details>
-<summary>Gemma-first description</summary>
+#### Gemma-first description
 
 ```text
 **Main subject or scene:** A platter of sashimi, featuring a fish head and slices of white fish, presented on a woven tray.
@@ -1035,12 +869,6 @@ A sashimi platter on a boat or near open water. It includes a fish head and body
 
 **Ambiguity or uncertainty:** The specific species of the fish is not identifiable with certainty.
 ```
-
-</details>
-
-Route: `gemma_only`
-Escalation reason: `—`
-
 
 ---
 
