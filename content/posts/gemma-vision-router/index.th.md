@@ -316,7 +316,10 @@ route log ต้นฉบับใช้ internal label ที่ยาวกว
 
 ### ภาพที่ 1: `image_01.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 1: image_01.jpeg](./images/image_01.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -343,7 +346,10 @@ The scene is set indoors,
 
 ### ภาพที่ 2: `image_02.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 2: image_02.jpeg](./images/image_02.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -380,7 +386,10 @@ Anime-style image of a stern-looking woman in a black suit holding a tablet in a
 
 ### ภาพที่ 3: `image_03.png`
 
+{{< gallery >}}
 ![ภาพ benchmark 3: image_03.png](./images/image_03.png)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -409,7 +418,10 @@ Full-body anime character illustration on a mostly black/transparent background.
 
 ### ภาพที่ 4: `image_04.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 4: image_04.jpeg](./images/image_04.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -443,7 +455,10 @@ A domestic cat is the main subject, sitting upright on a wooden floor.
 
 ### ภาพที่ 5: `image_05.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 5: image_05.jpeg](./images/image_05.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -471,7 +486,10 @@ This image features a single chibi-style anime character against a plain white b
 
 ### ภาพที่ 6: `image_06.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 6: image_06.jpeg](./images/image_06.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -496,7 +514,10 @@ An anime-style illustration of a girl with long, pale blue or white hair.
 
 ### ภาพที่ 7: `image_07.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 7: image_07.jpeg](./images/image_07.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -527,7 +548,10 @@ Hand-drawn meme-style image of a blonde anime girl with blue eyes and a flower c
 
 ### ภาพที่ 8: `image_08.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 8: image_08.jpeg](./images/image_08.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -558,7 +582,10 @@ Photo of a large circular electronics/mechanical assembly lying on a cream plaid
 
 ### ภาพที่ 9: `image_09.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 9: image_09.jpeg](./images/image_09.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `empty_gemma_response`
@@ -583,7 +610,10 @@ Close-up photo of a white custom keyboard PCB held in front of a cluttered elect
 
 ### ภาพที่ 10: `image_10.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 10: image_10.jpeg](./images/image_10.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `empty_gemma_response`
@@ -608,7 +638,10 @@ Photo of a PC build/test bench area. On the right is an open computer case with 
 
 ### ภาพที่ 11: `image_11.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 11: image_11.jpeg](./images/image_11.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -632,7 +665,10 @@ An image showing a partially assembled 3D printer frame next to a completed 3D p
 
 ### ภาพที่ 12: `image_12.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 12: image_12.jpeg](./images/image_12.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -665,7 +701,10 @@ Photo of a partially disassembled machine or electronics/mechanical assembly on 
 
 ### ภาพที่ 13: `image_13.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 13: image_13.jpeg](./images/image_13.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `empty_gemma_response`
@@ -690,7 +729,10 @@ Close-up photo of a white PCB with many hot-swap switch sockets, SMD components,
 
 ### ภาพที่ 14: `image_14.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 14: image_14.jpeg](./images/image_14.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -715,7 +757,10 @@ This image features a graphics card as the main subject.
 
 ### ภาพที่ 15: `image_15.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 15: image_15.jpeg](./images/image_15.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -739,7 +784,10 @@ A hand is holding a black electrical power inlet (likely an IEC C14 type) in fro
 
 ### ภาพที่ 16: `image_16.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 16: image_16.jpeg](./images/image_16.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -771,7 +819,10 @@ Rendered product-style image of a black USB dongle or cartridge-like device with
 
 ### ภาพที่ 17: `image_17.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 17: image_17.jpeg](./images/image_17.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `empty_gemma_response`
@@ -796,7 +847,10 @@ Mobile screenshot of the rh3d.xyz site showing a 3D model viewer for a 3D printe
 
 ### ภาพที่ 18: `image_18.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 18: image_18.jpeg](./images/image_18.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `empty_gemma_response`
@@ -821,7 +875,10 @@ Photo of a rack-mounted or small lab network/server setup inside a rack. An oran
 
 ### ภาพที่ 19: `image_19.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 19: image_19.jpeg](./images/image_19.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **เหตุผลที่ escalate:** `ocr_or_quality_risk`
@@ -851,7 +908,10 @@ Photo of a desktop/tower PC on a table beneath two wall outlet plates. One plug 
 
 ### ภาพที่ 20: `image_20.jpeg`
 
+{{< gallery >}}
 ![ภาพ benchmark 20: image_20.jpeg](./images/image_20.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **เหตุผลที่ escalate:** `—`
@@ -924,10 +984,12 @@ Interesting. model ไม่ได้แค่ตัดสินผิด แต
 
 | Snapshot | Session | Weekly |
 |---|---|---|
-| `A_before` | Session: 95% remaining (5% used) • resets in 4h 47m (2026-06-05 12:46 UTC) | Weekly: 57% remaining (43% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `A_after` | Session: 83% remaining (17% used) • resets in 4h 40m (2026-06-05 12:46 UTC) | Weekly: 55% remaining (45% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `B_before` | Session: 75% remaining (25% used) • resets in 4h 7m (2026-06-05 12:46 UTC) | Weekly: 54% remaining (46% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `B_after` | Session: 68% remaining (32% used) • resets in 4h 0m (2026-06-05 12:46 UTC) | Weekly: 53% remaining (47% used) • resets in 5d 17h (2026-06-11 02:44 UTC) |
+| `A_before` | Session: 95% remaining (5% used) | Weekly: 57% remaining (43% used) |
+| `A_after` | Session: 83% remaining (17% used) | Weekly: 55% remaining (45% used) |
+| `A_delta` | **+12 pp** used (5% → 17%) | **+2 pp** used (43% → 45%) |
+| `B_before` | Session: 75% remaining (25% used) | Weekly: 54% remaining (46% used) |
+| `B_after` | Session: 68% remaining (32% used) | Weekly: 53% remaining (47% used) |
+| `B_delta` | **+7 pp** used (25% → 32%) | **+1 pp** used (46% → 47%) |
 
 แต่ผม **ไม่** ตีความตัวเลขเหล่านี้เป็น per-call cost accounting แบบเป๊ะ
 

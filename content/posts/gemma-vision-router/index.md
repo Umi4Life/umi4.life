@@ -314,7 +314,10 @@ Each image card keeps the full recorded text from the benchmark logs. Empty Gemm
 
 ### Image 1: `image_01.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 1: image_01.jpeg](./images/image_01.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -341,7 +344,10 @@ The scene is set indoors,
 
 ### Image 2: `image_02.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 2: image_02.jpeg](./images/image_02.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -378,7 +384,10 @@ Anime-style image of a stern-looking woman in a black suit holding a tablet in a
 
 ### Image 3: `image_03.png`
 
+{{< gallery >}}
 ![Benchmark image 3: image_03.png](./images/image_03.png)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -407,7 +416,10 @@ Full-body anime character illustration on a mostly black/transparent background.
 
 ### Image 4: `image_04.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 4: image_04.jpeg](./images/image_04.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -441,7 +453,10 @@ A domestic cat is the main subject, sitting upright on a wooden floor.
 
 ### Image 5: `image_05.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 5: image_05.jpeg](./images/image_05.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -469,7 +484,10 @@ This image features a single chibi-style anime character against a plain white b
 
 ### Image 6: `image_06.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 6: image_06.jpeg](./images/image_06.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -494,7 +512,10 @@ An anime-style illustration of a girl with long, pale blue or white hair.
 
 ### Image 7: `image_07.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 7: image_07.jpeg](./images/image_07.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -525,7 +546,10 @@ Hand-drawn meme-style image of a blonde anime girl with blue eyes and a flower c
 
 ### Image 8: `image_08.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 8: image_08.jpeg](./images/image_08.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -556,7 +580,10 @@ Photo of a large circular electronics/mechanical assembly lying on a cream plaid
 
 ### Image 9: `image_09.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 9: image_09.jpeg](./images/image_09.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `empty_gemma_response`
@@ -581,7 +608,10 @@ Close-up photo of a white custom keyboard PCB held in front of a cluttered elect
 
 ### Image 10: `image_10.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 10: image_10.jpeg](./images/image_10.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `empty_gemma_response`
@@ -606,7 +636,10 @@ Photo of a PC build/test bench area. On the right is an open computer case with 
 
 ### Image 11: `image_11.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 11: image_11.jpeg](./images/image_11.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -630,7 +663,10 @@ An image showing a partially assembled 3D printer frame next to a completed 3D p
 
 ### Image 12: `image_12.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 12: image_12.jpeg](./images/image_12.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -663,7 +699,10 @@ Photo of a partially disassembled machine or electronics/mechanical assembly on 
 
 ### Image 13: `image_13.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 13: image_13.jpeg](./images/image_13.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `empty_gemma_response`
@@ -688,7 +727,10 @@ Close-up photo of a white PCB with many hot-swap switch sockets, SMD components,
 
 ### Image 14: `image_14.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 14: image_14.jpeg](./images/image_14.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -713,7 +755,10 @@ This image features a graphics card as the main subject.
 
 ### Image 15: `image_15.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 15: image_15.jpeg](./images/image_15.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -737,7 +782,10 @@ A hand is holding a black electrical power inlet (likely an IEC C14 type) in fro
 
 ### Image 16: `image_16.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 16: image_16.jpeg](./images/image_16.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -769,7 +817,10 @@ Rendered product-style image of a black USB dongle or cartridge-like device with
 
 ### Image 17: `image_17.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 17: image_17.jpeg](./images/image_17.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `empty_gemma_response`
@@ -794,7 +845,10 @@ Mobile screenshot of the rh3d.xyz site showing a 3D model viewer for a 3D printe
 
 ### Image 18: `image_18.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 18: image_18.jpeg](./images/image_18.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `empty_gemma_response`
@@ -819,7 +873,10 @@ Photo of a rack-mounted or small lab network/server setup inside a rack. An oran
 
 ### Image 19: `image_19.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 19: image_19.jpeg](./images/image_19.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_then_gpt`
 - **Escalation reason:** `ocr_or_quality_risk`
@@ -849,7 +906,10 @@ Photo of a desktop/tower PC on a table beneath two wall outlet plates. One plug 
 
 ### Image 20: `image_20.jpeg`
 
+{{< gallery >}}
 ![Benchmark image 20: image_20.jpeg](./images/image_20.jpeg)
+{{< /gallery >}}
+
 
 - **Route:** `gemma_only`
 - **Escalation reason:** `—`
@@ -921,10 +981,12 @@ Quota snapshots were captured before and after each window.
 
 | Snapshot | Session | Weekly |
 |---|---|---|
-| `A_before` | Session: 95% remaining (5% used) • resets in 4h 47m (2026-06-05 12:46 UTC) | Weekly: 57% remaining (43% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `A_after` | Session: 83% remaining (17% used) • resets in 4h 40m (2026-06-05 12:46 UTC) | Weekly: 55% remaining (45% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `B_before` | Session: 75% remaining (25% used) • resets in 4h 7m (2026-06-05 12:46 UTC) | Weekly: 54% remaining (46% used) • resets in 5d 18h (2026-06-11 02:44 UTC) |
-| `B_after` | Session: 68% remaining (32% used) • resets in 4h 0m (2026-06-05 12:46 UTC) | Weekly: 53% remaining (47% used) • resets in 5d 17h (2026-06-11 02:44 UTC) |
+| `A_before` | Session: 95% remaining (5% used) | Weekly: 57% remaining (43% used) |
+| `A_after` | Session: 83% remaining (17% used) | Weekly: 55% remaining (45% used) |
+| `A_delta` | **+12 pp** used (5% → 17%) | **+2 pp** used (43% → 45%) |
+| `B_before` | Session: 75% remaining (25% used) | Weekly: 54% remaining (46% used) |
+| `B_after` | Session: 68% remaining (32% used) | Weekly: 53% remaining (47% used) |
+| `B_delta` | **+7 pp** used (25% → 32%) | **+1 pp** used (46% → 47%) |
 
 However, I do **not** interpret these as exact per-call cost accounting.
 
