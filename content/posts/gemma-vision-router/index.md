@@ -6,6 +6,7 @@ title = 'Reducing GPT Vision Calls with a Fail-Closed Gemma Router'
 description = 'A Hermes vision-routing experiment using local Gemma through LiteLLM as a first-pass image triage layer, with GPT/Codex escalation for empty, OCR-heavy, or risky cases.'
 tags = ["hermes-agent", "litellm", "gemma", "local-llm", "vision", "benchmark", "routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
+mermaid = true
 +++
 
 # Reducing GPT Vision Calls with a Fail-Closed Gemma Router
