@@ -26,14 +26,13 @@ If you want to link back:
 
 If you want a spot on this page or just want me to follow you back, leave a comment below (Waline on this page) or reach out another way. Paste something like this:
 
-````yml
 ```yml
 - name: YourHandle
   url: https://your-site-that-is-not-down.example/
   desc: "Engineering chaos, rhythm game arcades, or debugging past a sensible bedtime"
   image: https://yoursite.example/avatar-that-actually-loads.webp
 ```
-````
+
 
 Other contact: [email](mailto:zekamashi@umi4.life), [GitHub](https://github.com/Umi4Life), [Discord](https://discordapp.com/users/zekamashi).
 
