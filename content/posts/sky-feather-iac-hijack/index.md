@@ -5,14 +5,13 @@ date = '2026-06-02T18:56:32+07:00'
 draft = false
 translationKey = 'sky-feather-iac-hijack'
 title = 'Sky Feather Hijacked My Homelab IaC'
+subtitle = 'Terraform, Ansible, Proxmox, GitOps — and an AI agent proposing infra changes safely.'
 description = 'A public-safe homelab GitOps story about Terraform, Ansible, Proxmox, private Gitea, GitHub pull requests, and an AI agent proposing infrastructure changes safely.'
 tags = ["proxmox", "terraform", "ansible", "gitops", "gitea", "github", "automation", "ai-agent", "hermes-agent", "discord-bot", "documentation"]
 categories = ["homelab", "infrastructure", "automation"]
 mermaid = true
 weight = 1
 +++
-
-**Subtitle:** Terraform, Ansible, Proxmox, GitOps, and an AI agent workflow for safer homelab infrastructure changes.
 
 ![Sky Feather experiment cover](./images/sky-feather-cover.jpeg)
 

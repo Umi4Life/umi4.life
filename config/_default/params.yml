@@ -158,6 +158,7 @@ show_update_time: true # If you want to show the update time, please set this to
 summary:
   enable: true
   style: 'subtitle' # 'subtitle' or 'blockquote'
+  subtitle_length: 280 # hero #subtitle char limit; set 0 to disable truncate
 
 # RSS output
 rss:

@@ -174,3 +174,11 @@
 #footer .footer-powered-muted {
   opacity: 0.88;
 }
+
+/* Hero post subtitle: graceful multi-line overflow */
+#subtitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
