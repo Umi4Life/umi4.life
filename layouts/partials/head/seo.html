@@ -1,0 +1,55 @@
+{{- with .Params.seo.robots -}}
+<meta name="robots" content="{{ . }}" />
+{{- end -}}
+<link rel="canonical" href="{{ .Permalink }}" />
+{{- range .AllTranslations -}}
+<link rel="alternate" hreflang="{{ .Language.LanguageCode }}" href="{{ .Permalink }}" />
+{{- end -}}
+{{- range .AllTranslations -}}
+{{- if eq .Language.Lang "en" -}}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+{{- end -}}
+{{- end -}}
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ .Site.Title | jsonify }},
+  "url": {{ .Site.BaseURL | jsonify }},
+  "description": {{ (.Site.Params.description | default .Site.Title) | jsonify }}
+}
+</script>
+{{- else if and .IsPage (eq .Section "posts") -}}
+{{- $description := .Params.description | default .Site.Params.description -}}
+{{- $image := "" -}}
+{{- if and .Params.cover (not (strings.HasPrefix .Params.cover "rgb")) -}}
+  {{- $image = .Params.cover | absURL -}}
+{{- else if and .Params.banner (not (strings.HasPrefix .Params.banner "rgb")) -}}
+  {{- $image = .Params.banner | absURL -}}
+{{- else -}}
+  {{- $image = .Site.Params.banner | absURL -}}
+{{- end -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ $description | jsonify }},
+  "datePublished": {{ .Date.Format "2006-01-02T15:04:05-07:00" | jsonify }},
+  "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": {{ .Site.Params.author | jsonify }}
+  },
+  "image": {{ $image | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink | jsonify }}
+  }
+  {{- with .Params.tags -}}
+  ,"keywords": {{ delimit . ", " | jsonify }}
+  {{- end -}}
+}
+</script>
+{{- end -}}

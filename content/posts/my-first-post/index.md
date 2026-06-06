@@ -5,7 +5,7 @@ title: "My first post"
 date: 2026-04-02
 draft: false
 translationKey: my-first-post
-description: "Starting a blog."
+description: "First post on umi4.life — homelab notes, 3D printing, and arcade rhythm games from a personal engineering blog."
 tags: ["hugo", "personal"]
 categories: ["etc"]
 ---

@@ -3,8 +3,9 @@ date = '2026-04-19T15:33:15+07:00'
 draft = false
 translationKey = 'wireguard-network-setup'
 title = 'ตั้งค่า WireGuard Network'
-cover = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
-description = 'สร้าง VPN ให้เพื่อนเข้าถึง local network ของผมได้ง่ายขึ้น'
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
+description = 'WireGuard VPN บน Vultr VPS พร้อม Proxmox subnet routing — ทางเลือกที่ขยายผู้ใช้ได้ง่ายกว่า Tailscale สำหรับแชร์ homelab กับเพื่อน'
 tags = ["proxmox", "linux", "homelab", "vpn", "documentation"]
 categories = ["homelab"]
 mermaid = true
@@ -12,7 +13,7 @@ mermaid = true
 
 ## The Problem
 
-![image](./images/meme.png)
+![มีมเรื่องขีดจำกัดผู้ใช้ Tailscale ทำให้แชร์ VPN ยากเมื่อมีคนเยอะ](./images/meme.png)
 
 ตอนนี้ผมใช้ Tailscale เป็น VPN สำหรับเข้า homelab จากข้างนอกบ้าน เช่น Wi‑Fi นอกบ้านหรือ cellular สิ่งที่ไม่ชอบใน setup นี้คือ free plan ของ Tailscale scale ผู้ใช้ยากมาก เพราะจำกัดไว้แค่ 6 users ถ้าผมอยากแชร์ internal services ให้กลุ่มเพื่อน ทุกคนต้องสมัครบัญชี Tailscale และผ่าน onboarding ของ Tailscale ก่อน วิธีเดียวที่พอจะเลี่ยง user limit ได้คือเพิ่มเป็นราย device ซึ่ง onboarding ก็ปวดหัวพอกัน: ให้ user login Tailscale จากเครื่องตัวเอง แล้วใช้ auth link เพื่อ sign in เข้าบัญชีของผม
 

@@ -5,7 +5,7 @@ date = '2026-04-04T10:35:08+07:00'
 draft = false
 translationKey = 'building-proxmox-homelab'
 title = 'Building a Proxmox Homelab'
-description = 'Own your infra'
+description = 'A homelab build diary: Proxmox VE on bare metal, TrueNAS storage, Docker consolidation, Traefik, AdGuard, Tailscale, and Cloudflare Tunnel for self-hosted services.'
 tags = ["proxmox", "linux", "homelab", "ai", "documentation"]
 categories = ["homelab"]
 mermaid = true
@@ -66,10 +66,10 @@ Because of the current ram shortage, going with DDR4 is a must. And this the cas
 I'm currenty scouring through facebook marketplace to find good deal on second hand RTX 3090 to replace the GTX 1080 Ti. The 3090 would let me host bigger ai model like 27b and 30b and looking at the Gemma-4 release, I did not want to miss the fun. I'll be stuck at 4b-7b model with 1080 Ti.
 
 {{< gallery >}}
-![image](./images/build-1.jpg)
-![image](./images/build-2.jpg)
-![image](./images/build-3.jpg)
-![image](./images/build-4.jpg)
+![Homelab server case exterior during the initial hardware build](./images/build-1.jpg)
+![Internal view of the Proxmox homelab build with storage and cooling](./images/build-2.jpg)
+![Cable management and component layout inside the homelab chassis](./images/build-3.jpg)
+![Completed homelab hardware assembly before OS installation](./images/build-4.jpg)
 {{< /gallery >}}
 
 As for the OS, I grabbed the [Proxmox VE ISO](https://www.proxmox.com/en/downloads/proxmox-virtual-environment/iso) and started setting up the hosts and the network. Proxmox VE is basically a virtualization platform. It allows me to spin up LXC (Linux Container) for my micro services, or even create VM to host multiple OS such as Windows 11, Arch Linux, TrueNAS in one platform.
@@ -87,8 +87,8 @@ The first thing I did after installing Proxmox is to install TrueNAS as my main 
 This puts me at ~ 5.5 TB of network storage
 
 {{< gallery >}}
-![image](./images/proxmox-nas.JPG)
-![image](./images/truenas.JPG)
+![Proxmox VE host overview with TrueNAS VM running on the homelab node](./images/proxmox-nas.JPG)
+![TrueNAS storage pools and dataset configuration for the homelab NAS](./images/truenas.JPG)
 {{< /gallery >}}
 
 After setting up data set and created SMB share for my main PC, phones, and family, I immediatly started spinning up some LXCs
@@ -269,9 +269,9 @@ Reverse Proxy (Traefik) acts as a unified gateway to each internal services, it 
 I can easily edit the centralized proxy setting without touching proxy setting on other microservices inside Docker.
 
 {{< gallery >}}
-![alt](./images/adguard.JPG)
-![alt](./images/traefik.png)
-![alt](./images/ssl.JPG)
+![AdGuard Home DNS rewrites mapping homelab service hostnames to Traefik](./images/adguard.JPG)
+![Traefik reverse proxy dashboard routing internal homelab microservices](./images/traefik.png)
+![Let's Encrypt TLS certificates issued for umi4.life homelab services](./images/ssl.JPG)
 {{< /gallery >}}
 
 None of these are exposed to the internet of course. They can only be accessed when connected to the same network as the Proxmox server, which brings us to...
@@ -287,15 +287,15 @@ By installing Tailscale directly on the Proxmox host and...
 I can not only access my Proxmox server from external network, but also anything inside my home network including my 3d printer from edge devices.
 
 {{< gallery >}}
-![alt](./images/tailscale.JPG)
-![alt](./images/phone.png)
+![Tailscale subnet routing and split DNS configuration for remote homelab access](./images/tailscale.JPG)
+![Mobile device accessing homelab services over Tailscale from an external network](./images/phone.png)
 {{< /gallery >}}
 
 
 ### Overall stacks
 This finally brings up to the stacks diagram of my infrastructure.
 
-![alt](./images/stacks.svg)
+![Homelab infrastructure stack diagram showing networking, storage, and service layers](./images/stacks.svg)
 
 This diagram is not 100% accurate yet. The places where where the stuff is hosted aren't up to date, some haven't been added to the diagram and as aforementioned, I'm using a consumer ISP package with consumer router, which is unable to do VLAN to properly seperate DMZ services from my internal service. I ended just creating another VM for Traefik, put everything on separate VMBR, created reverse tunnel on those DMZ services and put everthing under strict firewall policy to make sure other people can't access my internal network.
 

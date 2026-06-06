@@ -3,7 +3,7 @@ locale = 'en-us'
 defaultContentLanguage = 'en'
 defaultContentLanguageInSubdir = false
 title = "UmiLife's Blog"
-description = "Homelab notes, self-hosted services, and infrastructure experiments."
+description = "Engineering notes from a homelab in perpetual beta — Proxmox, self-hosted services, and infrastructure experiments."
 theme = 'reimu'
 
 [languages.en]

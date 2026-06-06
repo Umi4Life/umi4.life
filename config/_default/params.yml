@@ -28,7 +28,7 @@ timeFormat: "2006-01-02 15:04:05"
 
 author: Umi4Life / Zekamashi
 email: zekamashi@umi4.life
-description: "I make stuff"
+description: "Engineering notes from a homelab in perpetual beta — Proxmox, self-hosted services, and infrastructure experiments."
 subtitle:
   typing:
     enable: true
@@ -255,6 +255,7 @@ dark_mode:
 ########################################
 
 baidu_analytics: false
+# Set to your GA4 measurement ID (e.g. G-XXXXXXXXXX) to enable theme analytics partial
 google_analytics: false
 clarity: false
 
@@ -599,7 +600,9 @@ home_categories:
 # Inject code snippet
 # Make sure your code snippet is safeHTML
 injector:
-  head_begin: # Inject code snippet right after <head>
+  # Replace YOUR_TOKEN after verifying in Google Search Console
+  head_begin: |
+    <!-- <meta name="google-site-verification" content="YOUR_TOKEN" /> -->
   head_end: |
     <link rel="stylesheet" href="/css/persistent-meting.css">
     <link rel="stylesheet" href="/css/article-extras.css">

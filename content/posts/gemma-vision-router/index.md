@@ -8,9 +8,9 @@ tags = ["hermes-agent", "litellm", "gemma", "local-llm", "vision", "benchmark", 
 categories = ["automation", "ai", "homelab"]
 mermaid = true
 weight = 2
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/gemma-vision-router/images/image_03.png'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/gemma-vision-router/images/image_03.png'
 +++
-
-# Reducing GPT Vision Calls with a Fail-Closed Gemma Router
 
 > Can a local multimodal model reduce GPT/Codex vision usage without making the assistant unreliable?
 

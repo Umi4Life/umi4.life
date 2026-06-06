@@ -6,9 +6,9 @@ title = 'Untangling the Homelab After a Hermes Dashboard Setup Went Sideways'
 description = 'A homelab incident story: setting up Hermes Dashboard exposed old routing and auth tech debt, broke Traefik and Authelia OIDC assumptions, and ended with a cleaner LiteLLM public API plus private admin workflow.'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/hermes-litellm-authelia-control-plane/images/hermes-dashboard-redacted.png'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/hermes-litellm-authelia-control-plane/images/hermes-dashboard-redacted.png'
 +++
-
-# Untangling the Homelab After a Hermes Dashboard Setup Went Sideways
 
 **Subtitle:** We tried to expose one dashboard, tripped over old routing and auth tech debt, broke a few things, then used the incident to make the stack less cursed.
 

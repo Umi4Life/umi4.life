@@ -6,9 +6,9 @@ title = 'Untangling Homelab หลังตั้ง Hermes Dashboard แล้�
 description = 'บันทึก incident จากการตั้ง Hermes Dashboard ที่ลาก tech debt ใน homelab ออกมาให้เห็น ตั้งแต่ Traefik, Authelia OIDC, split DNS จนถึง LiteLLM workflow ที่แยก public API กับ private admin UI'
 tags = ["hermes-agent", "litellm", "authelia", "oidc", "traefik", "cloudflare", "homelab", "sso", "docker", "debugging"]
 categories = ["homelab", "infrastructure", "automation"]
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/hermes-litellm-authelia-control-plane/images/hermes-dashboard-redacted.png'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/hermes-litellm-authelia-control-plane/images/hermes-dashboard-redacted.png'
 +++
-
-# Untangling Homelab หลังตั้ง Hermes Dashboard แล้วพังเป็นลูกโซ่
 
 **คำบรรยาย:** เราแค่อยากเปิด Hermes Dashboard ให้เข้าจาก LAN ได้ แต่ดันไปสะกิด tech debt เก่าใน routing/auth stack จนต้องไล่แก้ปมทั้ง Traefik, Authelia OIDC, split DNS และ LiteLLM
 

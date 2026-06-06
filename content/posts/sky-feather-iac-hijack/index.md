@@ -12,8 +12,6 @@ mermaid = true
 weight = 1
 +++
 
-# Sky Feather Hijacked My Homelab IaC
-
 **Subtitle:** Terraform, Ansible, Proxmox, GitOps, and an AI agent workflow for safer homelab infrastructure changes.
 
 ![Sky Feather experiment cover](./images/sky-feather-cover.jpeg)

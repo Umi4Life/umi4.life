@@ -5,7 +5,7 @@ title: "โพสต์แรกของผม"
 date: 2026-04-02
 draft: false
 translationKey: my-first-post
-description: "เริ่มต้นเขียนบล็อก"
+description: "โพสต์แรกบน umi4.life — บันทึก homelab, 3D printing และ arcade rhythm games จากบล็อกวิศวกรรมส่วนตัว"
 tags: ["hugo", "personal"]
 categories: ["etc"]
 ---

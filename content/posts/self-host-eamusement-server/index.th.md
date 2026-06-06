@@ -11,8 +11,6 @@ categories = ["homelab", "private-server"]
 mermaid = true
 +++
 
-# จากการ clone GitHub สู่ homelab ระดับ production: MongoDB, private CI และ deploy อัตโนมัติ
-
 **Fork extension และโครงสร้างพื้นฐานบน Proxmox (RCHE)**
 
 ### https://rche.umi4.life/

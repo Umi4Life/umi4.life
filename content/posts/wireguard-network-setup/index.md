@@ -3,15 +3,16 @@ date = '2026-04-19T15:33:15+07:00'
 draft = false
 translationKey = 'wireguard-network-setup'
 title = 'WireGuard Network Setup'
-cover = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
-description = 'Creating VPN for people to my local network access'
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
+description = 'Self-hosted WireGuard VPN on a Vultr VPS with Proxmox subnet routing — a scalable alternative to Tailscale for sharing homelab access with friends.'
 tags = ["proxmox", "linux", "homelab", "vpn", "documentation"]
 categories = ["homelab"]
 mermaid = true
 +++
 
 ## The Problem
-![image](./images/meme.png)
+![Meme about Tailscale user limits making VPN sharing painful at scale](./images/meme.png)
 Right now, I'm using Tailscale as a VPN for homelab access from remote (external wifi & cellular). What I don't like about this set up is that Tailscale free plan is very difficult to scale users as the user limit is only 6. If I want to share my internal services to my friend groups, they need to sign up for Tailscale account first and go through their onboarding. The only way to get aroud user limit I could think of is to add by device which is also a nightmare onboarding process (Tailscale login from user's device -> use the auth link to sign in to my account).
 
 In short, Tailscale is great for personal use. But a pain to add users. WireGuard is much more simplified as all I have to do is generate QR link send it to my friend, and they only need to install WireGuard app and nothing else.

@@ -12,8 +12,6 @@ mermaid = true
 weight = 1
 +++
 
-# Sky Feather แฮก Homelab IaC ของผม
-
 **คำบรรยาย:** Terraform, Ansible, Proxmox, GitOps และเวิร์กโฟลว์เอเจนต์ AI สำหรับการเปลี่ยนแปลง infrastructure homelab ที่ปลอดภัย
 
 ![ปกการทดลอง Sky Feather](./images/sky-feather-cover.jpeg)
