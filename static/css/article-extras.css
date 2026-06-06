@@ -174,13 +174,3 @@
 #footer .footer-powered-muted {
   opacity: 0.88;
 }
-
-/* Homepage Must Read badge: anchor to cover image, flip corner on right-side layouts */
-.post-cover.right .post-sticky {
-  left: auto;
-  right: 0;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-}

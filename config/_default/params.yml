@@ -264,7 +264,7 @@ clarity: false
 
 # mermaid url https://github.com/mermaid-js/mermaid
 mermaid:
-  zoom: true # whether to enable zoom for mermaid diagrams
+  zoom: false # whether to enable zoom for mermaid diagrams
 
 code_block:
   # whether to expand the code block by default
