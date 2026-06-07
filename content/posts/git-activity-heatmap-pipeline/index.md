@@ -97,7 +97,7 @@ Color semantics:
 - **Blue** — private forge activity only
 - **Purple** — both on the same day
 
-The live widget on About and on [`/activity/`](/activity/) reads `/data/activity.json`. That file is **vendored by CI** from `Umi4Life/git-activity`. Do not edit it manually on the blog — use `scripts/vendor-activity.sh` for local Hugo parity.
+The live widget on [`/About/`](/About/) reads `/data/activity.json`. That file is **vendored by CI** from `Umi4Life/git-activity`. Do not edit it manually on the blog — use `scripts/vendor-activity.sh` for local Hugo parity.
 
 Example embedded in this post:
 
@@ -246,7 +246,7 @@ The Node.js 20 deprecation warning on `actions/checkout@v4` is GitHub housekeepi
 
 - Public artifact repo: [github.com/Umi4Life/git-activity](https://github.com/Umi4Life/git-activity)
 - Blog repo: [github.com/Umi4Life/umi4.life](https://github.com/Umi4Life/umi4.life)
-- Live heatmap: [About](/about/) and [/activity/](/activity/)
+- Live heatmap: [About](/about/)
 - Local dev vendor helper: `scripts/vendor-activity.sh` / `scripts/vendor-activity.ps1`
 
 The exporter itself stays on private Gitea. If you self-host a similar pipeline, treat the homelab as a count exporter, the public repo as a sanitized artifact, and the blog as a read-only display layer.
