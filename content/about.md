@@ -9,6 +9,12 @@ toc: false
 comment: true
 ---
 
+## Git activity
+
+Public GitHub and self-hosted Git activity, shown without private repository metadata.
+
+{{< git-activity src="/data/activity.json" >}}
+
 I'm **Umi4Life** or also known as **Zekamashi**; I am an avid rhythm gamer with focus on making arcade controller rather than playing the game itself. I own multiple Voron/3D printers that I 100% build my self from scratch (screw Bambulab, hail open source). I have also recently picked up homelab as a hobby.
 
 This site is where I write down infrastructure experiments, self-hosted services, and other shenanigans that sometimes turn into multi-day debugging sessions. In the future I'll probably start documenting hardware project in my backlog too, such as custom keyboard (started from pcb design phase) and another 3D printer build.

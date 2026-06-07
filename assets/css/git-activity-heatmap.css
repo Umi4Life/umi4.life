@@ -1,0 +1,276 @@
+.git-activity-wrap {
+  margin: 1rem 0;
+}
+
+.git-activity-disclosure {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--grey-9, #888);
+  line-height: 1.5;
+}
+
+.git-activity-stage {
+  --git-activity-tile-offset: calc(12px + 2.5ch + 8px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0.75rem auto 0;
+  max-width: 100%;
+}
+
+.git-activity-outer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+
+.git-activity-inner {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.git-activity-calendar {
+  --git-activity-none: color-mix(in srgb, var(--color-default, #444) 12%, var(--color-wrap, #fff));
+  --git-activity-github-1: color-mix(in srgb, #2da44e 35%, white);
+  --git-activity-github-2: color-mix(in srgb, #2da44e 60%, white);
+  --git-activity-github-3: color-mix(in srgb, #2da44e 85%, white);
+  --git-activity-github-4: #2da44e;
+  --git-activity-private-1: color-mix(in srgb, #218bff 35%, white);
+  --git-activity-private-2: color-mix(in srgb, #218bff 60%, white);
+  --git-activity-private-3: color-mix(in srgb, #218bff 85%, white);
+  --git-activity-private-4: #218bff;
+  --git-activity-both-1: color-mix(in srgb, #8957e5 35%, white);
+  --git-activity-both-2: color-mix(in srgb, #8957e5 60%, white);
+  --git-activity-both-3: color-mix(in srgb, #8957e5 85%, white);
+  --git-activity-both-4: #8957e5;
+
+  display: grid;
+  grid: auto repeat(7, 10px) auto / auto repeat(53, 10px);
+  gap: 3px;
+  margin: 0 1px 1px;
+  width: fit-content;
+  font-size: 12px;
+  padding: 12px;
+  border: solid 1px var(--color-border);
+  border-radius: 8px;
+  background: var(--color-wrap, #fff);
+}
+
+[data-theme="dark"] .git-activity-calendar {
+  --git-activity-none: #161b22;
+  --git-activity-github-1: color-mix(in srgb, #3fb950 25%, transparent);
+  --git-activity-github-2: color-mix(in srgb, #3fb950 45%, transparent);
+  --git-activity-github-3: color-mix(in srgb, #3fb950 70%, transparent);
+  --git-activity-github-4: #3fb950;
+  --git-activity-private-1: color-mix(in srgb, #58a6ff 25%, transparent);
+  --git-activity-private-2: color-mix(in srgb, #58a6ff 45%, transparent);
+  --git-activity-private-3: color-mix(in srgb, #58a6ff 70%, transparent);
+  --git-activity-private-4: #58a6ff;
+  --git-activity-both-1: color-mix(in srgb, #a371f7 25%, transparent);
+  --git-activity-both-2: color-mix(in srgb, #a371f7 45%, transparent);
+  --git-activity-both-3: color-mix(in srgb, #a371f7 70%, transparent);
+  --git-activity-both-4: #a371f7;
+}
+
+.git-activity-month {
+  grid-row: 1 / 2;
+  margin-bottom: -2px;
+  color: var(--color-default);
+}
+
+.git-activity-week {
+  grid-row: 3;
+  grid-column: 1 / 2;
+  line-height: 10px;
+  margin-right: 2px;
+  color: var(--color-default);
+}
+
+.git-activity-week + .git-activity-week {
+  grid-row: 5;
+}
+
+.git-activity-week + .git-activity-week + .git-activity-week {
+  grid-row: 7;
+}
+
+.git-activity-tiles {
+  grid-column: 2 / 56;
+  grid-row: 2 / 9;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: subgrid / subgrid;
+}
+
+.git-activity-tile {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  outline: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent);
+  outline-offset: -1px;
+  box-sizing: border-box;
+}
+
+.git-activity-tile.source-none.intensity-0 {
+  background: var(--git-activity-none);
+}
+
+.git-activity-tile.source-github.intensity-1 {
+  background: var(--git-activity-github-1);
+}
+
+.git-activity-tile.source-github.intensity-2 {
+  background: var(--git-activity-github-2);
+}
+
+.git-activity-tile.source-github.intensity-3 {
+  background: var(--git-activity-github-3);
+}
+
+.git-activity-tile.source-github.intensity-4 {
+  background: var(--git-activity-github-4);
+}
+
+.git-activity-tile.source-private.intensity-1 {
+  background: var(--git-activity-private-1);
+}
+
+.git-activity-tile.source-private.intensity-2 {
+  background: var(--git-activity-private-2);
+}
+
+.git-activity-tile.source-private.intensity-3 {
+  background: var(--git-activity-private-3);
+}
+
+.git-activity-tile.source-private.intensity-4 {
+  background: var(--git-activity-private-4);
+}
+
+.git-activity-tile.source-both.intensity-1 {
+  background: var(--git-activity-both-1);
+}
+
+.git-activity-tile.source-both.intensity-2 {
+  background: var(--git-activity-both-2);
+}
+
+.git-activity-tile.source-both.intensity-3 {
+  background: var(--git-activity-both-3);
+}
+
+.git-activity-tile.source-both.intensity-4 {
+  background: var(--git-activity-both-4);
+}
+
+.git-activity-tile:hover {
+  outline: 1px solid var(--red-2, #e06c75);
+}
+
+.git-activity-summary {
+  grid-column: 2 / 30;
+  grid-row: 9;
+  margin-top: 4px;
+  color: var(--color-default);
+}
+
+.git-activity-legend-grid {
+  grid-column: 30 / 56;
+  grid-row: 9;
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  color: var(--color-default);
+}
+
+.git-activity-legend-grid .git-activity-tile {
+  cursor: default;
+}
+
+.git-activity-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0.5rem 0 0;
+  padding-left: var(--git-activity-tile-offset);
+  font-size: 0.85rem;
+  color: var(--color-default);
+}
+
+.git-activity-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.git-activity-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.git-activity-legend-swatch.none {
+  background: var(--git-activity-none, #ebedf0);
+}
+
+.git-activity-legend-swatch.github {
+  background: #2da44e;
+}
+
+.git-activity-legend-swatch.private {
+  background: #218bff;
+}
+
+.git-activity-legend-swatch.both {
+  background: #8957e5;
+}
+
+[data-theme="dark"] .git-activity-legend-swatch.github {
+  background: #3fb950;
+}
+
+[data-theme="dark"] .git-activity-legend-swatch.private {
+  background: #58a6ff;
+}
+
+[data-theme="dark"] .git-activity-legend-swatch.both {
+  background: #a371f7;
+}
+
+.git-activity-error {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-default);
+  background: var(--color-wrap, #fff);
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 768px) {
+  .git-activity-stage {
+    align-items: flex-start;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .git-activity-outer,
+  .git-activity-inner {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .git-activity-legend-grid {
+    grid-column: 2 / 56;
+    justify-content: flex-start;
+  }
+
+  .git-activity-summary {
+    grid-column: 2 / 56;
+  }
+}

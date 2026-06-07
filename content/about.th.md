@@ -9,6 +9,12 @@ toc: false
 comment: true
 ---
 
+## กิจกรรม Git
+
+กิจกรรม Git สาธารณะบน GitHub และ Git self-hosted ส่วนตัว แสดงโดยไม่มี metadata ของ repository ส่วนตัว
+
+{{< git-activity src="/data/activity.json" >}}
+
 ผม **Umi4Life** หรือที่รู้จักในนาม **Zekamashi**;  Rhythm game player ที่เน้นทำคอนโทรลเลอร์ตู้เกมมากกว่าเล่นเกมเอง ผมมีเ 3D Printer Voron หลายเครื่องที่ประกอบเอง 100% (screw Bambulab long live open source) และเมื่อเร็วๆ นี้ก็เพิ่งเริ่มเล่น homelab เป็นงานอดิเรก
 
 เว็บนี้ใช้จดบันทึกการทดลองด้าน infrastractire, self-hosted services และเรื่องสนุกๆ ที่บางทีกลายเป็นการ debug หลายวัน ในอนาคตอาจเริ่มเขียนโปรเจกต์ hardware ใน backlog ด้วย เช่น custom keyboard (เริ่มจากขั้นตอนออกแบบ PCB) และ 3D Printer อีกเครื่อง

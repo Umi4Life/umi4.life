@@ -1,0 +1,43 @@
+{{- $src := .Get "src" | default "/data/activity.sample.json" -}}
+
+{{- $css := resources.Get "css/git-activity-heatmap.css" -}}
+{{- if hugo.IsProduction -}}
+  {{- $css = $css | minify | fingerprint -}}
+{{- end -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+<div class="git-activity-wrap">
+  <p class="git-activity-disclosure">
+    This graph shows daily commit counts only. Repository names, commit messages, branch names, and file paths are intentionally omitted.
+  </p>
+
+  <div class="git-activity-stage">
+    <div
+      id="git-activity-heatmap"
+      data-git-activity-root
+      data-src="{{ $src }}"
+      aria-busy="true"
+    ></div>
+
+    <div class="git-activity-legend" aria-hidden="false">
+      <span class="git-activity-legend-item">
+        <span class="git-activity-legend-swatch github"></span>
+        GitHub only
+      </span>
+      <span class="git-activity-legend-item">
+        <span class="git-activity-legend-swatch private"></span>
+        Self-hosted Git only
+      </span>
+      <span class="git-activity-legend-item">
+        <span class="git-activity-legend-swatch both"></span>
+        Both sources
+      </span>
+    </div>
+  </div>
+</div>
+
+{{- $js := resources.Get "js/git-activity-heatmap.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $js = $js | minify | fingerprint -}}
+{{- end -}}
+<script src="{{ $js.RelPermalink }}" data-pjax defer></script>

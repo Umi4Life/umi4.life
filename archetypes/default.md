@@ -3,6 +3,7 @@ date = '{{ .Date }}'
 draft = true
 title = '{{ replace .File.ContentBaseName "-" " " | title }}'
 description = ''
+subtitle = ''   # optional — short hero line when description is long/SEO-heavy
 translationKey = '{{ .File.ContentBaseName }}'
 tags = []
 categories = []
@@ -10,4 +11,5 @@ categories = []
 cover = ''
 banner = ''
 mermaid = true
+weight = '' 
 +++
