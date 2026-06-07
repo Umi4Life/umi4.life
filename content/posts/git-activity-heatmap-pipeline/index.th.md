@@ -97,7 +97,7 @@ flowchart LR
 - **น้ำเงิน** — private forge เท่านั้น
 - **ม่วง** — ทั้งสองแหล่งในวันเดียวกัน
 
-widget บน About และ [`/activity/`](/activity/) อ่าน `/data/activity.json` ไฟล์นี้ **ถูก vendor โดย CI** จาก `Umi4Life/git-activity` อย่าแก้มือบนบล็อก — ใช้ `scripts/vendor-activity.sh` สำหรับ Hugo local
+widget บน [`/About/`](/About/) อ่าน `/data/activity.json` ไฟล์นี้ **ถูก vendor โดย CI** จาก `Umi4Life/git-activity` อย่าแก้มือบนบล็อก — ใช้ `scripts/vendor-activity.sh` สำหรับ Hugo local
 
 ตัวอย่างในโพสต์นี้:
 
@@ -246,7 +246,7 @@ journalctl -u git-activity-exporter.service -n 30 --no-pager
 
 - Artifact repo สาธารณะ: [github.com/Umi4Life/git-activity](https://github.com/Umi4Life/git-activity)
 - Repo บล็อก: [github.com/Umi4Life/umi4.life](https://github.com/Umi4Life/umi4.life)
-- Heatmap สด: [About](/about/) และ [/activity/](/activity/)
+- Heatmap สด: [About](/about/)
 - Local dev: `scripts/vendor-activity.sh` / `scripts/vendor-activity.ps1`
 
 ตัว exporter อยู่บน Gitea ส่วนตัว ถ้าทำ pipeline คล้ายกัน ให้มอง homelab เป็น count exporter, repo สาธารณะเป็น sanitized artifact และบล็อกเป็น display layer แบบ read-only
