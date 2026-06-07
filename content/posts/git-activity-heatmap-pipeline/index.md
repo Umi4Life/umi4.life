@@ -1,6 +1,6 @@
 +++
-banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/git-activity-heatmap-pipeline/images/vendor-ci-success-redacted.png'
-cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/git-activity-heatmap-pipeline/images/vendor-ci-success-redacted.png'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/git-activity-heatmap-pipeline/images/heatmap-about-live.png'
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/git-activity-heatmap-pipeline/images/heatmap-about-live.png'
 date = '2026-06-08T03:00:00+07:00'
 draft = false
 translationKey = 'git-activity-heatmap-pipeline'
