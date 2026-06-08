@@ -93,8 +93,8 @@ The renderer lives in the blog repo:
 
 Color semantics:
 
-- **Green** — public GitHub activity only
-- **Blue** — private forge activity only
+- **Blue** — public GitHub activity only
+- **Green** — private forge activity only
 - **Purple** — both on the same day
 
 The live widget on [`/About/`](/About/) reads `/data/activity.json`. That file is **vendored by CI** from `Umi4Life/git-activity`. Do not edit it manually on the blog — use `scripts/vendor-activity.sh` for local Hugo parity.

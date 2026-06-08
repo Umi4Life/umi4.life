@@ -15,31 +15,53 @@
   flex-direction: column;
   align-items: flex-start;
   margin: 0.75rem auto 0;
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
+}
+
+[data-git-activity-root] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .git-activity-outer {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: flex-start;
-  overflow-x: auto;
+  margin: 12px 0;
 }
 
 .git-activity-inner {
+  width: 100%;
+  min-width: 0;
   overflow-x: auto;
-  max-width: 100%;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.git-activity-inner::-webkit-scrollbar {
+  height: 8px;
+  background-color: transparent;
+}
+
+.git-activity-inner::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .git-activity-calendar {
   --git-activity-none: color-mix(in srgb, var(--color-default, #444) 12%, var(--color-wrap, #fff));
-  --git-activity-github-1: color-mix(in srgb, #2da44e 35%, white);
-  --git-activity-github-2: color-mix(in srgb, #2da44e 60%, white);
-  --git-activity-github-3: color-mix(in srgb, #2da44e 85%, white);
-  --git-activity-github-4: #2da44e;
-  --git-activity-private-1: color-mix(in srgb, #218bff 35%, white);
-  --git-activity-private-2: color-mix(in srgb, #218bff 60%, white);
-  --git-activity-private-3: color-mix(in srgb, #218bff 85%, white);
-  --git-activity-private-4: #218bff;
+  --git-activity-github-1: color-mix(in srgb, #218bff 35%, white);
+  --git-activity-github-2: color-mix(in srgb, #218bff 60%, white);
+  --git-activity-github-3: color-mix(in srgb, #218bff 85%, white);
+  --git-activity-github-4: #218bff;
+  --git-activity-private-1: color-mix(in srgb, #2da44e 35%, white);
+  --git-activity-private-2: color-mix(in srgb, #2da44e 60%, white);
+  --git-activity-private-3: color-mix(in srgb, #2da44e 85%, white);
+  --git-activity-private-4: #2da44e;
   --git-activity-both-1: color-mix(in srgb, #8957e5 35%, white);
   --git-activity-both-2: color-mix(in srgb, #8957e5 60%, white);
   --git-activity-both-3: color-mix(in srgb, #8957e5 85%, white);
@@ -59,14 +81,14 @@
 
 [data-theme="dark"] .git-activity-calendar {
   --git-activity-none: #161b22;
-  --git-activity-github-1: color-mix(in srgb, #3fb950 25%, transparent);
-  --git-activity-github-2: color-mix(in srgb, #3fb950 45%, transparent);
-  --git-activity-github-3: color-mix(in srgb, #3fb950 70%, transparent);
-  --git-activity-github-4: #3fb950;
-  --git-activity-private-1: color-mix(in srgb, #58a6ff 25%, transparent);
-  --git-activity-private-2: color-mix(in srgb, #58a6ff 45%, transparent);
-  --git-activity-private-3: color-mix(in srgb, #58a6ff 70%, transparent);
-  --git-activity-private-4: #58a6ff;
+  --git-activity-github-1: color-mix(in srgb, #58a6ff 25%, transparent);
+  --git-activity-github-2: color-mix(in srgb, #58a6ff 45%, transparent);
+  --git-activity-github-3: color-mix(in srgb, #58a6ff 70%, transparent);
+  --git-activity-github-4: #58a6ff;
+  --git-activity-private-1: color-mix(in srgb, #3fb950 25%, transparent);
+  --git-activity-private-2: color-mix(in srgb, #3fb950 45%, transparent);
+  --git-activity-private-3: color-mix(in srgb, #3fb950 70%, transparent);
+  --git-activity-private-4: #3fb950;
   --git-activity-both-1: color-mix(in srgb, #a371f7 25%, transparent);
   --git-activity-both-2: color-mix(in srgb, #a371f7 45%, transparent);
   --git-activity-both-3: color-mix(in srgb, #a371f7 70%, transparent);
@@ -174,6 +196,7 @@
   grid-row: 9;
   margin-top: 4px;
   color: var(--color-default);
+  white-space: nowrap;
 }
 
 .git-activity-legend-grid {
@@ -184,7 +207,8 @@
   gap: 6px;
   justify-content: flex-end;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   color: var(--color-default);
 }
 
@@ -220,11 +244,11 @@
 }
 
 .git-activity-legend-swatch.github {
-  background: #2da44e;
+  background: #218bff;
 }
 
 .git-activity-legend-swatch.private {
-  background: #218bff;
+  background: #2da44e;
 }
 
 .git-activity-legend-swatch.both {
@@ -232,11 +256,11 @@
 }
 
 [data-theme="dark"] .git-activity-legend-swatch.github {
-  background: #3fb950;
+  background: #58a6ff;
 }
 
 [data-theme="dark"] .git-activity-legend-swatch.private {
-  background: #58a6ff;
+  background: #3fb950;
 }
 
 [data-theme="dark"] .git-activity-legend-swatch.both {
@@ -265,12 +289,12 @@
     justify-content: flex-start;
   }
 
-  .git-activity-legend-grid {
-    grid-column: 2 / 56;
-    justify-content: flex-start;
+  .git-activity-inner {
+    overflow-x: auto;
+    touch-action: pan-x;
   }
 
-  .git-activity-summary {
-    grid-column: 2 / 56;
+  .git-activity-legend {
+    padding-left: 0;
   }
 }

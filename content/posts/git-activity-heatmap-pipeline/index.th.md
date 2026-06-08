@@ -93,8 +93,8 @@ flowchart LR
 
 ความหมายของสี:
 
-- **เขียว** — GitHub สาธารณะเท่านั้น
-- **น้ำเงิน** — private forge เท่านั้น
+- **น้ำเงิน** — GitHub สาธารณะเท่านั้น
+- **เขียว** — private forge เท่านั้น
 - **ม่วง** — ทั้งสองแหล่งในวันเดียวกัน
 
 widget บน [`/About/`](/About/) อ่าน `/data/activity.json` ไฟล์นี้ **ถูก vendor โดย CI** จาก `Umi4Life/git-activity` อย่าแก้มือบนบล็อก — ใช้ `scripts/vendor-activity.sh` สำหรับ Hugo local
