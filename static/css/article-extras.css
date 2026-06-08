@@ -210,11 +210,11 @@
 .sidebar-menu-icon img {
   display: block;
   opacity: 1;
-  filter: brightness(1.18) saturate(1.28) contrast(1.06);
+  filter: brightness(1) saturate(1) contrast(0.7);
 }
 
 .sidebar-menu-link-wrap.link-active .sidebar-menu-icon img {
-  filter: brightness(1.22) saturate(1.32) contrast(1.08)
+  filter: brightness(1) saturate(1) contrast(0.7)
     drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
 }
 
