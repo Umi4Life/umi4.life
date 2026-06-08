@@ -234,11 +234,37 @@ The Node.js 20 deprecation warning on `actions/checkout@v4` is GitHub housekeepi
 
 ---
 
+## Considered and rejected: employer-hosted Git
+
+The exporter could theoretically pull from additional Git providers, including employer-hosted Git. I considered it and decided against publishing that signal on a personal site.
+
+```mermaid
+flowchart LR
+  idea["More Git providers"]
+  tech["Technically feasible"]
+  risk["Cadence metadata risk"]
+  policy["Employer data boundary"]
+  optics["Professional optics"]
+  reject["Excluded from public artifact"]
+  idea --> tech
+  tech --> risk
+  risk --> reject
+  policy --> reject
+  optics --> reject
+```
+
+Daily commit counts do not expose code, repo names, messages, or paths — but they are still **metadata**. Metadata can reveal **cadence**: active days, quiet periods, crunch-like patterns. Data **derived from employer systems** may fall outside what belongs on a personal blog, even when aggregated. **Professional optics** matter too: sanitization does not fully answer “why is employer-derived activity on a personal site?”
+
+The public artifact stays **public GitHub + personal homelab Gitea only**. That is a deliberate boundary, not a missing feature.
+
+---
+
 ## What we deliberately did not do
 
 - **Fetch at Hugo build time** — the JSON is committed; builds stay deterministic and token-free
 - **Blog PAT on the homelab** — push target is `git-activity` only; vendor CI owns the blog update
 - **Private metadata in public JSON** — no repo names, messages, or branch names in the artifact contract
+- **Employer-hosted Git activity** — the pipeline could technically ingest more Git providers, but the public artifact intentionally excludes employer-derived metadata. Daily counts are still metadata, and metadata can reveal cadence.
 
 ---
 

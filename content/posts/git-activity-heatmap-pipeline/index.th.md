@@ -234,11 +234,37 @@ journalctl -u git-activity-exporter.service -n 30 --no-pager
 
 ---
 
+## พิจารณาแล้วตัดสินใจไม่ทำ: Git ของนายจ้าง
+
+exporter รองรับ Git provider เพิ่มได้ทางเทคนิค รวม Git ของนายจ้าง — แต่ตัดสินใจไม่เผยแพร่บนบล็อกส่วนตัว
+
+```mermaid
+flowchart LR
+  idea["More Git providers"]
+  tech["Technically feasible"]
+  risk["Cadence metadata risk"]
+  policy["Employer data boundary"]
+  optics["Professional optics"]
+  reject["Excluded from public artifact"]
+  idea --> tech
+  tech --> risk
+  risk --> reject
+  policy --> reject
+  optics --> reject
+```
+
+จำนวน commit รายวันไม่เปิดเผยโค้ด ชื่อ repo ข้อความ commit หรือ path — แต่ก็ยังเป็น **metadata** metadata สะท้อน **จังหวะการทำงาน** ได้: วันที่มีกิจกรรม ช่วงเงียบ หรือรูปแบบที่ดูเหมือนช่วงเร่งงาน ข้อมูลที่ **มาจากระบบนายจ้าง** อาจไม่ควรอยู่บนบล็อกส่วนตัว แม้จะรวมเป็นตัวเลขแล้ว **ภาพลักษณ์วิชาชีพ** ก็สำคัญ: การ sanitize ไม่ได้ตอบคำถามว่า “ทำไมกิจกรรมที่มาจากนายจ้างถึงอยู่บนเว็บส่วนตัว?”
+
+artifact สาธารณะยังคงเป็น **GitHub สาธารณะ + Gitea homelab ส่วนตัว** เท่านั้น นี่คือขอบเขตที่ตั้งใจไว้ ไม่ใช่ฟีเจอร์ที่ยังทำไม่เสร็จ
+
+---
+
 ## สิ่งที่ตั้งใจไม่ทำ
 
 - **Fetch ตอน Hugo build** — JSON ถูก commit แล้ว build จึง deterministic และไม่ต้องมี token
 - **Blog PAT บน homelab** — push ไปแค่ `git-activity` vendor CI เป็นคนอัปเดตบล็อก
 - **Private metadata ใน JSON สาธารณะ** — ไม่มีชื่อ repo, message หรือ branch ใน artifact contract
+- **กิจกรรม Git ของนายจ้าง** — pipeline รองรับ Git provider เพิ่มได้ทางเทคนิค แต่ artifact สาธารณะตั้งใจไม่รวม metadata ที่มาจากนายจ้าง แม้เป็นจำนวนรายวัน metadata ก็ยังสะท้อนจังหวะการทำงานได้
 
 ---
 
