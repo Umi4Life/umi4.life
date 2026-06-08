@@ -23,7 +23,7 @@
     {{- if .Site.Params.injector.body_begin -}}
       {{- .Site.Params.injector.body_begin | safeHTML -}}
     {{- end -}}
-    {{- partialCached "loader.html" . -}}
+    {{- partialCached "loader.html" . .Site.Params.preloader.icon -}}
     <div id="container">
       <div id="wrap">
         {{- partial "header.html" . -}}

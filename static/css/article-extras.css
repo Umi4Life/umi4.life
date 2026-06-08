@@ -182,3 +182,63 @@
   -webkit-line-clamp: 3;
   overflow: hidden;
 }
+
+/* ONGEKI menu / footer / loader icons — slightly larger than Reimu defaults */
+.main-nav-icon,
+.sidebar-menu-icon {
+  font-size: 28px;
+}
+
+/* PNG icons: Reimu stacks opacity on link wrap + icon (0.8 × 0.8) for font glyphs */
+.main-nav-link-wrap:has(.main-nav-icon > img) {
+  opacity: 1;
+}
+
+.main-nav-icon:has(> img) {
+  opacity: 1;
+}
+
+.sidebar-menu-icon:has(> img) {
+  opacity: 1;
+}
+
+.sidebar-menu-link-wrap.link-active:has(.sidebar-menu-icon > img) {
+  opacity: 1;
+}
+
+.main-nav-icon img,
+.sidebar-menu-icon img {
+  display: block;
+  opacity: 1;
+  filter: brightness(1.18) saturate(1.28) contrast(1.06);
+}
+
+.sidebar-menu-link-wrap.link-active .sidebar-menu-icon img {
+  filter: brightness(1.22) saturate(1.32) contrast(1.08)
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
+}
+
+.main-nav-icon::before,
+.sidebar-menu-icon::before {
+  font-size: 28px;
+}
+
+.footer-info-sep {
+  width: 28px;
+  height: 28px;
+}
+
+.sidebar-top .sidebar-top-taichi {
+  width: 54px;
+  height: 54px;
+}
+
+#loader .loading-taichi img,
+#loader .loading-taichi svg {
+  width: 220px;
+  height: 220px;
+}
+
+#loader .spinner-box .loading-word {
+  top: calc(50% + 155px);
+}

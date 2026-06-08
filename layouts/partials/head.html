@@ -71,7 +71,7 @@
 {{- end -}}
 <!-- loader -->
 {{- if .Site.Params.preloader.enable -}}
-  {{- partial "helpers/scss.html" (dict "source" "css/loader.scss" "temp" "loader.scss" "target" "css/loader.css" "ctx" .) -}}
+  {{- partialCached "helpers/scss.html" (dict "source" "css/loader.scss" "temp" "loader.scss" "target" "css/loader.css" "ctx" .) "loader-css" -}}
 {{- end -}}
 <!-- open-graph -->
 {{- if .Site.Params.open_graph.enable -}}
@@ -155,7 +155,7 @@
 {{- end -}}
 <!-- favicon use default -->
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
-{{- partial "helpers/scss.html" (dict "source" "css/main.scss" "temp" "main.scss" "target" "css/main.css" "ctx" .) -}}
+{{- partialCached "helpers/scss.html" (dict "source" "css/main.scss" "temp" "main.scss" "target" "css/main.css" "ctx" .) "main-css" -}}
 <!-- photo-swipe -->
 {{- partial "helpers/cdnCss.html" (dict "name" "photoswipe" "ctx" . "async" true) -}}
 <!-- katex -->
