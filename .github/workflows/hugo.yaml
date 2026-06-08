@@ -41,30 +41,13 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Create directory for user-specific executable files
-        run: |
-          mkdir -p "${HOME}/.local"
       - name: Install Dart Sass
-        run: |
-          archive="dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-          curl --fail --show-error --silent --location --retry 3 --retry-all-errors \
-            --output "${archive}" \
-            "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/${archive}"
-          gzip --test "${archive}"
-          tar -C "${HOME}/.local" -xf "${archive}"
-          rm "${archive}"
-          echo "${HOME}/.local/dart-sass" >> "${GITHUB_PATH}"
-      - name: Install Hugo
-        run: |
-          archive="hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
-          curl --fail --show-error --silent --location --retry 3 --retry-all-errors \
-            --output "${archive}" \
-            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${archive}"
-          gzip --test "${archive}"
-          mkdir "${HOME}/.local/hugo"
-          tar -C "${HOME}/.local/hugo" -xf "${archive}"
-          rm "${archive}"
-          echo "${HOME}/.local/hugo" >> "${GITHUB_PATH}"
+        run: npm install -g "sass@${DART_SASS_VERSION}"
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
       - name: Verify installations
         run: |
           echo "Dart Sass: $(sass --version)"
