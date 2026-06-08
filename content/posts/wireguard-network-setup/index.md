@@ -3,8 +3,8 @@ date = '2026-04-19T15:33:15+07:00'
 draft = false
 translationKey = 'wireguard-network-setup'
 title = 'WireGuard Network Setup'
-cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
-banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/wireguard-network-setup/images/client4.jpg'
+cover = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
+banner = 'https://arknightshipship.com/cdn/shop/files/ArknightsNianBean.jpg?v=1721956346'
 description = 'Self-hosted WireGuard VPN on a Vultr VPS with Proxmox subnet routing — a scalable alternative to Tailscale for sharing homelab access with friends.'
 tags = ["proxmox", "linux", "homelab", "vpn", "documentation"]
 categories = ["homelab"]
