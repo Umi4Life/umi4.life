@@ -16,7 +16,7 @@
     "title" .Title
     "date" ( .Date | time.Format $dateFormat )
     "lastmod" ( .Lastmod | time.Format $dateFormat )
-    "wordcount" ($cleanContent | $.Page.RenderString | string | countwords)
+    "wordcount" ($cleanContent | plainify | countwords)
     "url" .RelPermalink
     )
   -}}
