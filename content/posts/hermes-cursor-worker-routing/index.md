@@ -127,7 +127,7 @@ First, Cursor CLI could work as a headless coding worker.
 
 Second, using it for tiny tasks was probably silly. A one-minute worker handoff for a function GPT-5.5 can write directly in seconds is not a win.
 
-V1 was smoke data. Useful, but not enough.
+V1 was useful, but not clean enough to trust. Smoke data is still data, but it should not be promoted into folklore. Run this as an experiment, not as folklore.
 
 ## V2: a slightly less tiny task
 
@@ -274,6 +274,8 @@ The LiteLLM route worked. The worker returned visible code. It did not get stuck
 
 But it failed the same semantic edge case twice.
 
+Qwen did not fail loudly. It failed politely, which is worse for an implementation worker.
+
 The benchmark said:
 
 ```text
@@ -389,8 +391,8 @@ Cursor CLI was slower but reliable. That makes it more interesting as a parallel
 Qwen was fast and route-healthy, but failed the same semantic edge case twice. For now, it should be treated as an experimental implementation worker that needs narrower task selection or stronger GPT-5.5 review before being trusted for coding.
 ```
 
-That is enough for me.
+So the rule for now is simple: let GPT-5.5 handle tiny deterministic edits directly. Save worker delegation for tasks large enough that the handoff overhead has something to amortize against.
 
-The tiny-task routing idea is probably dead.
+No quota bonfire this time. Just boring measurements.
 
-The worker-pool idea is very much alive. See you next play.
+The tiny-task routing idea is probably dead. The worker-pool idea is very much alive.
