@@ -53,6 +53,93 @@
       || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
     if (!isIOS) return;
 
+    const showCopyDialog = (url) => {
+      const existing = document.querySelector('.ios-share-copy-dialog');
+      if (existing) existing.remove();
+
+      if (!document.querySelector('#ios-share-copy-dialog-style')) {
+        const style = document.createElement('style');
+        style.id = 'ios-share-copy-dialog-style';
+        style.textContent = `
+          .ios-share-copy-dialog {
+            align-items: center;
+            background: rgba(0, 0, 0, 0.55);
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            left: 0;
+            padding: 24px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 9999;
+          }
+          .ios-share-copy-dialog__panel {
+            background: var(--color-card, #222);
+            border-radius: 12px;
+            box-shadow: var(--shadow-card, 0 8px 24px rgba(0, 0, 0, 0.3));
+            color: var(--color-default, #fff);
+            max-width: 520px;
+            padding: 16px;
+            width: min(100%, 520px);
+          }
+          .ios-share-copy-dialog__title {
+            font-weight: 700;
+            margin-bottom: 12px;
+          }
+          .ios-share-copy-dialog__input {
+            box-sizing: border-box;
+            font: inherit;
+            margin-bottom: 12px;
+            padding: 10px;
+            width: 100%;
+          }
+          .ios-share-copy-dialog__actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+          }
+          .ios-share-copy-dialog__actions button {
+            font: inherit;
+            padding: 8px 12px;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      const dialog = document.createElement('div');
+      dialog.className = 'ios-share-copy-dialog';
+      dialog.innerHTML = `
+        <div class="ios-share-copy-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="ios-share-copy-dialog-title">
+          <div id="ios-share-copy-dialog-title" class="ios-share-copy-dialog__title">Copy this post URL</div>
+          <input class="ios-share-copy-dialog__input" type="text" readonly value="${url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" />
+          <div class="ios-share-copy-dialog__actions">
+            <button type="button" data-copy-url>Copy</button>
+            <button type="button" data-close-dialog>Close</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(dialog);
+
+      const input = dialog.querySelector('.ios-share-copy-dialog__input');
+      input.focus();
+      input.select();
+
+      dialog.querySelector('[data-copy-url]').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          dialog.remove();
+        } catch (error) {
+          input.focus();
+          input.select();
+        }
+      });
+      dialog.querySelector('[data-close-dialog]').addEventListener('click', () => dialog.remove());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.remove();
+      });
+    };
+
     document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
       // Facebook's web sharer is brittle on iOS: it can open the Facebook
       // app/browser login flow without creating a draft. On iOS, replace only
@@ -84,7 +171,7 @@
             });
           } catch (error) {
             if (error && error.name === 'AbortError') return;
-            window.prompt('Copy this post URL:', link.dataset.shareUrl);
+            showCopyDialog(link.dataset.shareUrl);
           }
           return;
         }
@@ -94,12 +181,12 @@
             await navigator.clipboard.writeText(link.dataset.shareUrl);
             alert('Post URL copied. Open Facebook and paste it into a new post.');
           } catch (error) {
-            window.prompt('Copy this post URL:', link.dataset.shareUrl);
+            showCopyDialog(link.dataset.shareUrl);
           }
           return;
         }
 
-        window.prompt('Copy this post URL:', link.dataset.shareUrl);
+        showCopyDialog(link.dataset.shareUrl);
       });
     });
   })();
