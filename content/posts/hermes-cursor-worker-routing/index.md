@@ -2,7 +2,7 @@
 date = '2026-06-12T01:20:00+07:00'
 draft = false
 translationKey = 'hermes-cursor-worker-routing'
-title = 'I Tried Using Cursor CLI and Qwen as Coding Workers for Hermes'
+title = 'I Tested Cursor CLI and Qwen as Coding Workers for Hermes'
 description = 'A small Hermes routing experiment comparing pure GPT-5.5, a Cursor CLI VM, and a Qwen worker through LiteLLM. The tiny-task result was boring; the worker-pool question was not.'
 tags = ["hermes-agent", "cursor", "qwen", "litellm", "ai-agents", "benchmark", "worker-routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
@@ -16,7 +16,7 @@ Not a magical "AI saves all tokens" kind of question. A boring operational one.
 
 If GPT-5.5 can plan and review while another agent writes code, maybe Hermes can stretch its useful work across more tasks. Or maybe the handoff overhead eats the whole benefit. The only way to find out was to measure it.
 
-So I ran three small routes through the same basic question:
+So I ran a small routing experiment with three modes:
 
 1. GPT-5.5 coding directly.
 2. GPT-5.5 orchestrating a Cursor CLI worker VM.
@@ -209,6 +209,8 @@ Here is the measured table:
 
 Do not read the quota deltas as exact token usage. The `codex-usage` meter exposes coarse percentage movement. A `0pp` movement does not mean "used zero tokens", and a `-1pp` movement does not mean "used exactly one percent".
 
+The Cursor runs showing 0pp movement are encouraging, but I would not treat them as proof of token savings because the meter is coarse and the orchestration session still consumes context.
+
 The safer reading is:
 
 - Pure GPT-5.5 moved the visible Session meter by -1pp in both measured runs.
@@ -222,7 +224,7 @@ This is useful telemetry. It is not billing data.
 
 For this task size, pure GPT-5.5 was the best path.
 
-It passed both runs on the first attempt and finished in about 24-27 seconds. Cursor also passed, but took about a minute per run. Qwen was faster than Cursor at producing code, but it failed the tests.
+It passed both runs on the first attempt and finished in about 24-27 seconds. Cursor also passed, but took about a minute per run. Qwen produced worker responses faster than Cursor, but that did not matter because both Qwen runs failed the same semantic edge case.
 
 If the task is small and self-contained, the routing overhead dominates. Just let GPT-5.5 do it.
 
@@ -268,7 +270,7 @@ That is the architecture I care about now.
 
 Qwen's result was more nuanced.
 
-The LiteLLM route worked. The worker returned visible code. It did not get stuck in hidden reasoning. It was also much faster than Cursor at producing an implementation attempt.
+The LiteLLM route worked. The worker returned visible code. It did not get stuck in hidden reasoning. Qwen produced worker responses faster than Cursor, but that did not matter because both Qwen runs failed the same semantic edge case.
 
 But it failed the same semantic edge case twice.
 
@@ -380,10 +382,11 @@ It also does not measure exact tokens or exact cost. The quota meter is coarse, 
 The only honest conclusion is narrower:
 
 ```text
-For this small deterministic coding task, pure GPT-5.5 was fastest.
-Cursor CLI VM was slower but reliable.
-Qwen was fast and route-healthy but failed the same edge case twice.
-The Cursor result makes parallel worker lanes worth exploring.
+For this small deterministic coding task, pure GPT-5.5 was the best route.
+
+Cursor CLI was slower but reliable. That makes it more interesting as a parallel worker lane than as a tiny-task accelerator.
+
+Qwen was fast and route-healthy, but failed the same semantic edge case twice. For now, it should be treated as an experimental implementation worker that needs narrower task selection or stronger GPT-5.5 review before being trusted for coding.
 ```
 
 That is enough for me.
