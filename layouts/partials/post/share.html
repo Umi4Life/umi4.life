@@ -48,17 +48,25 @@
 
 <script>
   (() => {
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (!isMobile) return;
+    const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+    if (!isIOS) return;
 
     document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
-      // Facebook's web sharer is brittle on mobile: it can open the Facebook
-      // app/browser login flow without creating a draft. On mobile, never make
-      // the visible/long-press URL point at facebook.com/sharer; expose the
-      // actual article URL instead.
+      // Facebook's web sharer is brittle on iOS: it can open the Facebook
+      // app/browser login flow without creating a draft. On iOS, replace only
+      // the Facebook slot with a generic share action. Android and desktop keep
+      // the normal Facebook sharer because we do not have evidence they fail.
       link.href = link.dataset.shareUrl;
+      link.title = 'Share this post';
+      link.setAttribute('aria-label', 'Share this post');
       link.removeAttribute('target');
       link.removeAttribute('rel');
+
+      const icon = link.querySelector('.share-icon');
+      if (icon) {
+        icon.classList.remove('icon', 'icon-facebook');
+        icon.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M20 16v4H4v-4"></path></svg>';
+      }
 
       link.addEventListener('click', async (event) => {
         if (typeof navigator.share === 'function') {
