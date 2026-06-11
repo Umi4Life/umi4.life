@@ -53,6 +53,29 @@
       || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
     if (!isIOS) return;
 
+    const getLocalizedText = (config, defaultText) => {
+      if (typeof config === 'string') return config;
+      if (typeof config === 'object' && config) {
+        const lang = document.documentElement.lang.toLowerCase();
+        const key = Object.keys(config).find((k) => k.toLowerCase() === lang);
+        if (key && config[key]) return config[key];
+      }
+      return defaultText;
+    };
+
+    const showCopyTooltip = (success) => {
+      const tooltip = document.querySelector('#copy-tooltip');
+      if (!tooltip) return;
+      const clipboardConfig = window.siteConfig && window.siteConfig.clipboard;
+      tooltip.innerText = success
+        ? getLocalizedText(clipboardConfig && clipboardConfig.success, 'Copy successfully (*^▽^*)')
+        : getLocalizedText(clipboardConfig && clipboardConfig.fail, 'Copy failed (ﾟ⊿ﾟ)ﾂ');
+      tooltip.style.opacity = '1';
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+      }, 1000);
+    };
+
     const showCopyDialog = (url) => {
       const existing = document.querySelector('.ios-share-copy-dialog');
       if (existing) existing.remove();
@@ -128,7 +151,7 @@
 
       copyButton.addEventListener('click', async () => {
         const setCopied = () => {
-          copyButton.textContent = 'Copied';
+          showCopyTooltip(true);
           setTimeout(() => dialog.remove(), 600);
         };
 
@@ -155,6 +178,7 @@
           // Ignore and leave the selected readonly URL visible for manual copy.
         }
 
+        showCopyTooltip(false);
         copyButton.textContent = 'Select URL';
       });
       dialog.querySelector('[data-close-dialog]').addEventListener('click', () => dialog.remove());
@@ -202,7 +226,7 @@
         if (navigator.clipboard && window.isSecureContext) {
           try {
             await navigator.clipboard.writeText(link.dataset.shareUrl);
-            alert('Post URL copied. Open Facebook and paste it into a new post.');
+            showCopyTooltip(true);
           } catch (error) {
             showCopyDialog(link.dataset.shareUrl);
           }
