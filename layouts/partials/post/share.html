@@ -52,6 +52,14 @@
     if (!isMobile || !navigator.share) return;
 
     document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
+      const fallbackHref = link.href;
+
+      // If native sharing is available, make long-press/copy-link expose the
+      // real article URL instead of Facebook's brittle mobile web sharer.
+      link.href = link.dataset.shareUrl;
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+
       link.addEventListener('click', async (event) => {
         event.preventDefault();
         try {
@@ -62,7 +70,7 @@
           });
         } catch (error) {
           if (error && error.name === 'AbortError') return;
-          window.open(link.href, '_blank', 'noopener,noreferrer');
+          window.open(fallbackHref, '_blank', 'noopener,noreferrer');
         }
       });
     });
