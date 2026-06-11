@@ -71,8 +71,11 @@
       }
 
       link.addEventListener('click', async (event) => {
+        // Do not navigate to the production permalink when this fallback runs
+        // from an insecure LAN preview or an in-app browser without Web Share.
+        event.preventDefault();
+
         if (typeof navigator.share === 'function') {
-          event.preventDefault();
           try {
             await navigator.share({
               title: link.dataset.shareTitle,
@@ -81,20 +84,22 @@
             });
           } catch (error) {
             if (error && error.name === 'AbortError') return;
-            window.location.href = link.dataset.shareUrl;
+            window.prompt('Copy this post URL:', link.dataset.shareUrl);
           }
           return;
         }
 
         if (navigator.clipboard && window.isSecureContext) {
-          event.preventDefault();
           try {
             await navigator.clipboard.writeText(link.dataset.shareUrl);
             alert('Post URL copied. Open Facebook and paste it into a new post.');
           } catch (error) {
-            window.location.href = link.dataset.shareUrl;
+            window.prompt('Copy this post URL:', link.dataset.shareUrl);
           }
+          return;
         }
+
+        window.prompt('Copy this post URL:', link.dataset.shareUrl);
       });
     });
   })();
