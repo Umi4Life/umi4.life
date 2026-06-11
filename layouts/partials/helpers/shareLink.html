@@ -1,0 +1,28 @@
+{{- $url := .Permalink -}}
+{{- $title := .Title -}}
+{{- $source := .Site.BaseURL -}}
+{{- $desc := "" -}}
+{{- if .Params.description -}}
+  {{- $desc = .Params.description | plainify | truncate 300 -}}
+{{- else if .Summary -}}
+  {{- $desc = .Summary  | plainify | truncate 300 -}}
+{{- else -}}
+  {{- $desc = .RawContent | truncate 300 -}}
+{{- end -}}
+
+{{- $encodedURL := $url | urlquery -}}
+{{- $encodedTitle := $title | urlquery -}}
+{{- $encodedSource := $source | urlquery -}}
+{{- $encodedDesc := $desc | urlquery -}}
+
+{{- $shareMap := dict
+  "weibo" (printf "https://service.weibo.com/share/share.php?url=%s&appkey=&title=%s&pic=&ralateUid=" $encodedURL $encodedTitle)
+  "facebook" (printf "https://www.facebook.com/sharer/sharer.php?u=%s" $encodedURL)
+  "twitter" (printf "https://twitter.com/intent/tweet?url=%s&text=%s&via=%s" $encodedURL $encodedTitle $encodedSource)
+  "linkedin" (printf "https://www.linkedin.com/shareArticle?url=%s&title=%s&summary=%s&mini=true&ro=true" $encodedURL $encodedTitle $encodedDesc)
+  "reddit" (printf "https://www.reddit.com/submit?url=%s&title=%s" $encodedURL $encodedTitle)
+  "qq" (printf "https://connect.qq.com/widget/shareqq/index.html?url=%s&title=%s&desc=%s&source=%s" $encodedURL $encodedTitle $encodedDesc $encodedSource)
+  "weixin" ("javascript:;" | safeURL)  
+-}}
+
+{{- return $shareMap -}}
