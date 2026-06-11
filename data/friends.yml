@@ -1,3 +1,8 @@
+- name: P-AM
+  url: https://www.facebook.com/praditamusement
+  desc: "The fun is yours."
+  image: https://unavatar.io/facebook/praditamusement
+
 - name: realStepdog
   url: https://x.com/realStepdog
   desc: X / Twitter
@@ -12,6 +17,16 @@
   url: https://github.com/Curfewshino
   desc: A random guy who wanna be a software engineer or automation engineer in thailand
   image: https://avatars.githubusercontent.com/u/100069205?v=4
+
+- name: SaltyAom
+  url: https://github.com/saltyaom
+  desc: GitHub
+  image: https://avatars.githubusercontent.com/u/35027979?v=4
+
+- name: Phumrapee Limpianchop
+  url: https://github.com/rayriffy
+  desc: GitHub
+  image: https://avatars.githubusercontent.com/u/22584594?v=4
 
 - name: DJkevinadam
   url: https://x.com/DJkevinadam
