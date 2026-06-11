@@ -122,17 +122,40 @@
       document.body.appendChild(dialog);
 
       const input = dialog.querySelector('.ios-share-copy-dialog__input');
-      input.focus();
-      input.select();
+      const copyButton = dialog.querySelector('[data-copy-url]');
+      const closeButton = dialog.querySelector('[data-close-dialog]');
+      closeButton.focus();
 
-      dialog.querySelector('[data-copy-url]').addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(url);
-          dialog.remove();
-        } catch (error) {
-          input.focus();
-          input.select();
+      copyButton.addEventListener('click', async () => {
+        const setCopied = () => {
+          copyButton.textContent = 'Copied';
+          setTimeout(() => dialog.remove(), 600);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(url);
+            setCopied();
+            return;
+          } catch (error) {
+            // Fall through to the selection-based copy path below.
+          }
         }
+
+        input.focus();
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+
+        try {
+          if (document.execCommand('copy')) {
+            setCopied();
+            return;
+          }
+        } catch (error) {
+          // Ignore and leave the selected readonly URL visible for manual copy.
+        }
+
+        copyButton.textContent = 'Select URL';
       });
       dialog.querySelector('[data-close-dialog]').addEventListener('click', () => dialog.remove());
       dialog.addEventListener('click', (event) => {
