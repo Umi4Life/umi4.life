@@ -194,6 +194,8 @@ Qwen was also healthy at the route level:
 
 That last field matters. Earlier local model experiments had a failure mode where the model spent all its budget in hidden reasoning and returned no visible code. This time Qwen produced visible output cleanly.
 
+This was the little Kamen Rider Build moment of the run: the bottles were shaken, the worker routes answered `pong`, and the subtitle might as well have been, "Now, let's begin the experiment." Dramatic pose optional; checksums mandatory.
+
 ## Results
 
 Here is the measured table:
