@@ -1,0 +1,70 @@
+{{- $shareMap := partial "helpers/shareLink.html" . -}}
+{{- $shareDesc := "" -}}
+{{- if .Params.description -}}
+  {{- $shareDesc = .Params.description | plainify | truncate 300 -}}
+{{- else if .Summary -}}
+  {{- $shareDesc = .Summary | plainify | truncate 300 -}}
+{{- else -}}
+  {{- $shareDesc = .RawContent | truncate 300 -}}
+{{- end -}}
+
+<div class="share-wrapper">
+  {{- range $share := .Site.Params.share -}}
+    <a
+      href="{{ index $shareMap $share }}"
+      {{ if not (eq $share "weixin") }}target="_blank" rel="noopener noreferrer"{{ end }}
+      title="{{ $.Title }}"
+      {{- if eq $share "facebook" }}
+        data-native-share="facebook"
+        data-share-url="{{ $.Permalink }}"
+        data-share-title="{{ $.Title }}"
+        data-share-text="{{ $shareDesc }}"
+      {{- end -}}
+    >
+      <div class="share-icon icon icon-{{ $share }}">
+        {{- if eq $share "weixin" -}}
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner">
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hugo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+        {{- end -}}
+      </div>
+    </a>
+  {{- end -}}
+</div>
+
+<script>
+  (() => {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile || !navigator.share) return;
+
+    document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
+      link.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try {
+          await navigator.share({
+            title: link.dataset.shareTitle,
+            text: link.dataset.shareText,
+            url: link.dataset.shareUrl,
+          });
+        } catch (error) {
+          if (error && error.name === 'AbortError') return;
+          window.open(link.href, '_blank', 'noopener,noreferrer');
+        }
+      });
+    });
+  })();
+</script>
