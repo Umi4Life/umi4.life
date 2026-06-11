@@ -48,21 +48,168 @@
 
 <script>
   (() => {
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (!isMobile) return;
+    const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+      || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+    if (!isIOS) return;
+
+    const getLocalizedText = (config, defaultText) => {
+      if (typeof config === 'string') return config;
+      if (typeof config === 'object' && config) {
+        const lang = document.documentElement.lang.toLowerCase();
+        const key = Object.keys(config).find((k) => k.toLowerCase() === lang);
+        if (key && config[key]) return config[key];
+      }
+      return defaultText;
+    };
+
+    const showCopyTooltip = (success) => {
+      const tooltip = document.querySelector('#copy-tooltip');
+      if (!tooltip) return;
+      const clipboardConfig = window.siteConfig && window.siteConfig.clipboard;
+      tooltip.innerText = success
+        ? getLocalizedText(clipboardConfig && clipboardConfig.success, 'Copy successfully (*^▽^*)')
+        : getLocalizedText(clipboardConfig && clipboardConfig.fail, 'Copy failed (ﾟ⊿ﾟ)ﾂ');
+      tooltip.style.opacity = '1';
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+      }, 1000);
+    };
+
+    const showCopyDialog = (url) => {
+      const existing = document.querySelector('.ios-share-copy-dialog');
+      if (existing) existing.remove();
+
+      if (!document.querySelector('#ios-share-copy-dialog-style')) {
+        const style = document.createElement('style');
+        style.id = 'ios-share-copy-dialog-style';
+        style.textContent = `
+          .ios-share-copy-dialog {
+            align-items: center;
+            background: rgba(0, 0, 0, 0.55);
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            left: 0;
+            padding: 24px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 9999;
+          }
+          .ios-share-copy-dialog__panel {
+            background: var(--color-card, #222);
+            border-radius: 12px;
+            box-shadow: var(--shadow-card, 0 8px 24px rgba(0, 0, 0, 0.3));
+            color: var(--color-default, #fff);
+            max-width: 520px;
+            padding: 16px;
+            width: min(100%, 520px);
+          }
+          .ios-share-copy-dialog__title {
+            font-weight: 700;
+            margin-bottom: 12px;
+          }
+          .ios-share-copy-dialog__input {
+            box-sizing: border-box;
+            font: inherit;
+            margin-bottom: 12px;
+            padding: 10px;
+            width: 100%;
+          }
+          .ios-share-copy-dialog__actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+          }
+          .ios-share-copy-dialog__actions button {
+            font: inherit;
+            padding: 8px 12px;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      const dialog = document.createElement('div');
+      dialog.className = 'ios-share-copy-dialog';
+      dialog.innerHTML = `
+        <div class="ios-share-copy-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="ios-share-copy-dialog-title">
+          <div id="ios-share-copy-dialog-title" class="ios-share-copy-dialog__title">Copy this post URL</div>
+          <input class="ios-share-copy-dialog__input" type="text" readonly value="${url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" />
+          <div class="ios-share-copy-dialog__actions">
+            <button type="button" data-copy-url>Copy</button>
+            <button type="button" data-close-dialog>Close</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(dialog);
+
+      const input = dialog.querySelector('.ios-share-copy-dialog__input');
+      const copyButton = dialog.querySelector('[data-copy-url]');
+      const closeButton = dialog.querySelector('[data-close-dialog]');
+      closeButton.focus();
+
+      copyButton.addEventListener('click', async () => {
+        const setCopied = () => {
+          showCopyTooltip(true);
+          setTimeout(() => dialog.remove(), 600);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(url);
+            setCopied();
+            return;
+          } catch (error) {
+            // Fall through to the selection-based copy path below.
+          }
+        }
+
+        input.focus();
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+
+        try {
+          if (document.execCommand('copy')) {
+            setCopied();
+            return;
+          }
+        } catch (error) {
+          // Ignore and leave the selected readonly URL visible for manual copy.
+        }
+
+        showCopyTooltip(false);
+        copyButton.textContent = 'Select URL';
+      });
+      dialog.querySelector('[data-close-dialog]').addEventListener('click', () => dialog.remove());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.remove();
+      });
+    };
 
     document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
-      // Facebook's web sharer is brittle on mobile: it can open the Facebook
-      // app/browser login flow without creating a draft. On mobile, never make
-      // the visible/long-press URL point at facebook.com/sharer; expose the
-      // actual article URL instead.
+      // Facebook's web sharer is brittle on iOS: it can open the Facebook
+      // app/browser login flow without creating a draft. On iOS, replace only
+      // the Facebook slot with a generic share action. Android and desktop keep
+      // the normal Facebook sharer because we do not have evidence they fail.
       link.href = link.dataset.shareUrl;
+      link.title = 'Share this post';
+      link.setAttribute('aria-label', 'Share this post');
       link.removeAttribute('target');
       link.removeAttribute('rel');
 
+      const icon = link.querySelector('.share-icon');
+      if (icon) {
+        icon.classList.remove('icon', 'icon-facebook');
+        icon.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"></path><path d="M7 9l5-5 5 5"></path><path d="M20 16v4H4v-4"></path></svg>';
+      }
+
       link.addEventListener('click', async (event) => {
+        // Do not navigate to the production permalink when this fallback runs
+        // from an insecure LAN preview or an in-app browser without Web Share.
+        event.preventDefault();
+
         if (typeof navigator.share === 'function') {
-          event.preventDefault();
           try {
             await navigator.share({
               title: link.dataset.shareTitle,
@@ -71,20 +218,22 @@
             });
           } catch (error) {
             if (error && error.name === 'AbortError') return;
-            window.location.href = link.dataset.shareUrl;
+            showCopyDialog(link.dataset.shareUrl);
           }
           return;
         }
 
         if (navigator.clipboard && window.isSecureContext) {
-          event.preventDefault();
           try {
             await navigator.clipboard.writeText(link.dataset.shareUrl);
-            alert('Post URL copied. Open Facebook and paste it into a new post.');
+            showCopyTooltip(true);
           } catch (error) {
-            window.location.href = link.dataset.shareUrl;
+            showCopyDialog(link.dataset.shareUrl);
           }
+          return;
         }
+
+        showCopyDialog(link.dataset.shareUrl);
       });
     });
   })();
