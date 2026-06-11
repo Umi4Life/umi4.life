@@ -49,28 +49,41 @@
 <script>
   (() => {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (!isMobile || !navigator.share) return;
+    if (!isMobile) return;
 
     document.querySelectorAll('[data-native-share="facebook"]').forEach((link) => {
-      const fallbackHref = link.href;
-
-      // If native sharing is available, make long-press/copy-link expose the
-      // real article URL instead of Facebook's brittle mobile web sharer.
+      // Facebook's web sharer is brittle on mobile: it can open the Facebook
+      // app/browser login flow without creating a draft. On mobile, never make
+      // the visible/long-press URL point at facebook.com/sharer; expose the
+      // actual article URL instead.
       link.href = link.dataset.shareUrl;
       link.removeAttribute('target');
       link.removeAttribute('rel');
 
       link.addEventListener('click', async (event) => {
-        event.preventDefault();
-        try {
-          await navigator.share({
-            title: link.dataset.shareTitle,
-            text: link.dataset.shareText,
-            url: link.dataset.shareUrl,
-          });
-        } catch (error) {
-          if (error && error.name === 'AbortError') return;
-          window.open(fallbackHref, '_blank', 'noopener,noreferrer');
+        if (typeof navigator.share === 'function') {
+          event.preventDefault();
+          try {
+            await navigator.share({
+              title: link.dataset.shareTitle,
+              text: link.dataset.shareText,
+              url: link.dataset.shareUrl,
+            });
+          } catch (error) {
+            if (error && error.name === 'AbortError') return;
+            window.location.href = link.dataset.shareUrl;
+          }
+          return;
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+          event.preventDefault();
+          try {
+            await navigator.clipboard.writeText(link.dataset.shareUrl);
+            alert('Post URL copied. Open Facebook and paste it into a new post.');
+          } catch (error) {
+            window.location.href = link.dataset.shareUrl;
+          }
         }
       });
     });
