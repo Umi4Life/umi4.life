@@ -60,12 +60,18 @@
 .article-entry .table-wrapper table,
 .article-entry > table {
   display: table;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
+  width: max-content !important;
+  max-width: none !important;
+  min-width: 100% !important;
   border-collapse: collapse;
   border-spacing: 0;
-  table-layout: fixed;
+  table-layout: auto;
+}
+
+/* Before Reimu's client-side wrapper runs, let direct markdown tables scroll too. */
+.article-entry > table {
+  display: block;
+  overflow-x: auto;
 }
 
 .article-entry .table-wrapper thead,
@@ -91,10 +97,10 @@
   padding: 8px 12px;
   vertical-align: top;
   text-align: left;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  hyphens: auto;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
   border-bottom: 1px solid var(--color-border, rgba(128, 128, 128, 0.35));
 }
 
@@ -104,12 +110,12 @@
   border-bottom-width: 3px;
 }
 
-/* Narrow label column when tables have 3+ columns */
+/* Keep multi-column data tables readable: scroll horizontally instead of squeezing cells into vertical text. */
 .article-entry .table-wrapper table:has(thead tr > *:nth-child(3)) th:first-child,
 .article-entry .table-wrapper table:has(thead tr > *:nth-child(3)) td:first-child,
 .article-entry > table:has(thead tr > *:nth-child(3)) th:first-child,
 .article-entry > table:has(thead tr > *:nth-child(3)) td:first-child {
-  width: 22%;
+  width: auto;
 }
 
 /* Respect markdown align-right (e.g. |---:|) */
