@@ -16,6 +16,8 @@ Not a magical "AI saves all tokens" kind of question. A boring operational one.
 
 If GPT-5.5 can plan and review while another agent writes code, maybe Hermes can stretch its useful work across more tasks. Or maybe the handoff overhead eats the whole benefit. The only way to find out was to measure it.
 
+The version I actually care about is not "one worker makes one tiny edit faster." That is the least interesting form of delegation. The spicy version is a small worker pool: Hermes splits a project into clean lanes, multiple Cursor VMs work at the same time, and GPT-5.5 spends its expensive attention on planning, review, and repair instead of typing every file itself.
+
 So I ran a small routing experiment with three modes:
 
 1. GPT-5.5 coding directly.
@@ -254,7 +256,7 @@ Can I run multiple Cursor CLI VMs as parallel implementation lanes?
 
 That is much more interesting.
 
-A one-minute handoff is bad if there is only one small task. But if Hermes can split a larger project into independent chunks, three Cursor workers can run at the same time:
+A one-minute handoff is bad if there is only one small task. But if Hermes can split a larger project into independent chunks, the handoff cost stops being a toll booth and starts looking more like worker startup time. Three Cursor workers can run at the same time:
 
 ```text
 cursor-cli-vm-1 -> backend endpoint
@@ -267,6 +269,27 @@ Hermes stays in the role it is good at: decomposition, prompts, acceptance crite
 The workers do the typing. Tiny orange-and-white drone squad energy, but with tests instead of vibes.
 
 That is the architecture I care about now.
+
+The win condition is not that a Cursor VM beats GPT-5.5 in a straight sprint. It probably will not, at least not on small tasks. The win condition is that two or three reliable Cursor lanes finish independent chunks while Hermes keeps the global state in one place:
+
+```text
+Hermes:
+  write the task graph
+  freeze tests and acceptance criteria
+  assign independent lanes
+  review diffs
+  run integration tests
+  merge or reject
+
+Cursor VM pool:
+  implement lane A
+  implement lane B
+  implement lane C
+```
+
+That changes the economics. A single slow worker is a curiosity. A pool of slow-but-reliable workers can turn wall-clock time into the thing being optimized, while the expensive orchestrator spends fewer turns on repetitive implementation detail. That is the operator dream: not "AI magic," just a boring little build farm for code edits.
+
+There are obvious traps. The lanes have to be genuinely independent. The tests have to be strong enough to catch local mistakes. Hermes has to own the final integration pass, because three green worker branches can still combine into one very silly red build. But those are engineering problems, not reasons to ignore the shape.
 
 ## Qwen was healthy, but not good enough for this task
 
@@ -350,6 +373,8 @@ The Cursor result is the one I keep thinking about. Not because it was fast. It 
 
 Instead of trying to make one agent faster, maybe the better move is to make Hermes better at assigning work to many slower-but-reliable workers.
 
+That is a very homelab-shaped bet. Do not buy one giant mythical worker. Rack a few boring ones, give each a narrow job, and make the supervisor ruthless about tests.
+
 ## What I would test next
 
 The next experiment should not be another tiny function.
@@ -377,6 +402,8 @@ Measure:
 
 That last metric is subjective, but important. A system that saves quota while making the human babysit five agents is not a good system.
 
+The test I want is not "can three Cursor VMs look busy?" Busy workers are easy. The useful test is whether Hermes can keep the work coordinated without turning review into a tiny distributed-systems incident. If the parallel run cuts wall-clock time, keeps repairs low, and does not bury the operator in merge noise, then the worker-pool idea graduates from cute lab trick to infrastructure candidate.
+
 ## Caveats
 
 This was a small benchmark. It does not prove Cursor is always worth using. It does not prove Qwen is bad. It does not prove GPT-5.5 is always better.
@@ -397,4 +424,6 @@ So the rule for now is simple: let GPT-5.5 handle tiny deterministic edits direc
 
 No quota bonfire this time. Just boring measurements.
 
-The tiny-task routing idea is probably dead. The worker-pool idea is very much alive.
+The tiny-task routing idea is probably dead. The worker-pool idea is very much alive. Cursor did not prove that delegation is faster by itself. It proved something more useful: a headless Cursor VM can be reliable enough to deserve a lane in a parallel run.
+
+That is the next chart I want to write.
