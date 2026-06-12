@@ -206,11 +206,11 @@ Here is the measured table:
 | Run | Mode | Result | Session delta | Weekly delta | Wall time | Implementation/helper time | Attempts | Repairs |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | A1 | Pure GPT-5.5 | PASS | -1pp | -1pp | 27.099s | 27.063s | 1 | 0 |
+| A2 | Pure GPT-5.5 | PASS | -1pp | 0pp | 24.228s | 24.194s | 1 | 0 |
 | B1 | Cursor CLI VM | PASS | 0pp | 0pp | 65.654s | 58.802s | 1 | 0 |
+| B2 | Cursor CLI VM | PASS | 0pp | 0pp | 63.941s | 57.134s | 1 | 0 |
 | C1 | Qwen worker | FAIL | -1pp | 0pp | 55.490s | 14.340s + 14.792s repair | 2 | 1 |
 | C2 | Qwen worker | FAIL | 0pp | 0pp | 29.212s | 14.322s + 14.816s repair | 2 | 1 |
-| B2 | Cursor CLI VM | PASS | 0pp | 0pp | 63.941s | 57.134s | 1 | 0 |
-| A2 | Pure GPT-5.5 | PASS | -1pp | 0pp | 24.228s | 24.194s | 1 | 0 |
 
 Do not read the quota deltas as exact token usage. The `codex-usage` meter exposes coarse percentage movement. A `0pp` movement does not mean "used zero tokens", and a `-1pp` movement does not mean "used exactly one percent".
 
