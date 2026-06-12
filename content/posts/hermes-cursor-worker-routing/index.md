@@ -410,20 +410,55 @@ This was a small benchmark. It does not prove Cursor is always worth using. It d
 
 It also does not measure exact tokens or exact cost. The quota meter is coarse, and the active Hermes session still spends tokens on orchestration, tool calls, logs, and reports.
 
-The only honest conclusion is narrower:
+## Conclusion
+
+For tiny tasks, Cursor CLI VM is impractical as a latency optimization. That is the boring conclusion, and it matters. If the job is a small deterministic edit, GPT-5.5 should usually just do it directly.
+
+But that is not the interesting conclusion from this experiment.
+
+The important signal is this:
 
 ```text
-For this small deterministic coding task, pure GPT-5.5 was the best route.
-
-Cursor CLI was slower but reliable. That makes it more interesting as a parallel worker lane than as a tiny-task accelerator.
-
-Qwen was fast and route-healthy, but failed the same semantic edge case twice. For now, it should be treated as an experimental implementation worker that needs narrower task selection or stronger GPT-5.5 review before being trusted for coding.
+Cursor CLI VM passed deterministic tests twice, first try, with no GPT patching.
 ```
 
-So the rule for now is simple: let GPT-5.5 handle tiny deterministic edits directly. Save worker delegation for tasks large enough that the handoff overhead has something to amortize against.
+That changes how I read the result. Cursor was not a faster replacement for GPT-5.5 on a small task. It was evidence for something more useful: a reliable parallel implementation worker.
+
+In other words, the path worth testing is not:
+
+```text
+GPT-5.5 vs one Cursor VM
+```
+
+It is:
+
+```text
+GPT-5.5 orchestrator
+  -> cursor-cli-vm-1 handles one independent slice
+  -> cursor-cli-vm-2 handles another independent slice
+  -> cursor-cli-vm-3 handles a third independent slice
+  -> Hermes reviews, tests, repairs, and integrates
+```
+
+That is where the one-minute handoff can make sense. Not because one worker is magically fast, but because several reliable workers can spend that minute at the same time. The experiment did not prove the pool works yet. It showed that Cursor is plausible enough to deserve a real pool test.
+
+Qwen's result points the other way for now. The route was healthy and fast, but it failed the same semantic edge case twice. I would still use it for narrower helper work, summaries, extraction, or draft implementations with GPT-5.5 review. I would not yet trust it as a primary coding lane for edge-case-heavy tasks.
+
+So the rule for now is simple:
+
+```text
+Small, bounded edit:
+  use GPT-5.5 directly
+
+Parallelizable project with strong tests:
+  try multiple Cursor CLI VMs as implementation lanes
+
+Local-model helper work:
+  use Qwen, but keep the task narrow and verify hard
+```
 
 No quota bonfire this time. Just boring measurements.
 
-The tiny-task routing idea is probably dead. The worker-pool idea is very much alive. Cursor did not prove that delegation is faster by itself. It proved something more useful: a headless Cursor VM can be reliable enough to deserve a lane in a parallel run.
+The tiny-task routing idea is probably dead. The multi-Cursor worker-pool idea is very much alive.
 
 That is the next chart I want to write.
