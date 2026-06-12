@@ -6,6 +6,8 @@ title = 'I Tested Cursor CLI and Qwen as Coding Workers for Hermes'
 description = 'A small Hermes routing experiment comparing pure GPT-5.5, a Cursor CLI VM, and a Qwen worker through LiteLLM. The tiny-task result was boring; the worker-pool question was not.'
 tags = ["hermes-agent", "cursor", "qwen", "litellm", "ai-agents", "benchmark", "worker-routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
+cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/static/images/hermes-cursor-worker-routing/kamen-rider-build-experiment.png'
+banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/static/images/hermes-cursor-worker-routing/kamen-rider-build-experiment.png'
 mermaid = false
 weight = 2
 +++
