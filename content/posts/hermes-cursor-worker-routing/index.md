@@ -178,7 +178,6 @@ Cursor was healthy and pinned to the right model:
 ```text
 CLI Version         2026.06.11-03-15-00-241fc09
 Model               Composer 2.5
-Subscription Tier   Enterprise
 pong
 ```
 
