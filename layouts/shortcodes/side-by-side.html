@@ -1,0 +1,4 @@
+<div style="display:flex; gap:1rem; justify-content:center; align-items:flex-start;">
+  <img src="{{ .Get "src1" }}" alt="{{ .Get "alt1" }}" style="width:{{ with .Get "width" }}{{ . }}{{ else }}48%{{ end }}; height:auto; border-radius:inherit;">
+  <img src="{{ .Get "src2" }}" alt="{{ .Get "alt2" }}" style="width:{{ with .Get "width" }}{{ . }}{{ else }}48%{{ end }}; height:auto; border-radius:inherit;">
+</div>

@@ -1,6 +1,6 @@
 +++
 date = '2026-06-19T16:20:00+07:00'
-draft = true
+draft = false
 translationKey = 'queue-reminiscence-agent-worker-rails'
 title = 'Queue Reminiscence: Testing Agent-Worker Rails with a Queue Board'
 description = 'A real arcade queue-board MVP became the test fixture for a Hermes worker-fleet experiment: Discord-only control, VM coding workers, PR-sized lanes, and the operating policy that kept the drones useful.'
@@ -211,19 +211,25 @@ When it worked, it worked well. Phases could split into PR-sized lanes: public r
 
 That last verb matters. The workflow was not "let the drones merge code into main while everyone claps." The mobile GitHub review view shows the human side of the loop: an open PR, files changed, the `Review` control, and actual code diff inspection from a phone. Tiny screen, real gate.
 
-![Mobile GitHub screenshot showing the Phase 4 auth/RBAC PR open in the Files changed view, with the Review control visible and a TypeScript diff under inspection.](evidence/mobile-github-pr-review-diff.jpeg)
+{{< side-by-side width="360"
+  src1="evidence/mobile-github-pr-review-diff.jpeg"
+  alt1="Mobile GitHub screenshot showing the Phase 4 auth/RBAC PR open in the Files changed view, with the Review control visible and a TypeScript diff under inspection."
+  src2="evidence/mobile-github-pr-review-summary.jpeg"
+  alt2="Mobile GitHub screenshot showing the Phase 4 auth/RBAC PR summary, test verification, and note that Cursor workers implemented the slice while Sky Feather reviewed and verified locally."
+>}}
 
 The matching PR summary shows the implementation note and verification block: Cursor workers A/B implemented the auth/RBAC slice, then Sky Feather reviewed and verified it locally before the human merge path. That is the division of labor I want from this system.
 
-![Mobile GitHub screenshot showing the Phase 4 auth/RBAC PR summary, test verification, and note that Cursor workers implemented the slice while Sky Feather reviewed and verified locally.](evidence/mobile-github-pr-review-summary.jpeg)
-
 And the PR trail is visible. The closed pull request page shows 44 closed PRs, with the visible page running from Phase 14 closure back through Phase 7/9 work. Most of them are authored by `sky-feather`: docs, features, fixes, Docker, E2E, admin UI, public UI, QR, display-state, rate limiting, and audit metadata.
 
-![GitHub closed pull request list showing the Queue Reminiscence PR train, including PR #44 through #20, mostly authored by sky-feather.](evidence/github-closed-pr-list.png)
+{{< side-by-side 
+  src1="evidence/github-closed-pr-list.png" width="360"
+  alt1="GitHub closed pull request list showing the Queue Reminiscence PR train, including PR #44 through #20, mostly authored by sky-feather."
+  src2="evidence/github-pr-25-detail.png" height="500"
+  alt2="GitHub PR #25 detail page showing the merged QR SVG endpoint PR, summary, verification, and merge activity."
+>}}
 
 One representative PR is #25, `feat: add QR SVG endpoint for public access URLs`. It was merged from `sky-feather:phase9-qr-svg` into `main`, with a summary that names the endpoint and verification: `bun run check` returning 188 passing tests at that phase. Tiny lane, clear artifact, merged result. That is the worker-pool unit of progress.
-
-![GitHub PR #25 detail page showing the merged QR SVG endpoint PR, summary, verification, and merge activity.](evidence/github-pr-25-detail.png)
 
 When it did not work, the failure was usually not "the model cannot code." It was orchestration glue.
 
@@ -380,6 +386,7 @@ The spicy version is building enough automation around that loop that the contro
 
 But for now, the clean version is enough.
 
-Queue Reminiscence shipped. The queue board works. The worker fleet learned where its rails need to be.
+Queue Reminiscence shipped. The queue board works. The worker fleet learned where its rails need to be.    
+https://github.com/Umi4Life/reminiscence
 
 See you next play.
