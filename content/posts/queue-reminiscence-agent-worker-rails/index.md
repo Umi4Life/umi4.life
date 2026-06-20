@@ -222,10 +222,10 @@ The matching PR summary shows the implementation note and verification block: Cu
 
 And the PR trail is visible. The closed pull request page shows 44 closed PRs, with the visible page running from Phase 14 closure back through Phase 7/9 work. Most of them are authored by `sky-feather`: docs, features, fixes, Docker, E2E, admin UI, public UI, QR, display-state, rate limiting, and audit metadata.
 
-{{< side-by-side 
-  src1="evidence/github-closed-pr-list.png" width="360"
+{{< side-by-side width="360"
+  src1="evidence/github-closed-pr-list.png" 
   alt1="GitHub closed pull request list showing the Queue Reminiscence PR train, including PR #44 through #20, mostly authored by sky-feather."
-  src2="evidence/github-pr-25-detail.png" height="500"
+  src2="evidence/github-pr-25-detail.png"
   alt2="GitHub PR #25 detail page showing the merged QR SVG endpoint PR, summary, verification, and merge activity."
 >}}
 
