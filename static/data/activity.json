@@ -1,11 +1,5 @@
 [
   {
-    "date": "2025-06-28",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
     "date": "2025-06-29",
     "github": 0,
     "private": 0,
@@ -2188,5 +2182,11 @@
     "github": 3,
     "private": 12,
     "total": 15
+  },
+  {
+    "date": "2026-06-28",
+    "github": 0,
+    "private": 0,
+    "total": 0
   }
 ]
