@@ -1,65 +1,5 @@
 [
   {
-    "date": "2025-06-21",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-22",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-23",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-24",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-25",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-26",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-27",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-28",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-29",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
-    "date": "2025-06-30",
-    "github": 0,
-    "private": 0,
-    "total": 0
-  },
-  {
     "date": "2025-07-01",
     "github": 0,
     "private": 0,
@@ -2185,8 +2125,68 @@
   },
   {
     "date": "2026-06-20",
-    "github": 9,
+    "github": 17,
     "private": 0,
-    "total": 9
+    "total": 17
+  },
+  {
+    "date": "2026-06-21",
+    "github": 17,
+    "private": 0,
+    "total": 17
+  },
+  {
+    "date": "2026-06-22",
+    "github": 19,
+    "private": 2,
+    "total": 21
+  },
+  {
+    "date": "2026-06-23",
+    "github": 4,
+    "private": 0,
+    "total": 4
+  },
+  {
+    "date": "2026-06-24",
+    "github": 0,
+    "private": 0,
+    "total": 0
+  },
+  {
+    "date": "2026-06-25",
+    "github": 1,
+    "private": 0,
+    "total": 1
+  },
+  {
+    "date": "2026-06-26",
+    "github": 0,
+    "private": 0,
+    "total": 0
+  },
+  {
+    "date": "2026-06-27",
+    "github": 3,
+    "private": 12,
+    "total": 15
+  },
+  {
+    "date": "2026-06-28",
+    "github": 1,
+    "private": 6,
+    "total": 7
+  },
+  {
+    "date": "2026-06-29",
+    "github": 0,
+    "private": 0,
+    "total": 0
+  },
+  {
+    "date": "2026-06-30",
+    "github": 0,
+    "private": 14,
+    "total": 14
   }
 ]
