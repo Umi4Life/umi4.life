@@ -2,8 +2,8 @@ baseURL = 'https://umi4.life/'
 locale = 'en-us'
 defaultContentLanguage = 'en'
 defaultContentLanguageInSubdir = false
-title = "UmiLife's Blog"
-description = "Engineering notes from a homelab in perpetual beta — Proxmox, self-hosted services, and infrastructure experiments."
+title = "Umi4Life's Blog"
+description = "Personal blog where I tinker with stuff. Proxmox, self-hosted services, and infrastructure experiments."
 theme = 'reimu'
 
 [languages.en]
