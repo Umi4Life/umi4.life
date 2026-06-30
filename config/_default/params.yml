@@ -28,7 +28,7 @@ timeFormat: "2006-01-02 15:04:05"
 
 author: Umi4Life / Zekamashi
 email: zekamashi@umi4.life
-description: "Engineering notes from a homelab in perpetual beta — Proxmox, self-hosted services, and infrastructure experiments."
+description: "Personal blog where I tinker with stuff. Proxmox, self-hosted services, and infrastructure experiments."
 subtitle:
   typing:
     enable: true
