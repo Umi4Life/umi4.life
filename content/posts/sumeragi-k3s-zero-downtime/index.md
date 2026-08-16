@@ -331,7 +331,7 @@ And to be precise about what the play test proved: **a player's session survived
 
 Roughly in priority order, distinguishing validated behavior from the remaining roadmap:
 
-1. **A third worker** — the real fix for never-below-two rollouts (and, bluntly, the missing scheduling domain that caused the deadlock).
+1. **A third worker — on a third machine.** Never-below-two rollouts need a third scheduling domain, and both current Proxmox nodes are already memory-constrained. The fix is horizontal scaling: a third physical box, not another VM squeezed onto a full host.
 2. **Control-plane HA** — a second and third k3s server (embedded etcd), so the API/scheduler isn't a single node.
 3. **Database and relay HA** — the next availability ceilings once the app layer is sorted.
 4. **Key rotation** — still pending after the committed-key cleanup.
