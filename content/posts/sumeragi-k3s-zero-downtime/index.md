@@ -5,8 +5,8 @@ date = '2026-08-16T00:00:00+07:00'
 draft = true
 translationKey = 'sumeragi-k3s-zero-downtime'
 title = "I Migrated an Arcade Server to k3s, Then Tested the Rollout by Playing a Credit"
-subtitle = 'Two replicas, two workers, and nowhere to put the third pod — plus the raw-TCP reality that "HA" does not mean what you think.'
-description = 'Migrating a bemani arcade server (raw AimeDB TCP, billing TLS, ALL.Net HTTP) from Docker Compose to k3s + Argo CD: a rollout deadlock, a PDB that refused a second eviction, and a score that survived a mid-play deployment.'
+subtitle = 'Migrating a raw-TCP arcade server to k3s — and proving a player's session survives a live rollout.'
+description = 'Migrating a bemani arcade server (raw AimeDB TCP, billing TLS, ALL.Net HTTP) from Docker Compose to k3s + Argo CD — and proving a player's session survives a live rollout.'
 tags = ["k3s", "kubernetes", "argo-cd", "gitops", "proxmox", "tcp", "arcade", "docker", "homelab", "zero-downtime", "frp", "cgnat"]
 categories = ["homelab", "kubernetes", "private-server"]
 mermaid = true
@@ -14,7 +14,7 @@ mermaid = true
 
 My final integration test was not `curl`. It was playing a credit while Kubernetes replaced the backend underneath me, then checking whether my score still existed.
 
-It did. Here's how I got there — and the deadlock that nearly made the whole thing pointless.
+It did. Here's how I got there.
 
 ---
 
@@ -172,47 +172,17 @@ The two-replica setup had a `PodDisruptionBudget` requiring at least one healthy
 
 Kubernetes let me shoot one replica and physically refused to let me shoot the second. A PDB governs *voluntary* disruption; it can't stop a machine from dying abruptly. But it made the policy concrete.
 
-### The rollout deadlock
+### A config mistake, and a two-line fix
 
-The first image rollout used what looked like the "safe" strategy:
-
-```yaml
-rollingUpdate:
-  maxUnavailable: 0   # never go below 2 replicas
-  maxSurge: 1         # create the replacement first
-```
-
-I had configured Kubernetes to keep two replicas alive while creating a third pod, then gave it exactly **two** places where a pod was legally allowed to exist — hard hostname anti-affinity, one pod per worker:
-
-```yaml
-podAntiAffinity:
-  requiredDuringSchedulingIgnoredDuringExecution:
-    - topologyKey: kubernetes.io/hostname
-```
-
-```text
-worker 1 → old pod
-worker 2 → old pod
-surge pod → needs a third legal worker
-scheduler → there is no third legal worker
-maxUnavailable: 0 → and you may not delete an old pod first
-```
-
-No legal next state. Argo went `Degraded`, the new ReplicaSet sat `Pending`, and eventually `ProgressDeadlineExceeded` fired.
-
-This was not a Kubernetes bug and not a flaky scheduler. **Kubernetes was behaving exactly correctly — the desired state itself was impossible on the available topology.** Every individual setting was reasonable; their composition had no solution.
-
-The fix wasn't clever YAML. It was admitting the arithmetic:
+The first rollout deadlocked. I'd set the "keep both replicas, create a replacement" strategy — but on two workers with one pod per host, the surge pod had nowhere to schedule, and `maxUnavailable: 0` refused to evict an old pod to make room. Argo went `Degraded`, the new pod sat `Pending`.
 
 ```yaml
 rollingUpdate:
-  maxUnavailable: 1   # drain one pod first
-  maxSurge: 0         # then place the replacement on the freed worker
+  maxUnavailable: 1   # drain one pod, free its worker, then replace
+  maxSurge: 0
 ```
 
-Drain one old pod, free one real worker, place the replacement, repeat. The honest cost: the service briefly runs on one replica during the ~35s drain window. Never-below-two requires a third worker, which doesn't exist yet.
-
-A note worth keeping: while the rollout was `Degraded`, the *old* pods were still serving traffic fine. Rollout health and serving health are different dimensions — dashboards just love collapsing them into one color.
+That's the whole fix. Drain one pod, place the replacement on its worker, repeat. The honest cost is a brief one-replica window during the ~35s drain — never-below-two needs a third worker, which needs a third machine.
 
 ### The proof: play a credit during the rollout
 
