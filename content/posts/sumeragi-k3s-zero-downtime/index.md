@@ -294,10 +294,6 @@ revisionHistoryLimit: 1
 
 Git is the rollback authority; I don't need ten revisions of `kubectl rollout undo` cluttering the tree.
 
-### Deleting a committed private key is not rotating it
-
-Repo cleanup found tracked private-key material (`billing.key`, `server.key`, `server.pem`) and a stale duplicate Kubernetes manifest. Removing them from the current tree was correct — but a secret that existed in Git history is still exposed. **Rotation is the only real remediation**; deleting from HEAD is tidying, not security.
-
 ### Not everything needs to become a Kubernetes Job
 
 The game-data importer needs large asset files that already live on the old "arcades" VM (NAS → edge → that VM). That box still has Docker, direct database reachability, and the config. Rather than re-plumb gigabytes of data into k3s to make the architecture look purer, the importer stays a one-shot `docker run` on that VM.
@@ -333,5 +329,3 @@ Roughly in priority order, distinguishing validated behavior from the remaining 
 3. **Database and relay HA** — the next availability ceilings once the app layer is sorted.
 4. **Key rotation** — still pending after the committed-key cleanup.
 5. **Encrypted GitOps for config/secrets** — runtime config is still an out-of-band Secret, not a reviewed Git change.
-
-*Public-safe note: internal IPs, hostnames, and credentials are omitted; the repos referenced live on a private Forge.*
