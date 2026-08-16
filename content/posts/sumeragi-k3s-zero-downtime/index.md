@@ -113,7 +113,19 @@ This is the "prepping for k3s" no tutorial covers: teaching the *application* to
 
 The application half was about teaching one process to drain. The cluster half was about turning three VMs into a *platform* instead of a sumeragi-shaped appliance.
 
-The cluster comes from the `tsukishiro-iac` repo: **Terraform** provisions the Proxmox VMs (one k3s server, two agents), and **Ansible** bootstraps them into k3s with the bundled Traefik and ServiceLB disabled and the server tainted control-plane-only. It's a *shared* platform on purpose — Sumeragi is the first tenant, not the cluster's identity. Future services get their own namespace, config/Secret boundary, and routing, and none of them inherit Sumeragi's raw-TCP edge path.
+First, the vocabulary. A k3s cluster has two kinds of nodes:
+
+- **Server** — the control plane: the API server, scheduler, controller manager, and the cluster datastore. It decides *where* things run. Here the single server is tainted control-plane-only, so it runs no workloads.
+- **Agent** (worker) — the machines that actually run the pods. The two sumeragi replicas land here, one per agent.
+
+`tsukishiro-iac` provisions them in two layers: **Terraform** creates the Proxmox VMs, **Ansible** bootstraps them into k3s (bundled Traefik and ServiceLB disabled, the server tainted). The three VMs are spread across **two physical Proxmox nodes**, not one:
+
+```text
+tsukishiro   — k3s-server-1 (control plane) + k3s-agent-1
+sakuraba-1   — k3s-agent-2
+```
+
+That spread matters: with one pod per worker, the two replicas already live on two separate physical hosts. And it's a *shared* platform on purpose — Sumeragi is the first tenant, not the cluster's identity. Future services get their own namespace, config/Secret boundary, and routing, and none of them inherit Sumeragi's raw-TCP edge path.
 
 The one real IaC bug worth recording was a network default. The generic VM module applied one LAN bridge and gateway to every VM — fine until you try to place a VM in the DMZ, where "the LAN gateway" is the wrong answer. The fix was per-VM `bridge`/`ipv4_gateway` overrides:
 
@@ -305,12 +317,11 @@ I want this section as loud as the wins, because "HA" is a word people say when 
 ```text
 one VPS relay / static IP
 one MariaDB endpoint
-one Proxmox host (all three VMs)
-one k3s server (control plane)
+one k3s server (single-node control plane)
 abrupt TCP connection continuity
 ```
 
-Three VMs on one Proxmox host buys rolling maintenance and per-VM resilience. It does not buy host, power, or storage HA. A two-replica deployment survives a single pod or worker loss; it does not survive the relay dying or the database deciding it's done.
+The three VMs already span two physical Proxmox nodes, and the two replicas sit on separate hosts — so a single host failure doesn't take down both replicas. What remains single-point is the *control plane* (one k3s server), plus the relay and the database.
 
 And to be precise about what the play test proved: **a player's session survived operationally and the result persisted.** It did not prove the TCP socket never dropped, and it says nothing about abrupt node failure — a crash still requires a reconnect.
 
@@ -321,7 +332,7 @@ And to be precise about what the play test proved: **a player's session survived
 Roughly in priority order, distinguishing validated behavior from the remaining roadmap:
 
 1. **A third worker** — the real fix for never-below-two rollouts (and, bluntly, the missing scheduling domain that caused the deadlock).
-2. **A second physical Proxmox host** — real failure-domain separation instead of three VMs on one box.
+2. **Control-plane HA** — a second and third k3s server (embedded etcd), so the API/scheduler isn't a single node.
 3. **Database and relay HA** — the next availability ceilings once the app layer is sorted.
 4. **Key rotation** — still pending after the committed-key cleanup.
 5. **Encrypted GitOps for config/secrets** — runtime config is still an out-of-band Secret, not a reviewed Git change.
