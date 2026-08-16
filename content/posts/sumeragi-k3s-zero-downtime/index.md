@@ -6,7 +6,7 @@ draft = true
 translationKey = 'sumeragi-k3s-zero-downtime'
 title = "I Migrated an Arcade Server to k3s, Then Tested the Rollout by Playing a Credit"
 subtitle = 'Migrating a raw-TCP arcade server to k3s — and proving a player's session survives a live rollout.'
-description = 'Migrating a bemani arcade server (raw AimeDB TCP, billing TLS, ALL.Net HTTP) from Docker Compose to k3s + Argo CD — and proving a player's session survives a live rollout.'
+description = 'Migrating a raw-TCP rhythm-game arcade backend (SEGA ALL.Net, AimeDB, billing TLS) from Docker Compose to k3s + Argo CD — and proving a player's session survives a live rollout.'
 tags = ["k3s", "kubernetes", "argo-cd", "gitops", "proxmox", "tcp", "arcade", "docker", "homelab", "zero-downtime", "frp", "cgnat"]
 categories = ["homelab", "kubernetes", "private-server"]
 mermaid = true
@@ -20,7 +20,7 @@ It did. Here's how I got there.
 
 ## Why this exists
 
-I run a bemani-style arcade server — Sumeragi, a fork of the community ARTEMiS project — for my rhythm-game cabinets. It had been a Docker Compose box for months, and it worked. The migration was as much about learning as about uptime.
+I run a private network backend for rhythm-game arcade cabinets — Sumeragi, a fork of the community ARTEMiS project. It had been a Docker Compose box for months, and it worked. The migration was as much about learning as about uptime.
 
 I could have used Docker Swarm and been done in a weekend. I didn't, on purpose: I wanted to **practice Kubernetes and distributed systems** — real pods, real rolling updates, real failure modes — and to learn **GitOps** as a discipline (declared state in Git, reviewable deploys, no more SSH-ing into a box to run `docker compose up`).
 
@@ -182,7 +182,7 @@ rollingUpdate:
   maxSurge: 0
 ```
 
-That's the whole fix. Drain one pod, place the replacement on its worker, repeat. The honest cost is a brief one-replica window during the ~35s drain — never-below-two needs a third worker, which needs a third machine.
+That's the whole fix. Drain one pod, place the replacement on its worker, repeat. The honest cost is a brief one-replica window during the ~35s drain — never-below-two needs a third worker, which in my setup means a third physical machine (both existing hosts are already memory-constrained).
 
 ### The proof: play a credit during the rollout
 
@@ -243,7 +243,14 @@ The first thing acid had to get right was schema migrations. "Run the migration 
 kubectl exec deploy/sumeragi -- python3 dbutils.py upgrade   # wrong: old image
 ```
 
-Before sync, that pod runs the **old image**, so it literally doesn't contain the new release's migration. The fix was an Argo **PreSync Job** that runs `dbutils.py upgrade` from the candidate image before the pods roll — a failed migration aborts the sync:
+Before sync, that pod runs the **old image**, so it literally doesn't contain the new release's migration:
+
+```text
+before sync:  pod = old image → the new migration doesn't exist yet
+after sync:   pod = new image → the app may start against the old schema
+```
+
+Neither timing works. The fix was an Argo **PreSync Job** that runs `dbutils.py upgrade` from the candidate image before the pods roll — a failed migration aborts the sync:
 
 ```yaml
 apiVersion: batch/v1
@@ -275,8 +282,35 @@ images:
 A few more things bit me along the way:
 
 - **Two roles owned one CoreDNS ConfigMap.** A sync failed with `lookup git-mirror.umi4.life: no such host` because two Ansible roles both rewrote the same `coredns-custom` object, and one clobbered the other's rule. One shared resource, one authoritative owner.
-- **Showing the pods showed the graveyard.** Whitelisting `Pod`/`ReplicaSet` in the AppProject made the pods visible — and every dead ReplicaSet too. `revisionHistoryLimit: 1`; Git is the rollback authority.
-- **Not everything needs to become a Kubernetes Job.** The game-data importer needs gigabytes that already live on the old arcades VM; it stays a one-off `docker run` there. Kubernetes is a tool, not a religion.
+- **Showing the pods showed the graveyard.** `kubectl` reported two healthy pods; Argo showed only a `Deployment`. The `AppProject` whitelist didn't include `Pod` or `ReplicaSet`, so I added them — and Argo immediately rendered every historical ReplicaSet it had ever retained. `revisionHistoryLimit: 1`; Git is the rollback history, Kubernetes doesn't need a graveyard.
+- **Deleting a committed key is not rotating it.** Cleanup found private TLS keys committed to the Sumeragi repo. Removing them from the current tree fixed the layout, but it did **not** make them secret again — Git history still has them. Deletion is cleanup; rotation is remediation. Rotation remains on the list.
+
+### Not everything belongs in Kubernetes
+
+Migrating the app to k3s raised an obvious follow-up: the game-data importer should become a Kubernetes Job, right?
+
+The importer (`read.py`) ingests a large game-asset collection. Those assets already live at `/srv/arcade-assets` on the old arcades VM, which also already has Docker, direct MariaDB reachability, the Sumeragi config, and a seat in the right DMZ. Making it a Job would mean exposing or re-plumbing that asset storage into the cluster just to run an occasional batch job.
+
+So the importer stayed where the data already lives: a one-shot `docker run --rm` of the same Sumeragi image on the arcades VM.
+
+Migrating the application to Kubernetes did not make the old VM obsolete. It clarified what the VM's job actually was.
+
+### The whole flow, in one picture
+
+The release system ends up as one path:
+
+```text
+Sumeragi source
+   → build + push image
+   → immutable digest
+   → acid PR (reviewed)
+   → manual Argo sync
+   → PreSync migration (candidate image)
+   → drain + replace replica 1
+   → drain + replace replica 2
+```
+
+Before, a deploy was `docker compose pull` + `docker compose up`. After, it's a reviewed Git change flowing through a migration gate into a controlled drain rollout.
 
 ---
 
@@ -291,7 +325,7 @@ one k3s server (single-node control plane)
 abrupt TCP connection continuity
 ```
 
-The three VMs already span two physical Proxmox nodes, and the two replicas sit on separate hosts — so a single host failure doesn't take down both replicas. What remains single-point is the *control plane* (one k3s server), plus the relay and the database.
+The three VMs already span two physical Proxmox nodes, and the two replicas sit on separate hosts — so a single physical-host failure doesn't take down both application replicas. But losing the host that runs `k3s-server-1` also removes the single control plane, and the relay and database remain single-point.
 
 And to be precise about what the play test proved: **a player's session survived operationally and the result persisted.** It did not prove the TCP socket never dropped, and it says nothing about abrupt node failure — a crash still requires a reconnect.
 
@@ -301,7 +335,7 @@ And to be precise about what the play test proved: **a player's session survived
 
 Roughly in priority order, distinguishing validated behavior from the remaining roadmap:
 
-1. **A third worker — on a third machine.** Never-below-two rollouts need a third scheduling domain, and both current Proxmox nodes are already memory-constrained. The fix is horizontal scaling: a third physical box, not another VM squeezed onto a full host.
+1. **A third worker — a third machine, in my case.** Never-below-two rollouts need a third scheduling domain, and both current Proxmox nodes are already memory-constrained. That's horizontal scaling for this homelab, not a universal Kubernetes requirement.
 2. **Control-plane HA** — a second and third k3s server (embedded etcd), so the API/scheduler isn't a single node.
 3. **Database and relay HA** — the next availability ceilings once the app layer is sorted.
 4. **Key rotation** — still pending after the committed-key cleanup.
