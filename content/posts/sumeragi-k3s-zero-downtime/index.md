@@ -222,9 +222,23 @@ That's the payoff. The cluster wasn't finished when Kubernetes turned green; it 
 
 ---
 
-## Part 4 — GitOps, and the parts YAML doesn't tell you
+## Part 4 — GitOps: introducing acid
 
-The migration's second act was Argo CD. Desired state now lives in a dedicated repo — `acid` — whose shape is a trimmed-down [Project Ceylon](https://life.lmwn.com/ceylon-i-gitops-with-argocd-34aa5712f67c), a LINE MAN Wongnai GitOps series: I took App-of-Apps and committed image state, and deliberately left Jsonnet and Argo Rollouts on the shelf — automated rollback needs an observable failure signal, which raw-TCP AimeDB doesn't give me. Manual sync, a DMZ git mirror (the cluster can't reach the internal Forge), and PreSync migration jobs round it out. The Application itself is deliberately bare — no `syncPolicy` means no auto-sync, no prune, no self-heal:
+The migration's second act was Argo CD — turning deploys from "SSH into the box" into "reviewed Git changes". The missing piece was a place to hold the *desired state*, so I made `acid`.
+
+### What acid is
+
+`acid` is the cluster's desired-state repository. Three repos, three jobs:
+
+```text
+sumeragi        the app       — source, tests, image build
+tsukishiro-iac  the substrate — Proxmox VMs, k3s, Argo CD install
+acid            the state     — what runs in the cluster, where, at which digest
+```
+
+The separation is the whole point: the app repo answers "how is this built?", the IaC repo answers "what does it run on?", and acid answers "what should actually be running right now?" That keeps deployment history independent of source commits, makes image promotion a reviewable diff, and lets Argo CD read acid without ever touching application source.
+
+Inside acid: an `AppProject` (the resource whitelist), an `Application` with no `syncPolicy` — manual sync, no auto-sync, no prune, no self-heal — and the Kustomize manifests, all pinned to one immutable digest. Its shape is a trimmed-down [Project Ceylon](https://life.lmwn.com/ceylon-i-gitops-with-argocd-34aa5712f67c), a LINE MAN Wongnai GitOps series: I took App-of-Apps and committed image state, and deliberately left Jsonnet and Argo Rollouts out.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -239,25 +253,15 @@ spec:
   # no syncPolicy → every sync is a human clicking the button
 ```
 
-That part worked — it's the *scars* that are worth writing down.
+### Migrations, ordered correctly
 
-### Argo could not pull Git because its own playbook deleted its DNS
-
-A sync failed with `lookup git-mirror.umi4.life: no such host`. Not Gitea, not TLS, not Argo. Two Ansible roles were both treating the same `kube-system/coredns-custom` ConfigMap as if each owned it. The Argo-UI role re-rendered the object and accidentally dropped the git-mirror forwarding rule.
-
-The durable fix was architectural, not procedural: **one shared resource, one authoritative owner** (`k3s_server`), everyone else supplies inputs and stops rewriting it.
-
-### "Run the migration before the rollout" — right. "Exec into the current pod" — wrong.
-
-My first migration runbook was conveniently dumb:
+The first thing acid had to get right was schema migrations. "Run the migration before the rollout" was correct — but my first idea, exec'ing into the current pod, was wrong:
 
 ```bash
-kubectl exec deploy/artemis -- python3 dbutils.py upgrade
+kubectl exec deploy/sumeragi -- python3 dbutils.py upgrade   # wrong: old image
 ```
 
-Before sync, the running pod has the **old image**, so it contains the **old migration files**. If the new release introduces a migration, the old pod literally does not contain it. The correct sequence is: build the new image → run the migration *from that new image* → only then roll the Deployment.
-
-The GitOps answer was an Argo **PreSync Job** that runs `dbutils.py upgrade` from the candidate digest before the pods roll — a failed migration aborts the sync:
+Before sync, that pod runs the **old image**, so it literally doesn't contain the new release's migration. The fix was an Argo **PreSync Job** that runs `dbutils.py upgrade` from the candidate image before the pods roll — a failed migration aborts the sync:
 
 ```yaml
 apiVersion: batch/v1
@@ -276,7 +280,7 @@ spec:
           command: ["python3", "dbutils.py", "upgrade"]
 ```
 
-And to kill the "remember to update two image fields" failure mode, Kustomize injects **one pinned digest** into both the Job and the Deployment — the manifests reference a bare name, and one line resolves it everywhere:
+And to kill the "remember to update two image fields" failure mode, Kustomize injects **one pinned digest** into both the Job and the Deployment:
 
 ```yaml
 images:
@@ -284,21 +288,13 @@ images:
     digest: sha256:af9763fa031b0e594fcc8366ce05765906f66154810bd618740312b90f022340
 ```
 
-### Show me the pods — no, not those pods
+### The scars
 
-I asked Argo to show me the Sumeragi pods. The `AppProject` whitelist didn't include `Pod` or `ReplicaSet`, so the UI only showed the Deployment. After whitelisting them, it showed the pods — and every historical dead ReplicaSet too.
+A few more things bit me along the way:
 
-```yaml
-revisionHistoryLimit: 1
-```
-
-Git is the rollback authority; I don't need ten revisions of `kubectl rollout undo` cluttering the tree.
-
-### Not everything needs to become a Kubernetes Job
-
-The game-data importer needs large asset files that already live on the old "arcades" VM (NAS → edge → that VM). That box still has Docker, direct database reachability, and the config. Rather than re-plumb gigabytes of data into k3s to make the architecture look purer, the importer stays a one-shot `docker run` on that VM.
-
-Kubernetes is a tool, not a religion. Put a workload there when orchestration adds value; leave occasional data-heavy batch work where the data already lives.
+- **Two roles owned one CoreDNS ConfigMap.** A sync failed with `lookup git-mirror.umi4.life: no such host` because two Ansible roles both rewrote the same `coredns-custom` object, and one clobbered the other's rule. One shared resource, one authoritative owner.
+- **Showing the pods showed the graveyard.** Whitelisting `Pod`/`ReplicaSet` in the AppProject made the pods visible — and every dead ReplicaSet too. `revisionHistoryLimit: 1`; Git is the rollback authority.
+- **Not everything needs to become a Kubernetes Job.** The game-data importer needs gigabytes that already live on the old arcades VM; it stays a one-off `docker run` there. Kubernetes is a tool, not a religion.
 
 ---
 
