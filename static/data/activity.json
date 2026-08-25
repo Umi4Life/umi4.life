@@ -1244,8 +1244,8 @@
   {
     "date": "2026-03-21",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 3,
+    "total": 3
   },
   {
     "date": "2026-03-22",
@@ -1268,14 +1268,14 @@
   {
     "date": "2026-03-25",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 23,
+    "total": 23
   },
   {
     "date": "2026-03-26",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 9,
+    "total": 9
   },
   {
     "date": "2026-03-27",
@@ -1310,8 +1310,8 @@
   {
     "date": "2026-04-01",
     "github": 0,
-    "private": 3,
-    "total": 3
+    "private": 7,
+    "total": 7
   },
   {
     "date": "2026-04-02",
@@ -1364,14 +1364,14 @@
   {
     "date": "2026-04-10",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 4,
+    "total": 4
   },
   {
     "date": "2026-04-11",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 1,
+    "total": 1
   },
   {
     "date": "2026-04-12",
@@ -1460,8 +1460,8 @@
   {
     "date": "2026-04-26",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 2,
+    "total": 2
   },
   {
     "date": "2026-04-27",
@@ -1652,44 +1652,44 @@
   {
     "date": "2026-05-28",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 3,
+    "total": 3
   },
   {
     "date": "2026-05-29",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 19,
+    "total": 19
   },
   {
     "date": "2026-05-30",
     "github": 3,
-    "private": 0,
-    "total": 3
+    "private": 21,
+    "total": 24
   },
   {
     "date": "2026-05-31",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 13,
+    "total": 13
   },
   {
     "date": "2026-06-01",
     "github": 1,
-    "private": 0,
-    "total": 1
+    "private": 18,
+    "total": 19
   },
   {
     "date": "2026-06-02",
     "github": 9,
-    "private": 2,
-    "total": 11
+    "private": 11,
+    "total": 20
   },
   {
     "date": "2026-06-03",
     "github": 7,
-    "private": 0,
-    "total": 7
+    "private": 9,
+    "total": 16
   },
   {
     "date": "2026-06-04",
@@ -1706,26 +1706,26 @@
   {
     "date": "2026-06-06",
     "github": 4,
-    "private": 0,
-    "total": 4
+    "private": 8,
+    "total": 12
   },
   {
     "date": "2026-06-07",
     "github": 2,
-    "private": 0,
-    "total": 2
+    "private": 10,
+    "total": 12
   },
   {
     "date": "2026-06-08",
     "github": 17,
-    "private": 2,
-    "total": 19
+    "private": 0,
+    "total": 17
   },
   {
     "date": "2026-06-09",
     "github": 2,
-    "private": 2,
-    "total": 4
+    "private": 12,
+    "total": 14
   },
   {
     "date": "2026-06-10",
@@ -1748,14 +1748,14 @@
   {
     "date": "2026-06-13",
     "github": 17,
-    "private": 0,
-    "total": 17
+    "private": 25,
+    "total": 42
   },
   {
     "date": "2026-06-14",
     "github": 34,
-    "private": 0,
-    "total": 34
+    "private": 4,
+    "total": 38
   },
   {
     "date": "2026-06-15",
@@ -1802,8 +1802,8 @@
   {
     "date": "2026-06-22",
     "github": 19,
-    "private": 0,
-    "total": 19
+    "private": 2,
+    "total": 21
   },
   {
     "date": "2026-06-23",
@@ -1832,14 +1832,14 @@
   {
     "date": "2026-06-27",
     "github": 3,
-    "private": 7,
-    "total": 10
+    "private": 12,
+    "total": 15
   },
   {
     "date": "2026-06-28",
     "github": 1,
-    "private": 3,
-    "total": 4
+    "private": 6,
+    "total": 7
   },
   {
     "date": "2026-06-29",
@@ -1850,14 +1850,14 @@
   {
     "date": "2026-06-30",
     "github": 3,
-    "private": 10,
-    "total": 13
+    "private": 14,
+    "total": 17
   },
   {
     "date": "2026-07-01",
     "github": 0,
-    "private": 4,
-    "total": 4
+    "private": 9,
+    "total": 9
   },
   {
     "date": "2026-07-02",
@@ -1880,44 +1880,44 @@
   {
     "date": "2026-07-05",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 7,
+    "total": 7
   },
   {
     "date": "2026-07-06",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 16,
+    "total": 16
   },
   {
     "date": "2026-07-07",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 24,
+    "total": 24
   },
   {
     "date": "2026-07-08",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 5,
+    "total": 5
   },
   {
     "date": "2026-07-09",
-    "github": 0,
-    "private": 1,
-    "total": 1
-  },
-  {
-    "date": "2026-07-10",
     "github": 0,
     "private": 10,
     "total": 10
   },
   {
+    "date": "2026-07-10",
+    "github": 0,
+    "private": 14,
+    "total": 14
+  },
+  {
     "date": "2026-07-11",
     "github": 0,
-    "private": 1,
-    "total": 1
+    "private": 16,
+    "total": 16
   },
   {
     "date": "2026-07-12",
@@ -1934,8 +1934,8 @@
   {
     "date": "2026-07-14",
     "github": 15,
-    "private": 0,
-    "total": 15
+    "private": 5,
+    "total": 20
   },
   {
     "date": "2026-07-15",
@@ -1952,14 +1952,14 @@
   {
     "date": "2026-07-17",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 1,
+    "total": 1
   },
   {
     "date": "2026-07-18",
     "github": 8,
-    "private": 10,
-    "total": 18
+    "private": 14,
+    "total": 22
   },
   {
     "date": "2026-07-19",
@@ -1970,14 +1970,14 @@
   {
     "date": "2026-07-20",
     "github": 0,
-    "private": 0,
-    "total": 0
+    "private": 5,
+    "total": 5
   },
   {
     "date": "2026-07-21",
     "github": 0,
-    "private": 1,
-    "total": 1
+    "private": 5,
+    "total": 5
   },
   {
     "date": "2026-07-22",
@@ -2012,56 +2012,56 @@
   {
     "date": "2026-07-27",
     "github": 0,
-    "private": 8,
-    "total": 8
+    "private": 16,
+    "total": 16
   },
   {
     "date": "2026-07-28",
     "github": 0,
-    "private": 13,
-    "total": 13
+    "private": 65,
+    "total": 65
   },
   {
     "date": "2026-07-29",
     "github": 0,
-    "private": 11,
-    "total": 11
+    "private": 28,
+    "total": 28
   },
   {
     "date": "2026-07-30",
     "github": 0,
-    "private": 5,
-    "total": 5
+    "private": 20,
+    "total": 20
   },
   {
     "date": "2026-07-31",
     "github": 0,
-    "private": 4,
-    "total": 4
+    "private": 12,
+    "total": 12
   },
   {
     "date": "2026-08-01",
     "github": 0,
-    "private": 17,
-    "total": 17
+    "private": 29,
+    "total": 29
   },
   {
     "date": "2026-08-02",
     "github": 0,
-    "private": 6,
-    "total": 6
+    "private": 37,
+    "total": 37
   },
   {
     "date": "2026-08-03",
     "github": 0,
-    "private": 3,
-    "total": 3
+    "private": 15,
+    "total": 15
   },
   {
     "date": "2026-08-04",
     "github": 0,
-    "private": 1,
-    "total": 1
+    "private": 3,
+    "total": 3
   },
   {
     "date": "2026-08-05",
@@ -2084,56 +2084,56 @@
   {
     "date": "2026-08-08",
     "github": 0,
-    "private": 14,
-    "total": 14
+    "private": 44,
+    "total": 44
   },
   {
     "date": "2026-08-09",
     "github": 0,
-    "private": 8,
-    "total": 8
+    "private": 27,
+    "total": 27
   },
   {
     "date": "2026-08-10",
     "github": 0,
-    "private": 9,
-    "total": 9
+    "private": 31,
+    "total": 31
   },
   {
     "date": "2026-08-11",
     "github": 0,
-    "private": 1,
-    "total": 1
+    "private": 3,
+    "total": 3
   },
   {
     "date": "2026-08-12",
     "github": 0,
-    "private": 7,
-    "total": 7
+    "private": 26,
+    "total": 26
   },
   {
     "date": "2026-08-13",
     "github": 0,
-    "private": 11,
-    "total": 11
+    "private": 33,
+    "total": 33
   },
   {
     "date": "2026-08-14",
     "github": 0,
-    "private": 12,
-    "total": 12
+    "private": 48,
+    "total": 48
   },
   {
     "date": "2026-08-15",
     "github": 0,
-    "private": 9,
-    "total": 9
+    "private": 35,
+    "total": 35
   },
   {
     "date": "2026-08-16",
     "github": 0,
-    "private": 27,
-    "total": 27
+    "private": 110,
+    "total": 110
   },
   {
     "date": "2026-08-17",
@@ -2144,14 +2144,14 @@
   {
     "date": "2026-08-18",
     "github": 0,
-    "private": 3,
-    "total": 3
+    "private": 20,
+    "total": 20
   },
   {
     "date": "2026-08-19",
     "github": 0,
-    "private": 6,
-    "total": 6
+    "private": 47,
+    "total": 47
   },
   {
     "date": "2026-08-20",
@@ -2168,25 +2168,25 @@
   {
     "date": "2026-08-22",
     "github": 0,
-    "private": 5,
-    "total": 5
+    "private": 35,
+    "total": 35
   },
   {
     "date": "2026-08-23",
     "github": 0,
-    "private": 10,
-    "total": 10
+    "private": 30,
+    "total": 30
   },
   {
     "date": "2026-08-24",
     "github": 0,
-    "private": 5,
-    "total": 5
+    "private": 24,
+    "total": 24
   },
   {
     "date": "2026-08-25",
     "github": 0,
-    "private": 5,
-    "total": 5
+    "private": 15,
+    "total": 15
   }
 ]
