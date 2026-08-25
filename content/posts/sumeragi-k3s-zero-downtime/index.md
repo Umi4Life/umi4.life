@@ -4,73 +4,67 @@ cover = ''
 date = '2026-08-16T00:00:00+07:00'
 draft = true
 translationKey = 'sumeragi-k3s-zero-downtime'
-title = "I Migrated an Arcade Server to k3s, Then Tested the Rollout by Playing a Credit"
-subtitle = 'Migrating a raw-TCP arcade server to k3s — and proving a player's session survives a live rollout.'
-description = 'Migrating a raw-TCP rhythm-game arcade backend (SEGA ALL.Net, AimeDB, billing TLS) from Docker Compose to k3s + Argo CD — and proving a player's session survives a live rollout.'
+title = "Migrating my arcade server to k3s"
+subtitle = "Migrating a raw-TCP arcade server to k3s"
+description = "Migrating a raw-TCP rhythm-game arcade backend from Docker Compose to k3s + Argo CD, and testing a player's session survives a live rollout."
 tags = ["k3s", "kubernetes", "argo-cd", "gitops", "proxmox", "tcp", "arcade", "docker", "homelab", "zero-downtime", "frp", "cgnat"]
 categories = ["homelab", "kubernetes", "private-server"]
 mermaid = true
 +++
 
-My final integration test was not `curl`. It was playing a credit while Kubernetes replaced the backend underneath me, then checking whether my score still existed.
+## Background
 
-It did. Here's how I got there.
+I run a private arcade server for [ALL.Net](https://en.namu.wiki/w/ALL.Net) games, [Sumeragi](https://sumeragi.umi4.life/) which is a fork of [Artemis](https://gitea.tendokyu.moe/Hay1tsme/artemis/src/branch/develop). It's hosted on Docker Compose on my homelab for months, but everytime I update it I need to restart the server so I need a 0 downtime rollout. 
 
----
+I successfully moved [Rche](https://umi4.life/posts/self-host-eamusement-server/) to Docker Swarm. But I wanted to play bigger and try kubernetes with git declared state.
 
-## Why this exists
+For this stack, I chose k3s for it's lightweightness and barebone nature. Perfect for beginning learing kubernetes. For git declared state, I chose [Argo CD](https://argo-cd.readthedocs.io/en/stable/).
 
-I run a private network backend for rhythm-game arcade cabinets — Sumeragi, a fork of the community ARTEMiS project. It had been a Docker Compose box for months, and it worked. The migration was as much about learning as about uptime.
-
-I could have used Docker Swarm and been done in a weekend. I didn't, on purpose: I wanted to **practice Kubernetes and distributed systems** — real pods, real rolling updates, real failure modes — and to learn **GitOps** as a discipline (declared state in Git, reviewable deploys, no more SSH-ing into a box to run `docker compose up`).
-
-An arcade server is the ideal sandbox for that: real production traffic, real players (friends, mid-song), real consequences — and the only person who gets paged at 3am is me.
-
-It also all runs on a **physical, self-hosted Proxmox homelab** — my own machine, my own VMs, my own private Git forge and container registry. No cloud, no managed Kubernetes. This is the box it lives on:
+<!--It also all runs on a **physical, self-hosted Proxmox homelab** — my own machine, my own VMs, my own private Git forge and container registry. No cloud, no managed Kubernetes. This is the box it lives on:
 
 {{< gallery >}}
 ![The Proxmox homelab machine](./images/server-machine.jpg)
 {{< /gallery >}}
 
-*[TODO: insert server machine photo]*
+*[TODO: insert server machine photo]*-->
 
 ---
 
-## Part 1 — Prepping Sumeragi for k3s
+## Part 1: Preparing Sumeragi for k3s
 
-The server already ran under Docker Compose and was reachable from cabinets — my ISP is CGNAT, so a VPS + FRP reverse tunnel provides the public entrypoint. (That networking earned its own scar early on: cab traffic must stay a transparent pipe — a Caddy `Via` header once broke `ALL.Net` auth even though the response matched a reference server byte-for-byte.)
+The server already ran under Docker Compose and was reachable from cabinets. My ISP is CGNAT, so a VPS + FRP reverse tunnel is required for the the public entrypoint. 
 
-The real prep for k3s wasn't networking, though. It was code. **Kubernetes was about to start sending `SIGTERM` to a process that had no idea how to stop gracefully.**
+However, Sumeragi need major work before kubernetes can even be considered.
 
 ### How it worked before
 
-One `python3 index.py` process launched several Uvicorn servers plus AimeDB through `asyncio.start_server`. Three things made that process k3s-hostile:
+One `python3 index.py` process launchs several Uvicorn servers plus AimeDB through `asyncio.start_server`. Three things made that process not k3s:
 
 1. **AimeDB's server handle was dropped.** `asyncio.start_server()` returns an object with a `close()`, but the code never kept it — so there was no way to stop accepting new AimeDB connections while in-flight sessions finished.
 2. **AimeDB wasn't in the shutdown path.** `index.py` tracked the Uvicorn tasks and, when one finished, cancelled the rest and exited. AimeDB ran outside that supervision entirely.
 3. **Health was a single string.** `/` returned "Service OK" — no readiness, no "are all listeners actually up."
 
 ```python
-# index.py (before) — the whole shutdown "strategy"
+# index.py
 task_list = [asyncio.create_task(launch_main(cfg, ssl))]
 if cfg.billing.standalone:
     task_list.append(asyncio.create_task(launch_billing(cfg)))
 if cfg.aimedb.enable:
-    AimedbServlette(cfg).start()      # ← not tracked, no handle kept
+    AimedbServlette(cfg).start()      # not tracked, no handle kept
 
 done, pending = await asyncio.wait(task_list, return_when=FIRST_COMPLETED)
 for t in pending:
     t.cancel("Another service died, server is shutting down")
 ```
 
-None of that matters for a single Compose box. For rolling updates — where a pod must go not-ready *before* it's drained, while a second replica keeps serving — it's the whole game.
+For rolling updates where a pod must go not-ready before it's drained, while a second replica keeps serving — it's the whole game.
 
-### The change: a coordinated lifecycle
+### The change: introducing lifecycle
 
-The core of the work was a new `LifecycleManager` — a tiny state machine:
+The major was was creating new `LifecycleManager` as a state machine:
 
 ```text
-STARTING → READY → DRAINING
+STARTING -> READY -> DRAINING
 ```
 
 ```python
@@ -83,112 +77,48 @@ class LifecycleManager:
 
 - **Listener-aware readiness.** `/ready` returns 200 only once every required listener is actually running, and 503 during startup and drain.
 - **`SIGTERM` means drain, not die.** On the signal, the process flips to `DRAINING`, stops accepting new connections everywhere, and lets established AimeDB sessions finish inside a 30-second in-process window (Kubernetes holds a 35-second grace period as the hard cutoff).
-- **AimeDB is finally supervised.** The server object and its connection tasks are retained, so the drain knows what's actually in flight — and an unexpected listener failure now produces a nonzero exit instead of being swallowed.
+- **AimeDB is supervised.** The server object and its connection tasks are retained, so the drain knows what's actually in flight — and an unexpected listener failure now produces a nonzero exit instead of being swallowed.
 
-A `service_manager` supervises every Uvicorn and AimeDB service through the same coordinated shutdown, with a ~500-line test suite pinning the behavior.
-
-### The Python 3.9 landmine
-
-The first version shipped a bug that only Python 3.9 (the container runtime) would surface: the shutdown `asyncio.Event()` was created at *module import time*, binding to whatever loop existed then — not the loop `asyncio.run()` creates later. The server would start, then immediately shut down:
-
-```text
-RuntimeError: Task got Future attached to a different loop
-```
-
-The fix was lazy initialization — create the event inside the running loop on first use:
-
-```python
-def _ensure_event(self):
-    if self._shutdown_event is None:
-        self._shutdown_event = asyncio.Event()   # created on the running loop
-```
-
-Plus a regression test that builds the manager on a foreign loop and proves it still works. Twenty tests, green.
-
-This is the "prepping for k3s" no tutorial covers: teaching the *application* to cooperate with termination semantics, before you write a single line of YAML.
+A `service_manager` supervises every Uvicorn and AimeDB service through the same coordinated shutdown.
 
 ---
 
-## Part 2 — Prepping the cluster: VMs as cattle
+## Part 2: Preparing the clusters
 
-The application half was about teaching one process to drain. The cluster half was about turning three VMs into a *platform* instead of a sumeragi-shaped appliance.
+Now comes turning VMs into a platform for running k3s.
 
-First, the vocabulary. A k3s cluster has two kinds of nodes:
+A k3s cluster has two kinds of nodes:
 
 - **Server** — the control plane: the API server, scheduler, controller manager, and the cluster datastore. It decides *where* things run. Here the single server is tainted control-plane-only, so it runs no workloads.
-- **Agent** (worker) — the machines that actually run the pods. The two sumeragi replicas land here, one per agent.
+- **Agent** (or worker) — the machines that actually run the pods. The sumeragi replicas land here, one per agent.
 
-`tsukishiro-iac` provisions them in two layers: **Terraform** creates the Proxmox VMs, **Ansible** bootstraps them into k3s (bundled Traefik and ServiceLB disabled, the server tainted). The three VMs are spread across **two physical Proxmox nodes**, not one:
+[tsukishiro-iac](http://localhost:1313/posts/sky-feather-iac-hijack/) provisions them in two layers: Terraform creates the Proxmox VMs, Ansible bootstraps them into k3s. The VMs are spread across my physical Proxmox nodes
 
 ```text
 tsukishiro   — k3s-server-1 (control plane) + k3s-agent-1
 sakuraba-1   — k3s-agent-2
+sawatari-1   — k3s-agent-3
 ```
-
-That spread matters: with one pod per worker, the two replicas already live on two separate physical hosts. And it's a *shared* platform on purpose — Sumeragi is the first tenant, not the cluster's identity. Future services get their own namespace, config/Secret boundary, and routing, and none of them inherit Sumeragi's raw-TCP edge path.
-
-The one real IaC bug worth recording was a network default. The generic VM module applied one LAN bridge and gateway to every VM — fine until you try to place a VM in the DMZ, where "the LAN gateway" is the wrong answer. The fix was per-VM `bridge`/`ipv4_gateway` overrides:
-
-```hcl
-# before — every VM inherited the module's single default
-bridge       = local.proxmox_defaults.bridge
-ipv4_gateway = local.proxmox_defaults.ipv4_gateway
-
-# after — each VM may override
-bridge       = try(each.value.bridge, local.proxmox_defaults.bridge)
-ipv4_gateway = try(each.value.ipv4_gateway, local.proxmox_defaults.ipv4_gateway)
-```
-
-```text
-tsukishiro-iac   Terraform -> Proxmox VMs    Ansible -> k3s bootstrap
-acid             in-cluster desired state, reconciled by Argo CD
-```
-
-That split — IaC owns the substrate, Git owns the continuously-reconciled desired state — is the boundary I keep coming back to. Provisioning is a prerequisite to the GitOps control plane, not part of it.
 
 ---
 
-## Part 3 — The migration: "HA" is a word that needs precision
+## Part 3: The migration
 
-Most zero-downtime Kubernetes advice assumes HTTP: drain old pods, route to new ones, done. An arcade server is not that. AimeDB is raw encrypted TCP — a cabinet opens a connection and holds it open for the whole session. Load balancing is **per TCP connection, not per message**; there's no request/response boundary to hand off.
+Most zero-downtime Kubernetes services deals with HTTP. Sumeragi is a bit more special. AimeDB is raw encrypted TCP, a cabinet opens a connection and holds it open for the whole session. Load balancing is per TCP connection instead of per message. There's no request/response boundary to hand off.
 
-So the honest framing, which I spent two weeks proving:
+There are some limitations here:
 
 - **Zero failed *new* connections during a controlled rollout:** achievable.
 - **Established TCP sessions surviving a rollout:** only if old pods drain until those sessions close naturally.
 - **Established TCP sessions surviving an abrupt pod/node/host failure:** impossible. The client reconnects.
 
-Kubernetes was never going to "teleport" a socket. The goal was narrower and more honest: **a player's session survives a controlled deployment rollout.**
+Kubernetes cannot "teleport" a socket, so the goal was more narrrow: make a player's session survive a deployment rollout.
 
-### Two replicas, and a PDB that said no
+### The real test: play a credit during the rollout
 
-The two-replica setup had a `PodDisruptionBudget` requiring at least one healthy pod. I tested it through the eviction API, and the result is a better PDB explanation than the docs:
+After the swapping out the traefik load balancer I did the most exciting part of the project: triggering a live rolling update while a session is in progress, and see if everything saves.
 
-```text
-2 healthy pods
-→ evict one:            HTTP 201   (allowed)
-→ evict the last one:   HTTP 429   (blocked — budget violated)
-```
-
-Kubernetes let me shoot one replica and physically refused to let me shoot the second. A PDB governs *voluntary* disruption; it can't stop a machine from dying abruptly. But it made the policy concrete.
-
-### A config mistake, and a two-line fix
-
-The first rollout deadlocked. I'd set the "keep both replicas, create a replacement" strategy — but on two workers with one pod per host, the surge pod had nowhere to schedule, and `maxUnavailable: 0` refused to evict an old pod to make room. Argo went `Degraded`, the new pod sat `Pending`.
-
-```yaml
-rollingUpdate:
-  maxUnavailable: 1   # drain one pod, free its worker, then replace
-  maxSurge: 0
-```
-
-That's the whole fix. Drain one pod, place the replacement on its worker, repeat. The honest cost is a brief one-replica window during the ~35s drain — never-below-two needs a third worker, which in my setup means a third physical machine (both existing hosts are already memory-constrained).
-
-### The proof: play a credit during the rollout
-
-All of the above is theory until someone's actually playing. So the test was: trigger a live rolling update **while a session was in progress**, and see what happens.
-
-The result, straight from the client's history tab:
+The result:
 
 ```text
 WIN 988,550 · FULL BELL · PLATINUM SCORE 2,117/0
@@ -196,15 +126,11 @@ MAX COMBO 236 · CRITICAL 1.147 · BREAK 5 · HIT 9 · MISS 17
 BELL 96/96 · MASTER
 ```
 
-The score appeared in history — which reads from the backend → database — so it **wrote and read back clean** across the rollout. A full play, through the drain window, with the result persisted. Argo returned to `Synced / Healthy` with both pods on the new image.
-
-That's the payoff. The cluster wasn't finished when Kubernetes turned green; it was finished when a real play still produced a score while the backend was being replaced.
-
-**The one caveat I owe myself:** "score saved" is consistent with *either* a seamless connection *or* a clean client reconnect. Logs distinguish the two; I haven't yet correlated play timing against the AimeDB drain window to claim the stronger word, *seamless*. I'll say "survived and persisted" and leave "seamless" for a log-correlation follow-up.
+The score appeared in history which reads from the backend -> database, so it wrote in clean duing the rollout. I did a full play through the drain window with the result persisted. Argo also successfully synced to `Synced / Healthy` with all pods on the new image.
 
 ---
 
-## Part 4 — GitOps: introducing acid
+## Part 4: GitOps. introducing Acid
 
 The migration's second act was Argo CD — turning deploys from "SSH into the box" into "reviewed Git changes". The missing piece was a place to hold the *desired state*, so I made `acid`.
 
