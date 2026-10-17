@@ -160,7 +160,7 @@ I finished the song and the score saved like nothing happened.
 
 ### Cutover
 
-Then came the production cutover. My first attempt pointed the edge at the pod's container ports on the node IP, where nothing listens. The AI agent pairing with me called for a rollback, and I said *"that's the test, we are cutting over to prod"*. The actual fix was a NodePort Service for the edge to target:
+Then came the production cutover. My first attempt pointed the edge at the pod's container ports on the node IP, where nothing listens. Rolling back was the safe call, and my answer was *"that's the test, we are cutting over to prod"*. The actual fix was a NodePort Service for the edge to target:
 
 ```text
 80    -> 30080   ALL.Net / title HTTP
