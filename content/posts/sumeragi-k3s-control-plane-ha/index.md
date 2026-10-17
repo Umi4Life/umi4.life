@@ -1,7 +1,7 @@
 +++
 banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/sumeragi-k3s-control-plane-ha/images/pve-vxlan-peers.png'
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/sumeragi-k3s-control-plane-ha/images/pve-vxlan-peers.png'
-date = '2026-10-17T09:35:00+07:00'
+date = '2026-10-17T09:30:00+07:00'
 draft = false
 translationKey = 'sumeragi-k3s-control-plane-ha'
 title = "Migrating my arcade server to k3s, Part 2"

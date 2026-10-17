@@ -1,7 +1,7 @@
 +++
 banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/sumeragi-k3s-image-promotion/images/acid-required-check.png'
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/sumeragi-k3s-image-promotion/images/acid-required-check.png'
-date = '2026-10-17T09:40:00+07:00'
+date = '2026-10-17T09:31:00+07:00'
 draft = false
 translationKey = 'sumeragi-k3s-image-promotion'
 title = "Migrating my arcade server to k3s, Part 3"
