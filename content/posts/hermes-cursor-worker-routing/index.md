@@ -9,7 +9,6 @@ categories = ["automation", "ai", "homelab"]
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/static/images/hermes-cursor-worker-routing/kamen-rider-build-experiment.png'
 banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/static/images/hermes-cursor-worker-routing/kamen-rider-build-experiment.png'
 mermaid = false
-weight = 2
 +++
 
 I started with a simple question: if Hermes is already running GPT-5.5 as the orchestrator, does it make sense to hand the typing to a separate worker drone?

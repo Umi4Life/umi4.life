@@ -45,19 +45,15 @@ Reminiscence is the odd one. It's public on GitHub and releases to GHCR. The obv
 
 > I don't want to have acid name or my internal infra known to public / also git.umi4.life is not public. github wont be able to reach it
 
-That ruled out a few designs in a row. A signed public relay was still too much surface. A webhook receiver on the edge, first custom and then [adnanh/webhook](https://github.com/adnanh/webhook) behind a Cloudflare tunnel, still felt bespoke:
-
-> it still feels too bespoke, I'd prefer a complete service I can just put on services's image: in compose
-
 After a proper look at what people run for this, the answer was the boring one: self-hosted [Renovate](https://docs.renovatebot.com/). It polls GHCR from inside my network and opens PRs against acid, and GitHub never learns anything.
 
 ### Renovate in k3s couldn't reach Git either
 
-The first Renovate ran as a CronJob in the cluster and failed with `Authentication failure`. The token was fine:
+The first Renovate ran as a CronJob in the cluster but failed becauseing of recurring limitation I self imposed:
 
-> it's the same dmz problem again. k3s server is not in the same lan as gitea
+>  k3s server is not in the same lan as gitea
 
-From the k3s nodes, `git.umi4.life` doesn't even resolve, and the read-only mirror Argo uses can't serve Renovate, which needs the Gitea API. Renovate moved to Docker Compose on exgress, the edge VM that can see both sides, and runs every five minutes.
+From the k3s nodes, `git.umi4.life` cannot resolve, and the read-only mirror Argo uses can't serve Renovate, which needs the Gitea API. Renovate moved to Docker Compose on exgress, the edge VM that can see both sides, and runs every five minutes.
 
 The config turns everything off and then allows one image:
 
@@ -86,7 +82,7 @@ The config turns everything off and then allows one image:
 }
 ```
 
-The first run did the wrong thing: it pinned the old unprefixed `1.1.1` tag to a digest, and acid's validation rejected the PR. Once Reminiscence published only `vX.Y.Z` tags, Renovate opened `v1.1.2 → v1.1.3@sha256:8d4b7c80…`, CI checked the tag against the GitHub release and the GHCR digest, and `renovate-bot` merged it.
+Once Reminiscence published semver `vX.Y.Z` tags, Renovate opened `v1.1.2 → v1.1.3@sha256:8d4b7c80…`, CI checked the tag against the GitHub release and the GHCR digest, and `renovate-bot` merged it.
 
 > auto merge went through and showed diff on argo
 
@@ -148,9 +144,7 @@ A request that doesn't match its entry, like the wrong source repo or an image t
 
 ### Getting all four through
 
-Each app's first real run broke on something small. One runner had no PyYAML. Another refused `pip install` under PEP 668 until it got a venv. One image reference came out with the registry prefix twice. The plugin publisher pushed under the registry's internal hostname, which didn't match the name in the policy.
-
-After those fixes, a push to each app's main branch built the image, opened a PR in acid, passed `validate`, and got merged by `acidpr-bot`. Then I synced all four in Argo by hand. Rche's core and plugin images are promoted separately, so what runs is always a pair I picked.
+Afterwardss, a push to each app's main branch built the image, opened a PR in acid, passed `validate`, and got merged by `acidpr-bot`. Then I synced all four in Argo manually. Rche's core and plugin images are promoted separately, so what runs is always a pair I picked.
 
 > [!TIP]
 > When only one side can see the other, make the side that can see pull. My internal Renovate polls public GHCR, so the public repo never needs to know my Git exists.
@@ -173,7 +167,7 @@ flowchart TB
     MIR[git-mirror]
   end
   subgraph dmz["DMZ"]
-    ARGO[Argo CD] -- "I press Sync" --> K3S[k3s]
+    ARGO[Argo CD] -- "Manual Sync" --> K3S[k3s]
   end
   REN -- polls --> GHCR
   REN -- opens --> PR

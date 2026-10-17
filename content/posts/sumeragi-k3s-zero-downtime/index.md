@@ -42,7 +42,7 @@ Most zero-downtime Kubernetes advice assumes HTTP. Sumeragi also speaks AimeDB, 
 - Open TCP connections surviving a rollout: only if the old pod drains them before it exits.
 - Open TCP connections surviving a crash or a dead node: impossible. The cabinet reconnects.
 
-So the goal was smaller than "HA". In my own words at the time: *"my goal at minimum is to at least allow players's play session to survive during rollout deployment."*
+So the goal was smaller than "HA". My goal was, at minimum, is to allow players's record save request to survive during rollout deployment.
 
 ---
 
@@ -368,7 +368,7 @@ The game data importer (`read.py`) looked like an obvious Kubernetes Job. But th
 Sumeragi source
   -> CI builds and pushes the image
   -> immutable digest
-  -> digest committed to acid (reviewed)
+  -> digest committed to acid
   -> Gitea mirrors acid to the edge
   -> I press Sync in Argo
   -> PreSync migration runs from the new image

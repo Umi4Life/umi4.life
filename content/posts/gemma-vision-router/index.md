@@ -7,7 +7,6 @@ description = 'A Hermes vision-routing experiment using local Gemma through Lite
 tags = ["hermes-agent", "litellm", "gemma", "local-llm", "vision", "benchmark", "routing", "homelab"]
 categories = ["automation", "ai", "homelab"]
 mermaid = true
-weight = 2
 cover = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/gemma-vision-router/images/image_02.jpeg'
 banner = 'https://raw.githubusercontent.com/Umi4Life/umi4.life/refs/heads/master/content/posts/gemma-vision-router/images/image_02.jpeg'
 +++

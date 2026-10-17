@@ -5,7 +5,7 @@ date = '2026-10-17T09:40:00+07:00'
 draft = false
 translationKey = 'prometheus-fabricated-rates'
 title = "My dashboard invented 7,694 requests an hour"
-subtitle = "Scraping four replicas through one load-balanced target, and every cabinet showing up as 10.42.0.0"
+subtitle = "Scraping four replicas through one load-balanced target, and every cabinet showing up as same IP"
 description = "Why Prometheus reported traffic that never happened when it scraped a load-balanced k3s Deployment, how per-pod NodePorts with externalTrafficPolicy Local fixed it, and how frp PROXY protocol brought back real cabinet IPs."
 tags = ["prometheus", "grafana", "loki", "traefik", "frp", "proxy-protocol", "k3s", "kubernetes", "observability", "homelab"]
 categories = ["homelab", "kubernetes", "private-server"]
@@ -22,13 +22,11 @@ mermaid = true
 
 ## Background
 
-My two arcade servers, Sumeragi and Rche, run as four replicas each on a k3s cluster in my homelab DMZ (the [k3s series](https://umi4.life/posts/sumeragi-k3s-zero-downtime/) covers how they got there). Rche already had a full Grafana dashboard with every game and cabinet. Sumeragi had logs and nothing else.
+My two arcade servers, Sumeragi and RCHE, run as four replicas each on a k3s cluster in my homelab DMZ LAN (read [k3s series](https://umi4.life/posts/sumeragi-k3s-zero-downtime/)). Rche already had a full Grafana dashboard with every game and cabinet. Sumeragi had logs and nothing else so it is lacking grafana metrics unlike rche.
 
-> sumeragi is lacking grafana metrics unlike rche right now
+So I gave Sumeragi [Grafana Alloy](https://grafana.com/docs/alloy/latest/) to send pod logs to Loki. Prometheus and Grafana run on a monitoring VM on my LAN, which can't reach the DMZ, so Prometheus scrapes through a Traefik entrypoint on exgress, my edge VM, which only answers to the monitoring host.
 
-So Sumeragi got [Grafana Alloy](https://grafana.com/docs/alloy/latest/) shipping pod logs to Loki, plus a bearer-protected `/metrics` endpoint with `sumeragi_` metrics. Prometheus and Grafana run on a monitoring VM on my LAN, which can't reach the DMZ, so Prometheus scrapes through a Traefik entrypoint on exgress, my edge VM, which only answers to the monitoring host.
-
-The dashboard went up, and it looked busy.
+The dashboard went up, and it looked busy than it should.
 
 ---
 
@@ -105,10 +103,6 @@ Rche got the same on `30088`. In a throwaway k3s cluster with two agents, each a
 
 ### One Traefik route per agent
 
-My first draft was eight hand-written routers, two apps times four agents.
-
-> for traefik and prometheus is there more elegant way to do it. especually for traefik that I apparantly have to create whole sumeragi-metrics-31 to 34 routers
-
 Traefik's file provider renders Go templates, so it became one file. The agent is picked by a `node` query parameter:
 
 ```yaml
@@ -149,16 +143,6 @@ The targets are the real agent addresses, but Prometheus never connects to them.
     - {target_label: __address__, replacement: '<exgress>:19084'}
 ```
 
-### Traefik didn't notice
-
-In production, the new routers didn't show up. Traefik was still serving the old config, and its log explained half of it: creating the new file had triggered a reload while another file had a duplicate `middlewares:` key, so Traefik rejected the whole reload. That file was fixed seconds later, but nothing reloaded again.
-
-I reproduced the other half on the same Traefik version (3.6.11): edits to files inside subdirectories of the dynamic config folder don't trigger a reload. Only top-level files do.
-
-```bash
-touch traefik/dynamic/metrics-per-node.yaml
-```
-
 ### Dashboards that double counted
 
 Now every pod is its own series, and a few panels started counting things four times. Rche's database totals, like web users, are reported by every pod, so `sum` turned 4 users into 16. Those became `max`. Per-client "last seen" gauges are combined across pods before counting, which took Rche's "clients up" from 4 back to the real 3. Rates were already fine with `sum(rate(...))`.
@@ -185,9 +169,7 @@ Sumeragi's cabinet panels were empty for a different reason. They only labeled c
 
 The first client to show up had the IP `10.42.0.0`, a Kubernetes pod network address. Every cabinet did.
 
-> as for 10.42.0.0 it's frpc to my vps
-
-My ISP puts me behind CGNAT, so cabinets reach a VPS, and frp tunnels the traffic home to exgress. Tracing it hop by hop:
+10.42.0.0 is FRPC to my VPS .My ISP puts me behind CGNAT, so cabinets reach a VPS, and frp tunnels the traffic home to exgress. Tracing it hop by hop:
 
 ```text
 cabinet -> VPS :80
